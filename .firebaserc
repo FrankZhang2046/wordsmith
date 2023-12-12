@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "wordsmith-vocabulary-builder": {
+      "hosting": {
+        "wordsmith": [
+          "wordsmith-vocabulary-builder"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "wordsmith-vocabulary-builder"
+  }
+}

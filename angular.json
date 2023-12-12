@@ -99,6 +99,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "wordsmith:build:production",
+              "serveTarget": "wordsmith:serve:production"
+            },
+            "development": {
+              "buildTarget": "wordsmith:build:development",
+              "serveTarget": "wordsmith:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
