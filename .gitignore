@@ -43,6 +43,7 @@ testem.log
 Thumbs.db
 
 # Firebase
+emulators-snapshot/
 .firebase
 *-debug.log
 .runtimeconfig.json
