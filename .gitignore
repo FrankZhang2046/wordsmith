@@ -47,3 +47,5 @@ emulators-snapshot/
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+src/app/data/wordsmith-vocabulary-builder-firebase-adminsdk-tl8hp-3df4ebe0cc.json
