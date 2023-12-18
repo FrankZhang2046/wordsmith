@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('./wordsmith-vocabulary-builder-firebase-adminsdk-tl8hp-3df4ebe0cc.json');
+const serviceAccount = require('./wordsmith-vocabulary-builder-firebase-adminsdk-tl8hp-3df4ebe0cc');
 const dictionary = require('./dictionary.json');
 
 admin.initializeApp({
@@ -12,53 +12,50 @@ db.settings({
   ssl: false
 });
 
-const collectionRef = db.collection('vocabularies');
+// 1. create a list of words from dictionary.json
+const vocabCollectionRef = db.collection('vocabularies');
 const wordList = Object.keys(dictionary);
-
+// 2. loop through the word list, use `counter` to track how many words have been added to the batch
 async function writeRecords() {
   let batch = db.batch();
-  let count = 0;
-  let batchCount = 0;
+  let counter = 0;
 
   for (let index = 0; index < wordList.length; index++) {
     const word = wordList[index];
-    const docRef = collectionRef.doc();
+    const docRef = vocabCollectionRef.doc();
     batch.set(docRef, {
-      word: word,
+      word,
       definition: dictionary[word]
     });
-    count++;
+    counter++;
 
-    if (count >= 500) {
+    // 3. if `counter` === 500, we commit the batch
+    if (counter === 500) {
       try {
         await batch.commit();
-        console.log(`Batch ${++batchCount} committed successfully. Last word is ${index} ${wordList[index]}`);
+        console.log(`last word is ${index} ${wordList[index]}`);
       } catch (error) {
-        console.error(`Error committing batch ${batchCount}:`, error);
-        // Handle specific error (e.g., retry logic, logging)
+        console.log(`Error when committing batch`)
       }
-      count = 0;
+      counter = 0;
       batch = db.batch();
     }
-  }
 
-  // Commit the final batch
-  if (count > 0) {
+  }
+  // 4. handle the last batch commit 
+  if (counter > 0) {
     try {
       await batch.commit();
-      console.log(`Final batch committed successfully.`);
+      console.log(`all words added to db.`);
     } catch (error) {
-      console.error('Error committing final batch:', error);
-      // Handle specific error
+      console.log(`Error when committing batch`)
     }
   }
 }
 
-// writeRecords()
-//   .then(() => console.log('All data uploaded'))
-//   .catch(error => console.error('Error during the upload process:', error));
+// writeRecords();
 
-collectionRef.get()
+vocabCollectionRef.get()
   .then(snapshot => {
-    console.log(snapshot.size, Object.keys(dictionary).length);
-  })
+    console.log(`${snapshot.size} in collection, ${wordList.length} words in dict.`)
+  });
