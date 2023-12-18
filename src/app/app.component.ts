@@ -15,11 +15,9 @@ export class AppComponent implements OnInit {
   constructor(private firestore: Firestore) {}
 
   public ngOnInit(): void {
-    const testCollection = collection(this.firestore, 'test');
+    const testCollection = collection(this.firestore, 'vocabularies');
     onSnapshot(testCollection, (snapshot) => {
-      snapshot.docs.forEach((element) => {
-        console.log('data: ', element.data());
-      });
+      console.log(`size of vocabulary: ${snapshot.size}`);
     });
   }
 }
