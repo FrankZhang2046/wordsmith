@@ -14,10 +14,5 @@ export class AppComponent implements OnInit {
   title = 'wordsmith';
   constructor(private firestore: Firestore) {}
 
-  public ngOnInit(): void {
-    const testCollection = collection(this.firestore, 'vocabularies');
-    onSnapshot(testCollection, (snapshot) => {
-      console.log(`size of vocabulary: ${snapshot.size}`);
-    });
-  }
+  public ngOnInit(): void {}
 }
