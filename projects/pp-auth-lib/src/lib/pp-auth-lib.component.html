@@ -1,0 +1,54 @@
+<div class="w-full flex flex-col items-center text-black">
+    <div [class.bg-emerald-200]="authMessage.status === 'success'" [class.bg-red-200]="authMessage.status === 'error'"
+        class="w-fit rounded-xl flex justify-center mt-4 p-4">
+        <div [class.text-red-900]="authMessage.status === 'error'"
+            [class.text-green-900]="authMessage.status === 'success'" class="">
+            <div *ngIf="authMessage.status === 'error'">
+                Error: {{ authMessage.message }} <br />This message will disappear in
+                {{ remainingTime }} seconds.
+            </div>
+            <div *ngIf="
+          authMessage.status === 'success' &&
+          authMessage.message === 'logged in'
+        ">
+                Successfully logged in, redirecting to the main page in
+                {{ remainingTime }} seconds.
+                <button mat-flat-button color="primary" (click)="navigateMethod()">
+                    Redirect Now
+                </button>
+            </div>
+            <div *ngIf="
+          authMessage.status === 'success' &&
+          authMessage.message === 'password reset'
+        ">
+                Please check your email for a password reset link, this message will
+                disappear in
+                {{ remainingTime }} seconds.
+                <button mat-flat-button color="primary" (click)="navigateMethod()">
+                    Redirect Now
+                </button>
+            </div>
+            <div *ngIf="
+          authMessage.status === 'success' &&
+          authMessage.message === 'verification sent'
+        ">
+                Successfully logged in. Please check your email for a verification link,
+                this message will disappear in
+                {{ remainingTime }} seconds.
+                <button mat-flat-button color="primary" (click)="navigateMethod()">
+                    Redirect Now
+                </button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="authMessage.status !== 'success'" class="self-center w-80 mt-4 bg-emerald-300 rounded-lg min-h-fit">
+        <mat-tab-group>
+            <mat-tab label="SIGN IN">
+                <!-- <app-sign-in class="relative" (signInStatus)="handleAuthStatusEvent($event)"></app-sign-in> -->
+            </mat-tab>
+            <mat-tab label="SIGN UP">
+                <!-- <app-sign-up (signUpStatus)="handleAuthStatusEvent($event)"></app-sign-up> -->
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
