@@ -1,1 +1,97 @@
 <p>sign-up works!</p>
+<div class="p-4 w-full">
+    <div *ngIf="!displaySignInForm; else emailSignUpForm" class="flex flex-col">
+        <button mat-flat-button (click)="signUp('google')">
+            <mat-icon svgIcon="google-icon"></mat-icon>
+            Sign Up With Google
+        </button>
+        <button class="mt-2 justify-center" mat-flat-button (click)="signUp('email')">
+            <mat-icon>email</mat-icon>
+            Sign Up With Email
+        </button>
+    </div>
+</div>
+
+<ng-template #emailSignUpForm>
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-[80px_1fr]">
+            <label for="email">Email</label>
+            <input class="ml-2 pl-2" type="email" id="email" formControlName="email" />
+
+            <div *ngIf="f.email.invalid && (f['email'].dirty || f['email'].touched)" class="col-span-2 error-message">
+                <div *ngIf="f.email.errors?.['required']">Email is required.</div>
+                <div *ngIf="f['email'].errors?.['email']">Invalid email format.</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-[80px_1fr] mt-2">
+            <label for="password">Password</label>
+            <div class="grid grid-cols-[1fr_20px] items-center">
+                <input #passwordInput class="ml-2 pl-2" type="password" id="password" formControlName="password" />
+                <div (click)="
+            togglePasswordVisibility(
+              passwordInput,
+              passwordInput.type === 'password'
+            )
+          ">
+                    <mat-icon>{{
+                        passwordInput.type === "password" ? "visibility" : "visibility_off"
+                        }}</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="
+        f['password'].invalid && (f['password'].dirty || f['password'].touched)
+      " class="col-span-2 error-message">
+            <div *ngIf="f['password'].errors?.['required']">
+                Password is required.
+            </div>
+            <div *ngIf="f['password'].errors?.['minlength']">
+                Password must be at least 6 characters.
+            </div>
+        </div>
+        <div class="grid grid-cols-[80px_1fr] mt-2">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="grid grid-cols-[1fr_20px] items-center">
+                <input #confirmPasswordInput class="ml-2 pl-2" type="password" id="confirmPassword"
+                    formControlName="confirmPassword" />
+                <div (click)="
+            togglePasswordVisibility(
+              confirmPasswordInput,
+              confirmPasswordInput.type === 'password'
+            )
+          ">
+                    <mat-icon>{{
+                        confirmPasswordInput.type === "password"
+                        ? "visibility"
+                        : "visibility_off"
+                        }}</mat-icon>
+                </div>
+            </div>
+            <!-- message container-->
+            <div *ngIf="
+          f['confirmPassword'].invalid &&
+          (f['confirmPassword'].dirty || f['confirmPassword'].touched)
+        " class="col-span-2 error-message">
+                <div *ngIf="f['confirmPassword'].errors?.['required']">
+                    Password is required.
+                </div>
+                <div *ngIf="f['confirmPassword'].errors?.['minlength']">
+                    Password should be at least 6 characters long.
+                </div>
+                <div *ngIf="f['confirmPassword']?.errors?.['passwordMismatch']">
+                    Password mismatched.
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-between w-full mt-2">
+            <button (click)="displaySignInForm = false" mat-flat-button>
+                Cancel
+            </button>
+            <button mat-flat-button type="submit" color="primary" [disabled]="signUpForm.invalid">
+                Sign Up
+            </button>
+        </div>
+    </form>
+</ng-template>

@@ -4,13 +4,14 @@ import { Router } from '@angular/router';
 import { Subscription, take, timer } from 'rxjs';
 import { MatTabsModule } from '@angular/material/tabs';
 import { PpAuthLibService } from './pp-auth-lib.service';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @Component({
   selector: 'lib-pp-auth-lib',
   standalone: true,
-  imports: [CommonModule, MatTabsModule],
   templateUrl: './pp-auth-lib.component.html',
   styles: ``,
+  imports: [CommonModule, MatTabsModule, SignUpComponent],
 })
 export class PpAuthLibComponent implements OnInit {
   constructor(private router: Router, private authService: PpAuthLibService) {}
@@ -23,6 +24,16 @@ export class PpAuthLibComponent implements OnInit {
   };
   public ngOnInit(): void {
     this.isProd = this.authService.isProd;
+  }
+  /*
+    handle the sign in status event from the sign in component
+   */
+  public handleAuthStatusEvent($event: any) {
+    if (this.authMessageClearTimeout) {
+      this.authMessageClearTimeout.unsubscribe();
+    }
+    this.authMessage = $event;
+    this.clearAuthMessage();
   }
   /*
   use the timer rx operator to clear the auth message after a few seconds
