@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription, take, timer } from 'rxjs';
 import { MatTabsModule } from '@angular/material/tabs';
+import { PpAuthLibService } from './pp-auth-lib.service';
 
 @Component({
   selector: 'lib-pp-auth-lib',
@@ -11,14 +12,18 @@ import { MatTabsModule } from '@angular/material/tabs';
   templateUrl: './pp-auth-lib.component.html',
   styles: ``,
 })
-export class PpAuthLibComponent {
-  constructor(private router: Router) {}
+export class PpAuthLibComponent implements OnInit {
+  constructor(private router: Router, private authService: PpAuthLibService) {}
   public authMessageClearTimeout!: Subscription;
+  public isProd!: boolean;
   public remainingTime!: number;
   public authMessage: { status: string; message: any } = {
     status: '',
     message: null,
   };
+  public ngOnInit(): void {
+    this.isProd = this.authService.isProd;
+  }
   /*
   use the timer rx operator to clear the auth message after a few seconds
    */
