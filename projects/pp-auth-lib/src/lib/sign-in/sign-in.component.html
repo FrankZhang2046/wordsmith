@@ -1,1 +1,62 @@
-<p>sign-in works!</p>
+<div class="p-4">
+  <div class="flex flex-col" *ngIf="!displaySignInForm; else emailSignInForm">
+    <button (click)="signIn('google')" mat-flat-button>
+      <mat-icon svgIcon="google-icon"></mat-icon>
+      {{ "sign in with google" | titlecase }}
+    </button>
+    <button (click)="signIn('email')" class="mt-2" mat-flat-button>
+      <mat-icon>email</mat-icon>
+      {{ "sign in with email" | titlecase }}
+    </button>
+  </div>
+  <div *ngIf="currentUserValue | displayPasswordResetModal" class="mt-3 hover:cursor-pointer text-xs text-green-800"
+    (click)="openPasswordResetModal()">
+    Forgot your password?
+  </div>
+</div>
+<ng-template #emailSignInForm>
+  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-[80px_1fr]">
+      <label for="email" class="w-20">Email</label>
+      <input type="email" class="flex-1 pl-2" id="email" formControlName="email" />
+      <div *ngIf="form.email.invalid && (form.email.dirty || form.email.touched)" class="col-span-2 error-message">
+        <div *ngIf="form.email.errors?.['required']">Email is required.</div>
+        <div *ngIf="form.email.errors?.['email']">Invalid email format.</div>
+      </div>
+    </div>
+    <div class="mt-2 grid grid-cols-[80px_1fr]">
+      <label for="password">Password</label>
+      <div class="grid grid-cols-[1fr_20px]">
+        <input #passwordInput class="ml-2 pl-2" type="password" id="password" formControlName="password" />
+        <div (click)="
+            togglePasswordVisibility(
+              passwordInput,
+              passwordInput.type === 'password'
+            )
+          ">
+          <mat-icon>{{
+            passwordInput.type === "password" ? "visibility" : "visibility_off"
+            }}</mat-icon>
+        </div>
+      </div>
+      <!-- password field error messages-->
+      <div *ngIf="
+          form.password.invalid &&
+          (form.password.dirty || form.password.touched)
+        " class="error-message col-span-2">
+        <div *ngIf="form.password.errors">Password is required.</div>
+        <div *ngIf="form.password.errors">
+          Password must be at least 6 characters.
+        </div>
+      </div>
+    </div>
+    <div class="w-full flex justify-between mt-2">
+      <button mat-flat-button (click)="displaySignInForm = false">
+        Cancel
+      </button>
+      <button mat-flat-button type="submit" [disabled]="signInForm.invalid">
+        Sign In
+      </button>
+    </div>
+  </form>
+</ng-template>
