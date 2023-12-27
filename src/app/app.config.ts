@@ -11,6 +11,7 @@ import { connectFirestoreEmulator } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { PpAuthLibService } from 'pp-auth-lib';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export function initConfig(ppAuthService: PpAuthLibService) {
   return () => (ppAuthService.isProd = environment.production);
@@ -26,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     },
     provideRouter(routes),
     provideClientHydration(),
+    // provideHttpClient(withFetch()),
     importProvidersFrom(
       provideFirebaseApp(() =>
         initializeApp({
