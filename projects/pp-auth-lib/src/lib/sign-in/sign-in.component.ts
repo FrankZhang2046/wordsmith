@@ -13,11 +13,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { PpAuthLibService } from '../pp-auth-lib.service';
+import { ConfirmPasswordResetComponent } from '../modal/modal/confirm-password-reset/confirm-password-reset.component';
 
 @Component({
   selector: 'lib-sign-in',
   standalone: true,
-  imports: [CommonModule, MatDialogModule],
+  imports: [CommonModule, MatDialogModule, ConfirmPasswordResetComponent],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
 })
@@ -33,7 +35,7 @@ export class SignInComponent implements OnInit {
   constructor(
     private auth: Auth,
     private formBuilder: FormBuilder,
-    private authService: AuthService,
+    private authService: PpAuthLibService,
     private matDialog: MatDialog
   ) {}
 
