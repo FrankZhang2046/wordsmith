@@ -10,16 +10,24 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { PpAuthLibService } from '../pp-auth-lib.service';
 import { ConfirmPasswordResetComponent } from '../modal/modal/confirm-password-reset/confirm-password-reset.component';
 
 @Component({
   selector: 'lib-sign-in',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, ConfirmPasswordResetComponent],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    ConfirmPasswordResetComponent,
+    MatIconModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
 })

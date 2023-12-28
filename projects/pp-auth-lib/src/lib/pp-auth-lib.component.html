@@ -47,7 +47,7 @@
     <div *ngIf="authMessage.status !== 'success'" class="self-center w-80 mt-4 bg-emerald-300 rounded-lg min-h-fit">
         <mat-tab-group>
             <mat-tab label="SIGN IN">
-                <!-- <app-sign-in class="relative" (signInStatus)="handleAuthStatusEvent($event)"></app-sign-in> -->
+                <lib-sign-in></lib-sign-in>
             </mat-tab>
             <mat-tab label="SIGN UP">
                 <lib-sign-up (signUpStatus)="handleAuthStatusEvent($event)"></lib-sign-up>

@@ -7,13 +7,14 @@ import { PpAuthLibService } from './pp-auth-lib.service';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SignInComponent } from './sign-in/sign-in.component';
 
 @Component({
   selector: 'lib-pp-auth-lib',
   standalone: true,
   templateUrl: './pp-auth-lib.component.html',
   styles: ``,
-  imports: [CommonModule, MatTabsModule, SignUpComponent],
+  imports: [CommonModule, MatTabsModule, SignUpComponent, SignInComponent],
 })
 export class PpAuthLibComponent implements OnInit {
   constructor(
