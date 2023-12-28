@@ -14,6 +14,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { PpAuthLibService } from 'pp-auth-lib';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
+import { AuthState } from './stores/states/auth.state';
 
 export function initConfig(ppAuthService: PpAuthLibService) {
   return () => (ppAuthService.isProd = environment.production);
@@ -44,7 +45,7 @@ export const appConfig: ApplicationConfig = {
       )
     ),
     importProvidersFrom(
-      NgxsModule.forRoot([]),
+      NgxsModule.forRoot([AuthState]),
       NgxsReduxDevtoolsPluginModule.forRoot(),
       provideAuth(() => {
         const auth = getAuth();
