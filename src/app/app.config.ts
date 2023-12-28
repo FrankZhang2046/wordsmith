@@ -1,4 +1,5 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { provideRouter } from '@angular/router';
 import { APP_INITIALIZER } from '@angular/core';
 import { routes } from './app.routes';
@@ -12,6 +13,7 @@ import { environment } from '../environments/environment';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { PpAuthLibService } from 'pp-auth-lib';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { NgxsModule } from '@ngxs/store';
 
 export function initConfig(ppAuthService: PpAuthLibService) {
   return () => (ppAuthService.isProd = environment.production);
@@ -42,6 +44,8 @@ export const appConfig: ApplicationConfig = {
       )
     ),
     importProvidersFrom(
+      NgxsModule.forRoot([]),
+      NgxsReduxDevtoolsPluginModule.forRoot(),
       provideAuth(() => {
         const auth = getAuth();
         if (!environment.production) {
