@@ -2,7 +2,11 @@
     <mat-form-field>
         <mat-label>Word search</mat-label>
         <input matInput placeholder="enter word" [formControl]="inputValue" aria-label="word-search" type="text"
-            [autocomplete]="wordSearchAutoComplete">
-        <mat-autocomplete #wordSearchAutoComplete="matAutocomplete"></mat-autocomplete>
+            [matAutocomplete]="wordSearchAutoComplete">
+        <mat-autocomplete #wordSearchAutoComplete="matAutocomplete">
+            @for (option of filteredOptions | async; track option) {
+            <mat-option [value]="option">{{option}}</mat-option>
+            }
+        </mat-autocomplete>
     </mat-form-field>
 </form>

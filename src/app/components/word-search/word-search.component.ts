@@ -3,7 +3,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounce, debounceTime } from 'rxjs';
+import { Observable, debounce, debounceTime, tap } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
@@ -20,6 +20,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 })
 export class WordSearchComponent {
   public inputValue: FormControl<string | null> = new FormControl('');
+  public filteredOptions: Observable<string[]> | undefined;
   constructor(private wordSearchService: WordSearchService) {
     this.inputValue.valueChanges
       .pipe(
@@ -28,7 +29,10 @@ export class WordSearchComponent {
       )
       .subscribe((value) => {
         if (value) {
-          this.wordSearchService.printWord(value);
+          this.filteredOptions = this.wordSearchService.printWord(value);
+          this.filteredOptions.pipe(tap(console.log)).subscribe();
+        } else if (value === '') {
+          this.filteredOptions = undefined;
         }
       });
   }
