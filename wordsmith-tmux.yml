@@ -1,0 +1,13 @@
+# wordsmith-tmux.yml
+name: wordsmith
+root: ~/Documents/Coding/wordsmith
+
+
+windows:
+  - editor:
+      layout: tiled
+      panes:
+        - sleep 10 && npm start
+        - npm run emulators
+        - ng build pp-auth-lib --watch
+        - cd functions && npm run build:watch
