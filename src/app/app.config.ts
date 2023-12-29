@@ -7,6 +7,11 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import {
+  connectFunctionsEmulator,
+  getFunctions,
+  provideFunctions,
+} from '@angular/fire/functions';
 import { connectAuthEmulator } from '@angular/fire/auth';
 import { connectFirestoreEmulator } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
@@ -42,9 +47,7 @@ export const appConfig: ApplicationConfig = {
           messagingSenderId: '401318579949',
           measurementId: 'G-PX3C2ZLDCQ',
         })
-      )
-    ),
-    importProvidersFrom(
+      ),
       NgxsModule.forRoot([AuthState]),
       NgxsReduxDevtoolsPluginModule.forRoot(),
       provideAuth(() => {
@@ -55,15 +58,20 @@ export const appConfig: ApplicationConfig = {
           });
         }
         return auth;
-      })
-    ),
-    importProvidersFrom(
+      }),
       provideFirestore(() => {
         const firestore = getFirestore();
         if (!environment.production) {
           connectFirestoreEmulator(firestore, 'localhost', 8080);
         }
         return firestore;
+      }),
+      provideFunctions(() => {
+        const functions = getFunctions();
+        if (!environment.production) {
+          connectFunctionsEmulator(functions, 'localhost', 5001);
+        }
+        return functions;
       })
     ),
     provideAnimations(),
