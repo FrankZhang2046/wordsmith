@@ -1,5 +1,12 @@
 import { WordSearchService } from './../../services/word-search.service';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Signal,
+  ViewChild,
+  WritableSignal,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -15,22 +22,27 @@ import {
   query,
   where,
 } from '@angular/fire/firestore';
+import { WordEntry } from '../../model/word-entry.model';
+import { ViewWordComponent } from '../view-word/view-word.component';
 
 @Component({
   selector: 'app-word-search',
   standalone: true,
+  templateUrl: './word-search.component.html',
+  styleUrl: './word-search.component.scss',
   imports: [
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    ViewWordComponent,
   ],
-  templateUrl: './word-search.component.html',
-  styleUrl: './word-search.component.scss',
 })
 export class WordSearchComponent {
   public inputValue: FormControl<string | null> = new FormControl('');
   public filteredOptions: Observable<string[]> | undefined;
+  public selectedWordSignal: WritableSignal<WordEntry | undefined> =
+    signal(undefined);
   constructor(
     private wordSearchService: WordSearchService,
     private firestore: Firestore
@@ -59,10 +71,7 @@ export class WordSearchComponent {
     const vocabularyCol = collection(this.firestore, 'vocabularies');
 
     onSnapshot(query(vocabularyCol, where('word', '==', word)), (snapshot) => {
-      // console.log data
-      snapshot.forEach((doc) => {
-        console.log(doc.data());
-      });
+      this.selectedWordSignal.set(snapshot.docs[0].data() as WordEntry);
     });
   }
 }

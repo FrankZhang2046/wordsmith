@@ -10,4 +10,7 @@
             }
         </mat-autocomplete>
     </mat-form-field>
+    @if (selectedWordSignal()) {
+    <app-view-word [selectedWord]="selectedWordSignal()"></app-view-word>
+    }
 </form>
