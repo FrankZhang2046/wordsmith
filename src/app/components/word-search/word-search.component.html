@@ -3,9 +3,10 @@
         <mat-label>Word search</mat-label>
         <input matInput placeholder="enter word" [formControl]="inputValue" aria-label="word-search" type="text"
             [matAutocomplete]="wordSearchAutoComplete">
-        <mat-autocomplete #wordSearchAutoComplete="matAutocomplete">
+        <mat-autocomplete #wordSearchAutoComplete="matAutocomplete"
+            (optionSelected)="matOptionClickEventHandler($event)">
             @for (option of filteredOptions | async; track option) {
-            <mat-option (click)="searchWordInDb(option)" [value]="option">{{option}}</mat-option>
+            <mat-option [value]="option">{{option}}</mat-option>
             }
         </mat-autocomplete>
     </mat-form-field>

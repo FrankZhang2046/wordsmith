@@ -4,7 +4,10 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable, debounce, debounceTime, tap } from 'rxjs';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
 import {
   Firestore,
   collection,
@@ -44,6 +47,13 @@ export class WordSearchComponent {
           this.filteredOptions = undefined;
         }
       });
+  }
+  public matOptionClickEventHandler(
+    selectedOption: MatAutocompleteSelectedEvent
+  ) {
+    // reset input component value
+    this.inputValue.setValue('');
+    this.searchWordInDb(selectedOption.option.value);
   }
   public searchWordInDb(word: string) {
     const vocabularyCol = collection(this.firestore, 'vocabularies');
