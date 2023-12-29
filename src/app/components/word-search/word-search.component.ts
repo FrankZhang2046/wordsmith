@@ -5,6 +5,13 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable, debounce, debounceTime, tap } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {
+  Firestore,
+  collection,
+  onSnapshot,
+  query,
+  where,
+} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-word-search',
@@ -21,7 +28,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 export class WordSearchComponent {
   public inputValue: FormControl<string | null> = new FormControl('');
   public filteredOptions: Observable<string[]> | undefined;
-  constructor(private wordSearchService: WordSearchService) {
+  constructor(
+    private wordSearchService: WordSearchService,
+    private firestore: Firestore
+  ) {
     this.inputValue.valueChanges
       .pipe(
         // debounce for 300 ms
@@ -29,11 +39,20 @@ export class WordSearchComponent {
       )
       .subscribe((value) => {
         if (value) {
-          this.filteredOptions = this.wordSearchService.printWord(value);
-          this.filteredOptions.pipe(tap(console.log)).subscribe();
+          this.filteredOptions = this.wordSearchService.fuzzySearchWord(value);
         } else if (value === '') {
           this.filteredOptions = undefined;
         }
       });
+  }
+  public searchWordInDb(word: string) {
+    const vocabularyCol = collection(this.firestore, 'vocabularies');
+
+    onSnapshot(query(vocabularyCol, where('word', '==', word)), (snapshot) => {
+      // console.log data
+      snapshot.forEach((doc) => {
+        console.log(doc.data());
+      });
+    });
   }
 }
