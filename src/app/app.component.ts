@@ -14,13 +14,22 @@ import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { AuthActions } from './stores/actions/auth.action';
 import { ReduxStateModel } from './model/redux-state.model';
+import { WordSearchComponent } from './components/word-search/word-search.component';
+import { WordSearchService } from './services/word-search.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, PpAuthLibComponent, MatToolbarModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    PpAuthLibComponent,
+    MatToolbarModule,
+    WordSearchComponent,
+  ],
 })
 export class AppComponent implements OnInit {
   public currentUser$!: Observable<User | null>;
@@ -29,7 +38,8 @@ export class AppComponent implements OnInit {
   constructor(
     private firestore: Firestore,
     private auth: Auth,
-    private store: Store
+    private store: Store,
+    private wordSearchService: WordSearchService
   ) {
     onAuthStateChanged(this.auth, (user) => {
       this.currentUserVal = user;

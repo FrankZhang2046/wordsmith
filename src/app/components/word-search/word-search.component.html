@@ -1,0 +1,8 @@
+<form>
+    <mat-form-field>
+        <mat-label>Word search</mat-label>
+        <input matInput placeholder="enter word" [formControl]="inputValue" aria-label="word-search" type="text"
+            [autocomplete]="wordSearchAutoComplete">
+        <mat-autocomplete #wordSearchAutoComplete="matAutocomplete"></mat-autocomplete>
+    </mat-form-field>
+</form>
