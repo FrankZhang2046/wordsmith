@@ -1,0 +1,4 @@
+<div>
+    <mat-icon>{{(instructorFeedback$ | async)?.correct ? "check" : "error"}}</mat-icon>
+    <div>{{(instructorFeedback$ | async)?.feedback}}</div>
+</div>

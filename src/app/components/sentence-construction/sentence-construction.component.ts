@@ -7,6 +7,9 @@ import { ViewWordComponent } from '../view-word/view-word.component';
 import { SentenceService } from '../../services/sentence.service';
 import { WordSearchService } from '../../services/word-search.service';
 import { WordEntry } from '../../model/word-entry.model';
+import { FeedbackDisplayComponent } from '../feedback-display/feedback-display.component';
+import { BehaviorSubject } from 'rxjs';
+import { InstructorFeedback } from '../../model/instructor-feedback.model';
 
 @Component({
   selector: 'app-sentence-construction',
@@ -19,10 +22,12 @@ import { WordEntry } from '../../model/word-entry.model';
     MatFormFieldModule,
     MatButtonModule,
     ViewWordComponent,
+    FeedbackDisplayComponent,
   ],
 })
 export class SentenceConstructionComponent {
   public selectedWord: WordEntry | undefined;
+  public instructorFeedback: InstructorFeedback | undefined;
   public sentenceForm: FormControl<string | null> = new FormControl<
     string | null
   >('');
@@ -33,17 +38,21 @@ export class SentenceConstructionComponent {
     this.wordSearchService.selectedWordSubject.subscribe(
       (word) => (this.selectedWord = word)
     );
+    this.sentenceService.instructorFeedback$.subscribe(
+      (feedback) => (this.instructorFeedback = feedback)
+    );
   }
-  public formSubmit(event: Event) {
+  public async formSubmit(event: Event) {
     event.preventDefault();
     console.log(this.sentenceForm.value);
     // make http request to cloud function
     // this.sentenceForm.reset();
     if (this.selectedWord && this.sentenceForm.value) {
-      this.sentenceService.sentenceEvaluation(
+      await this.sentenceService.sentenceEvaluation(
         this.selectedWord?.word,
         this.sentenceForm.value
       );
+      this.sentenceForm.reset();
     }
   }
 }

@@ -7,3 +7,7 @@
     <button mat-flat-button color="primary" class="w-8 mt-2 mb-2 justify-self-end"
         (click)="formSubmit($event)">Submit</button>
 </form>
+
+@if (instructorFeedback) {
+<app-feedback-display></app-feedback-display>
+}
