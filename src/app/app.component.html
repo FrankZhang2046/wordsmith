@@ -1,7 +1,7 @@
 <div class="app-container bg-green-400">
     <mat-toolbar class=" !bg-green-600 flex justify-between">
-        <div class="text-white">Wordsmith</div>
+        <div class="text-white" (click)="redirectMethod('word-search')">Wordsmith</div>
     </mat-toolbar>
-    <app-word-search></app-word-search>
+    <!-- <app-word-search></app-word-search> -->
     <router-outlet></router-outlet>
 </div>

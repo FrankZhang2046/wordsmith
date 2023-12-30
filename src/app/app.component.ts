@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import {
   Firestore,
   collection,
@@ -39,7 +39,8 @@ export class AppComponent implements OnInit {
     private firestore: Firestore,
     private auth: Auth,
     private store: Store,
-    private wordSearchService: WordSearchService
+    private wordSearchService: WordSearchService,
+    private router: Router
   ) {
     onAuthStateChanged(this.auth, (user) => {
       this.currentUserVal = user;
@@ -54,4 +55,7 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit(): void {}
+  public redirectMethod(destination: string): void {
+    this.router.navigate([`/${destination}`]);
+  }
 }
