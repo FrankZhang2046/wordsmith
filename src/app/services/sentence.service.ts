@@ -1,0 +1,25 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+interface SentenceEvaluation {
+  correct: boolean;
+  feedback: string;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class SentenceService {
+  constructor(private http: HttpClient) {}
+  public sentenceEvaluation(word: string, sentence: string) {
+    const url =
+      'http://127.0.0.1:5001/wordsmith-vocabulary-builder/us-central1/helloWorld';
+    this.http.post(url, { word, sentence }).subscribe((res: Object) => {
+      console.log(res);
+      console.log(
+        (res as SentenceEvaluation).correct,
+        (res as SentenceEvaluation).feedback
+      );
+    });
+  }
+}

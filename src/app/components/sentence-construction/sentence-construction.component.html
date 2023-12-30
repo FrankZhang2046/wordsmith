@@ -3,6 +3,7 @@
     <div class="font-light mt-2">Now create a sentence using this word, click <span class="font-semibold">Submit</span>
         when
         you've finished.</div>
-    <textarea class="min-w-20 mt-2" name="" id=""></textarea>
-    <button mat-flat-button color="primary" class="w-8 mt-2 mb-2 justify-self-end">Submit</button>
+    <textarea class="min-w-20 mt-2" name="" id="" [formControl]="sentenceForm"></textarea>
+    <button mat-flat-button color="primary" class="w-8 mt-2 mb-2 justify-self-end"
+        (click)="formSubmit($event)">Submit</button>
 </form>

@@ -34,6 +34,7 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
     provideRouter(routes),
+    provideHttpClient(),
     provideClientHydration(),
     // provideHttpClient(withFetch()),
     importProvidersFrom(

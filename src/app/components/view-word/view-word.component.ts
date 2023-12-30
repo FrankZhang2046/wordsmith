@@ -28,7 +28,6 @@ export class ViewWordComponent {
     });
   }
   public navigateMethod() {
-    // navigate to "sentence-construction"
     this.router.navigate(['/sentence-construction']);
   }
 }

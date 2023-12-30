@@ -25,16 +25,24 @@ export const helloWorld = onRequest(async (request, response) => {
       {
         role: 'system',
         content:
-          'You are an English professor, here to judge if a sentence that your student constructed using a given word you just taught the student makes sense and uses the word correctly. When responding to your student, assume the tone and verbiage of master Yoda from the starwars.',
+          'You are an English professor, here to judge if a sentence that your student constructed using a given word you just taught the student makes sense and uses the word correctly. When responding, format your response as a JSON literal in this format: {correct: boolean, // this represents if the sentence is gramatically, and syntactically correct feedback: string, // this is your feedback}',
       },
       {
         role: 'user',
-        content:
-          "the word is 'antibiotics'. the sentence is: 'Mary is sick, the doctor prescribed her with some antibiotics.'",
+        content: `the word is '${request.body.word}'. the sentence is: '${request.body.sentence}'`,
       },
     ],
   });
 
-  logger.info('Hello logs!', { structuredData: true });
+  logger.info(`request is: `, request.body);
+  logger.info(`result is: `, results.choices[0].message.content);
+  response.setHeader('Content-Type', 'application/json');
+  console.log(`response is: `, results.choices[0].message.content);
   response.send(results.choices[0].message.content);
+  // response.send(
+  //   JSON.stringify({
+  //     passed: true,
+  //     feedback: 'fuck your mother',
+  //   })
+  // );
 });
