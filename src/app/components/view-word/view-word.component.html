@@ -1,13 +1,17 @@
 <div class="flex flex-col">
     <div class="grid grid-cols-[100px_1fr]">
         <span class="font-bold">{{"word".toUpperCase()}}</span>
-        <div class="ml-2">{{selectedWord?.word}}</div>
+        <div class="ml-2">{{(selectedWord |async)?.word}}</div>
         <span class="font-bold">{{"definition".toUpperCase()}}</span>
-        <div class="ml-2">{{selectedWord?.definition}}</div>
+        <div class="ml-2">{{(selectedWord | async)?.definition}}</div>
     </div>
     <mat-divider class="!border-black"></mat-divider>
+    @if (urlSegment() !== 'sentence-construction') {
     <div>
         <div class="font-light">Now try using this word in a sentence.</div>
         <button mat-flat-button (click)="navigateMethod()">Confirm</button>
     </div>
+
+    }
+
 </div>

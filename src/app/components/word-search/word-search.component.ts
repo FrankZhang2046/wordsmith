@@ -41,8 +41,7 @@ import { ViewWordComponent } from '../view-word/view-word.component';
 export class WordSearchComponent {
   public inputValue: FormControl<string | null> = new FormControl('');
   public filteredOptions: Observable<string[]> | undefined;
-  public selectedWordSignal: WritableSignal<WordEntry | undefined> =
-    signal(undefined);
+  public selectedWord: WordEntry | undefined;
   constructor(
     private wordSearchService: WordSearchService,
     private firestore: Firestore
@@ -59,6 +58,10 @@ export class WordSearchComponent {
           this.filteredOptions = undefined;
         }
       });
+
+    this.wordSearchService.selectedWordSubject.subscribe(
+      (wordEntry) => (this.selectedWord = wordEntry)
+    );
   }
   public matOptionClickEventHandler(
     selectedOption: MatAutocompleteSelectedEvent
@@ -71,7 +74,9 @@ export class WordSearchComponent {
     const vocabularyCol = collection(this.firestore, 'vocabularies');
 
     onSnapshot(query(vocabularyCol, where('word', '==', word)), (snapshot) => {
-      this.selectedWordSignal.set(snapshot.docs[0].data() as WordEntry);
+      this.wordSearchService.selectedWordSubject.next(
+        snapshot.docs[0].data() as WordEntry
+      );
     });
   }
 }
