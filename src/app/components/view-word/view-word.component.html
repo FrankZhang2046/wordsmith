@@ -1,14 +1,13 @@
-<div>
-    <div class="flex">
+<div class="flex flex-col">
+    <div class="grid grid-cols-[100px_1fr]">
         <span class="font-bold">{{"word".toUpperCase()}}</span>
         <div class="ml-2">{{selectedWord?.word}}</div>
-    </div>
-    <div class="flex">
         <span class="font-bold">{{"definition".toUpperCase()}}</span>
         <div class="ml-2">{{selectedWord?.definition}}</div>
     </div>
+    <mat-divider class="!border-black"></mat-divider>
     <div>
         <div class="font-light">Now try using this word in a sentence.</div>
-        <button>Confirm</button>
+        <button mat-flat-button>Confirm</button>
     </div>
 </div>
