@@ -39,10 +39,4 @@ export const helloWorld = onRequest(async (request, response) => {
   response.setHeader('Content-Type', 'application/json');
   console.log(`response is: `, results.choices[0].message.content);
   response.send(results.choices[0].message.content);
-  // response.send(
-  //   JSON.stringify({
-  //     passed: true,
-  //     feedback: 'fuck your mother',
-  //   })
-  // );
 });

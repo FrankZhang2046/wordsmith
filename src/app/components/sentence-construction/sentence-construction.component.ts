@@ -45,8 +45,6 @@ export class SentenceConstructionComponent {
   public async formSubmit(event: Event) {
     event.preventDefault();
     console.log(this.sentenceForm.value);
-    // make http request to cloud function
-    // this.sentenceForm.reset();
     if (this.selectedWord && this.sentenceForm.value) {
       await this.sentenceService.sentenceEvaluation(
         this.selectedWord?.word,
