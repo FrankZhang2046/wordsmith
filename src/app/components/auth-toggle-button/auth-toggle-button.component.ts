@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PpAuthLibService } from 'pp-auth-lib';
 import { User } from '@angular/fire/auth';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-auth-toggle-button',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatMenuModule],
   templateUrl: './auth-toggle-button.component.html',
   styleUrl: './auth-toggle-button.component.scss',
 })
@@ -16,5 +17,8 @@ export class AuthToggleButtonComponent {
     this.ppAuthLibService.authenticatedUser$.subscribe(
       (user) => (this.authenticatedUser = user)
     );
+  }
+  public signOutMethod(): void {
+    this.ppAuthLibService.signOut();
   }
 }

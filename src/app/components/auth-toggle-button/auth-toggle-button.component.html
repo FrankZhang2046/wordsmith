@@ -1,3 +1,7 @@
-<div>
+<button [matMenuTriggerFor]="authMenu">
     {{authenticatedUser?.displayName}}
-</div>
+</button>
+
+<mat-menu #authMenu="matMenu">
+    <button mat-menu-item (click)="signOutMethod()">Log out</button>
+</mat-menu>

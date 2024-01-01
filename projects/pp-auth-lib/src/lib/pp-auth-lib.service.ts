@@ -56,4 +56,8 @@ export class PpAuthLibService {
       return new Promise((res, rej) => res(null));
     }
   }
+
+  public signOut(): void {
+    this.auth.signOut();
+  }
 }
