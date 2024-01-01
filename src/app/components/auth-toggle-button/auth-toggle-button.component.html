@@ -1,6 +1,10 @@
+@if (!authenticatedUser) {
+<button (click)="redirectMethod('log-in')">sign in/sign up</button>
+} @else {
 <button [matMenuTriggerFor]="authMenu">
-    {{authenticatedUser?.displayName}}
+    {{authenticatedUser.displayName ? authenticatedUser.displayName : authenticatedUser.email}}
 </button>
+}
 
 <mat-menu #authMenu="matMenu">
     <button mat-menu-item (click)="signOutMethod()">Log out</button>

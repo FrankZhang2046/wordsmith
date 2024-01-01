@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PpAuthLibService } from 'pp-auth-lib';
 import { User } from '@angular/fire/auth';
 import { MatMenuModule } from '@angular/material/menu';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth-toggle-button',
@@ -13,12 +14,19 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class AuthToggleButtonComponent {
   public authenticatedUser: User | null = null;
-  constructor(private ppAuthLibService: PpAuthLibService) {
+  constructor(
+    private ppAuthLibService: PpAuthLibService,
+    private router: Router
+  ) {
     this.ppAuthLibService.authenticatedUser$.subscribe(
       (user) => (this.authenticatedUser = user)
     );
   }
   public signOutMethod(): void {
     this.ppAuthLibService.signOut();
+  }
+
+  public redirectMethod(target: string): void {
+    this.router.navigate([`/${target}`]);
   }
 }

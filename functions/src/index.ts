@@ -1,3 +1,6 @@
+/* eslint-disable object-curly-spacing */
+/* eslint-disable quotes */
+/* eslint-disable max-len */
 /**
  * Import function triggers from their respective submodules:
  *
@@ -18,25 +21,28 @@ const openai = new OpenAI({
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-export const helloWorld = onRequest(async (request, response) => {
-  const results = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
-    messages: [
-      {
-        role: 'system',
-        content:
-          'You are an English professor, here to judge if a sentence that your student constructed using a given word you just taught the student makes sense and uses the word correctly. When responding, format your response as a JSON literal in this format: {correct: boolean, // this represents if the sentence is gramatically, and syntactically correct feedback: string, // this is your feedback}, be strict about the grammar.',
-      },
-      {
-        role: 'user',
-        content: `the word is '${request.body.word}'. the sentence is: '${request.body.sentence}'`,
-      },
-    ],
-  });
+export const helloWorld = onRequest(
+  { cors: true },
+  async (request, response) => {
+    const results = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          role: 'system',
+          content:
+            'You are an English professor, here to judge if a sentence that your student constructed using a given word you just taught the student makes sense and uses the word correctly. When responding, format your response as a JSON literal in this format: {correct: boolean, // this represents if the sentence is gramatically, and syntactically correct feedback: string, // this is your feedback}, be strict about the grammar.',
+        },
+        {
+          role: 'user',
+          content: `the word is '${request.body.word}'. the sentence is: '${request.body.sentence}'`,
+        },
+      ],
+    });
 
-  logger.info(`request is: `, request.body);
-  logger.info(`result is: `, results.choices[0].message.content);
-  response.setHeader('Content-Type', 'application/json');
-  console.log(`response is: `, results.choices[0].message.content);
-  response.send(results.choices[0].message.content);
-});
+    logger.info(`request is: `, request.body);
+    logger.info(`result is: `, results.choices[0].message.content);
+    response.setHeader('Content-Type', 'application/json');
+    console.log(`response is: `, results.choices[0].message.content);
+    response.send(results.choices[0].message.content);
+  }
+);

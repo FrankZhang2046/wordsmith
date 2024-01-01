@@ -7,10 +7,10 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
-db.settings({
-  host: 'localhost:8080',
-  ssl: false
-});
+// db.settings({
+//   host: 'localhost:8080',
+//   ssl: false
+// });
 
 // 1. create a list of words from dictionary.json
 const vocabCollectionRef = db.collection('vocabularies');
@@ -53,7 +53,8 @@ async function writeRecords() {
   }
 }
 
-// writeRecords();
+// writeRecords()
+//   .then(() => console.log('done'));
 
 vocabCollectionRef.get()
   .then(snapshot => {
