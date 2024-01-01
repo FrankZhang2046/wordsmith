@@ -4,13 +4,17 @@ import {
   sendPasswordResetEmail,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  User,
 } from '@angular/fire/auth';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PpAuthLibService {
   private _isProd: boolean = false;
+  public authenticatedUser$: BehaviorSubject<User | null> =
+    new BehaviorSubject<User | null>(null);
 
   constructor(private auth: Auth) {}
 

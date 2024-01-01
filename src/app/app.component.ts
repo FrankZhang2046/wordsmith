@@ -7,7 +7,7 @@ import {
   doc,
   onSnapshot,
 } from '@angular/fire/firestore';
-import { PpAuthLibComponent } from 'pp-auth-lib';
+import { PpAuthLibComponent, PpAuthLibService } from 'pp-auth-lib';
 import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
 import { Auth, User, onAuthStateChanged } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
@@ -16,7 +16,9 @@ import { AuthActions } from './stores/actions/auth.action';
 import { ReduxStateModel } from './model/redux-state.model';
 import { WordSearchComponent } from './components/word-search/word-search.component';
 import { WordSearchService } from './services/word-search.service';
-import { log } from 'console';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { AuthToggleButtonComponent } from './components/auth-toggle-button/auth-toggle-button.component';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +31,9 @@ import { log } from 'console';
     PpAuthLibComponent,
     MatToolbarModule,
     WordSearchComponent,
+    MatIconModule,
+    MatTooltipModule,
+    AuthToggleButtonComponent,
   ],
 })
 export class AppComponent implements OnInit {
@@ -40,17 +45,19 @@ export class AppComponent implements OnInit {
     private auth: Auth,
     private store: Store,
     private wordSearchService: WordSearchService,
-    private router: Router
+    private router: Router,
+    private ppAuthLibService: PpAuthLibService
   ) {
     onAuthStateChanged(this.auth, (user) => {
       this.currentUserVal = user;
-      this.store.dispatch(new AuthActions.RegisterCurrentUser(user));
-      // todo clean up this code, redirection should not be handled here
-      if (user) {
-        console.log('user', user);
-      } else if (user === null) {
-        console.log(`user is null`);
-      }
+      this.ppAuthLibService.authenticatedUser$.next(user);
+      // this.store.dispatch(new AuthActions.RegisterCurrentUser(user));
+      // // todo clean up this code, redirection should not be handled here
+      // if (user) {
+      //   console.log('user', user);
+      // } else if (user === null) {
+      //   console.log(`user is null`);
+      // }
     });
   }
 

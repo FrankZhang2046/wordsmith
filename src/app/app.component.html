@@ -1,7 +1,9 @@
 <div class="app-container bg-green-400">
     <mat-toolbar class=" !bg-green-600 flex justify-between">
-        <div class="text-white" (click)="redirectMethod('word-search')">Wordsmith</div>
+        <mat-icon class="hover:cursor-pointer">menu</mat-icon>
+        <div matTooltip="search for a word" class="text-white hover:cursor-pointer"
+            (click)="redirectMethod('word-search')">Wordsmith</div>
+        <app-auth-toggle-button></app-auth-toggle-button>
     </mat-toolbar>
-    <!-- <app-word-search></app-word-search> -->
     <router-outlet></router-outlet>
 </div>
