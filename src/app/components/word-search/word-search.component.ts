@@ -1,4 +1,4 @@
-import { WordSearchService } from './../../services/word-search.service';
+import { WordService } from '../../services/word.service';
 import {
   Component,
   ElementRef,
@@ -22,7 +22,7 @@ import {
   query,
   where,
 } from '@angular/fire/firestore';
-import { WordEntry } from '../../models/word-entry.model';
+import { VocabularyEntry } from '../../models/word-entry.model';
 import { ViewWordComponent } from '../view-word/view-word.component';
 
 @Component({
@@ -41,9 +41,9 @@ import { ViewWordComponent } from '../view-word/view-word.component';
 export class WordSearchComponent {
   public inputValue: FormControl<string | null> = new FormControl('');
   public filteredOptions: Observable<string[]> | undefined;
-  public selectedWord: WordEntry | undefined;
+  public selectedWord: VocabularyEntry | undefined;
   constructor(
-    private wordSearchService: WordSearchService,
+    private wordSearchService: WordService,
     private firestore: Firestore
   ) {
     this.inputValue.valueChanges
@@ -75,7 +75,7 @@ export class WordSearchComponent {
 
     onSnapshot(query(vocabularyCol, where('word', '==', word)), (snapshot) => {
       this.wordSearchService.selectedWordSubject.next(
-        snapshot.docs[0].data() as WordEntry
+        snapshot.docs[0].data() as VocabularyEntry
       );
     });
   }

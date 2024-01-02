@@ -15,7 +15,7 @@ import { Select, Store } from '@ngxs/store';
 import { AuthActions } from './stores/actions/auth.action';
 import { ReduxStateModel } from './models/redux-state.model';
 import { WordSearchComponent } from './components/word-search/word-search.component';
-import { WordSearchService } from './services/word-search.service';
+import { WordService } from './services/word.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthToggleButtonComponent } from './components/auth-toggle-button/auth-toggle-button.component';
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
     private firestore: Firestore,
     private auth: Auth,
     private store: Store,
-    private wordSearchService: WordSearchService,
+    private wordSearchService: WordService,
     private router: Router,
     private ppAuthLibService: PpAuthLibService
   ) {

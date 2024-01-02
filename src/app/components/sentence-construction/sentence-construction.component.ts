@@ -5,8 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { ViewWordComponent } from '../view-word/view-word.component';
 import { SentenceService } from '../../services/sentence.service';
-import { WordSearchService } from '../../services/word-search.service';
-import { WordEntry } from '../../models/word-entry.model';
+import { WordService } from '../../services/word.service';
+import { VocabularyEntry } from '../../models/word-entry.model';
 import { FeedbackDisplayComponent } from '../feedback-display/feedback-display.component';
 import { BehaviorSubject } from 'rxjs';
 import { InstructorFeedback } from '../../models/instructor-feedback.model';
@@ -26,14 +26,14 @@ import { InstructorFeedback } from '../../models/instructor-feedback.model';
   ],
 })
 export class SentenceConstructionComponent {
-  public selectedWord: WordEntry | undefined;
+  public selectedWord: VocabularyEntry | undefined;
   public instructorFeedback: InstructorFeedback | undefined;
   public sentenceForm: FormControl<string | null> = new FormControl<
     string | null
   >('');
   constructor(
     private sentenceService: SentenceService,
-    private wordSearchService: WordSearchService
+    private wordSearchService: WordService
   ) {
     this.wordSearchService.selectedWordSubject.subscribe(
       (word) => (this.selectedWord = word)
