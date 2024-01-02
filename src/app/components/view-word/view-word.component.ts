@@ -1,7 +1,7 @@
 import { WordSearchService } from './../../services/word-search.service';
 import { Component, Input, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WordEntry } from '../../model/word-entry.model';
+import { WordEntry } from '../../models/word-entry.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';

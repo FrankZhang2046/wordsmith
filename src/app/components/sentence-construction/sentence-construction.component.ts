@@ -6,10 +6,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { ViewWordComponent } from '../view-word/view-word.component';
 import { SentenceService } from '../../services/sentence.service';
 import { WordSearchService } from '../../services/word-search.service';
-import { WordEntry } from '../../model/word-entry.model';
+import { WordEntry } from '../../models/word-entry.model';
 import { FeedbackDisplayComponent } from '../feedback-display/feedback-display.component';
 import { BehaviorSubject } from 'rxjs';
-import { InstructorFeedback } from '../../model/instructor-feedback.model';
+import { InstructorFeedback } from '../../models/instructor-feedback.model';
 
 @Component({
   selector: 'app-sentence-construction',

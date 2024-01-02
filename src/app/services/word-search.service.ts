@@ -3,7 +3,7 @@ import Fuse from 'fuse.js';
 import { listOfWords } from '../data/listOfWords';
 import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { log } from 'console';
-import { WordEntry } from '../model/word-entry.model';
+import { WordEntry } from '../models/word-entry.model';
 
 @Injectable({
   providedIn: 'root',

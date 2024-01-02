@@ -22,7 +22,7 @@ import {
   query,
   where,
 } from '@angular/fire/firestore';
-import { WordEntry } from '../../model/word-entry.model';
+import { WordEntry } from '../../models/word-entry.model';
 import { ViewWordComponent } from '../view-word/view-word.component';
 
 @Component({

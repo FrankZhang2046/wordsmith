@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { InstructorFeedback } from '../model/instructor-feedback.model';
+import { InstructorFeedback } from '../models/instructor-feedback.model';
 import { environment } from '../../environments/environment';
 
 interface SentenceEvaluation {

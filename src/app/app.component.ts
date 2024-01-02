@@ -13,7 +13,7 @@ import { Auth, User, onAuthStateChanged } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { AuthActions } from './stores/actions/auth.action';
-import { ReduxStateModel } from './model/redux-state.model';
+import { ReduxStateModel } from './models/redux-state.model';
 import { WordSearchComponent } from './components/word-search/word-search.component';
 import { WordSearchService } from './services/word-search.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
