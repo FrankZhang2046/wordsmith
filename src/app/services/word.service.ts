@@ -5,6 +5,8 @@ import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { log } from 'console';
 import { VocabularyEntry, WordEntry } from '../models/word-entry.model';
 import {
+  DocumentData,
+  DocumentReference,
   Firestore,
   Timestamp,
   collection,
@@ -21,7 +23,7 @@ export class WordService {
   public selectedWordSubject: BehaviorSubject<VocabularyEntry | undefined> =
     new BehaviorSubject<VocabularyEntry | undefined>(undefined);
   constructor(private auth: Auth, private firestore: Firestore) {}
-  public async addWordToWordBank(word: string) {
+  public async addWordToWordBank(word: string): Promise<DocumentData | string> {
     // grab the correct collection for the user
     const user = await this.auth.currentUser;
     const wordBankCollection = collection(
@@ -30,7 +32,7 @@ export class WordService {
     );
     // if the collection has a document with word as the key, return the document, if not, create it
     const wordEntryDocument = doc(wordBankCollection, word);
-    getDoc(wordEntryDocument).then((doc) => {
+    return getDoc(wordEntryDocument).then((doc) => {
       if (doc.exists()) {
         return doc;
       } else {
@@ -43,7 +45,7 @@ export class WordService {
           },
         };
         setDoc(wordEntryDocument, newWordEntry);
-        return;
+        return 'doc created';
       }
     });
   }
