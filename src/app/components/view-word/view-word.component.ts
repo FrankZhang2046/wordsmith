@@ -17,12 +17,12 @@ import { UtilitiesService } from '../../services/utilities.service';
 })
 export class ViewWordComponent {
   public selectedWord: Observable<VocabularyEntry | undefined> =
-    this.wordSearchService.selectedWordSubject.asObservable();
+    this.wordService.selectedWordSubject.asObservable();
   public urlSegment: WritableSignal<string> = signal('');
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private wordSearchService: WordService,
+    private wordService: WordService,
     private utilities: UtilitiesService
   ) {
     this.route.url.subscribe((url) => {
@@ -30,6 +30,13 @@ export class ViewWordComponent {
     });
   }
   public addToWordBank() {
+    this.selectedWord.subscribe(async (word) => {
+      if (word) {
+        const currentUser = await this.wordService.addWordToWordBank(
+          word?.word
+        );
+      }
+    });
     this.utilities.navigateMethod('sentence-construction');
   }
 }
