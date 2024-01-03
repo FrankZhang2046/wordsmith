@@ -16,11 +16,10 @@ import {
   providedIn: 'root',
 })
 export class ReviewService {
-  constructor(private firestore: Firestore, private auth: Auth) {
-    console.log(`uid: `, this.auth.currentUser?.uid);
-  }
-  public getReviewQueue(): void {
-    console.log(`running that method`);
+  constructor(private firestore: Firestore, private auth: Auth) {}
+  public async getReviewQueue(): Promise<void> {
+    await this.auth.authStateReady();
+    console.log(`auth state is ready, `, this.auth.currentUser?.email);
 
     const today = new Date('2024-01-01');
     today.setHours(0, 0, 0, 0);

@@ -65,9 +65,7 @@ export class WordSearchComponent {
       (wordEntry) => (this.selectedWord = wordEntry)
     );
 
-    setTimeout(() => {
-      this.reviewService.getReviewQueue();
-    }, 5000);
+    this.reviewService.getReviewQueue();
   }
   public matOptionClickEventHandler(
     selectedOption: MatAutocompleteSelectedEvent
