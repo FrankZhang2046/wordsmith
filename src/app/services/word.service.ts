@@ -3,10 +3,11 @@ import Fuse from 'fuse.js';
 import { listOfWords } from '../data/listOfWords';
 import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { log } from 'console';
-import { VocabularyEntry, WordEntry } from '../models/word-entry.model';
+import { VocabularyEntry, WordStats } from '../models/word-entry.model';
 import {
   DocumentData,
   DocumentReference,
+  DocumentSnapshot,
   Firestore,
   Timestamp,
   collection,
@@ -23,7 +24,9 @@ export class WordService {
   public selectedWordSubject: BehaviorSubject<VocabularyEntry | undefined> =
     new BehaviorSubject<VocabularyEntry | undefined>(undefined);
   constructor(private auth: Auth, private firestore: Firestore) {}
-  public async addWordToWordBank(word: string): Promise<DocumentData | string> {
+  public async addWordToWordBank(
+    word: string
+  ): Promise<DocumentSnapshot | string> {
     // grab the correct collection for the user
     const user = await this.auth.currentUser;
     const wordBankCollection = collection(
@@ -36,13 +39,12 @@ export class WordService {
       if (doc.exists()) {
         return doc;
       } else {
-        const newWordEntry: WordEntry = {
-          word: {
-            lastPracticed: Timestamp.now(),
-            nextPractice: Timestamp.now(),
-            masteryLevel: 1,
-            sentenceHistory: [],
-          },
+        const newWordEntry: WordStats = {
+          word,
+          lastPracticed: Timestamp.now(),
+          nextPractice: Timestamp.now(),
+          masteryLevel: 1,
+          sentenceHistory: [],
         };
         setDoc(wordEntryDocument, newWordEntry);
         return 'doc created';

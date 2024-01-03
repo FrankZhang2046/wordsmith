@@ -24,6 +24,7 @@ import {
 } from '@angular/fire/firestore';
 import { VocabularyEntry } from '../../models/word-entry.model';
 import { ViewWordComponent } from '../view-word/view-word.component';
+import { ReviewService } from '../../services/review.service';
 
 @Component({
   selector: 'app-word-search',
@@ -43,8 +44,9 @@ export class WordSearchComponent {
   public filteredOptions: Observable<string[]> | undefined;
   public selectedWord: VocabularyEntry | undefined;
   constructor(
-    private wordSearchService: WordService,
-    private firestore: Firestore
+    private wordService: WordService,
+    private firestore: Firestore,
+    private reviewService: ReviewService
   ) {
     this.inputValue.valueChanges
       .pipe(
@@ -53,15 +55,17 @@ export class WordSearchComponent {
       )
       .subscribe((value) => {
         if (value) {
-          this.filteredOptions = this.wordSearchService.fuzzySearchWord(value);
+          this.filteredOptions = this.wordService.fuzzySearchWord(value);
         } else if (value === '') {
           this.filteredOptions = undefined;
         }
       });
 
-    this.wordSearchService.selectedWordSubject.subscribe(
+    this.wordService.selectedWordSubject.subscribe(
       (wordEntry) => (this.selectedWord = wordEntry)
     );
+
+    this.reviewService.getReviewQueue();
   }
   public matOptionClickEventHandler(
     selectedOption: MatAutocompleteSelectedEvent
@@ -74,7 +78,7 @@ export class WordSearchComponent {
     const vocabularyCol = collection(this.firestore, 'vocabularies');
 
     onSnapshot(query(vocabularyCol, where('word', '==', word)), (snapshot) => {
-      this.wordSearchService.selectedWordSubject.next(
+      this.wordService.selectedWordSubject.next(
         snapshot.docs[0].data() as VocabularyEntry
       );
     });

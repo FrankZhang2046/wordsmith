@@ -5,11 +5,8 @@ export interface VocabularyEntry {
   definition: string;
 }
 
-export interface WordEntry {
-  [key: string]: WordStats;
-}
-
 export interface WordStats {
+  word: string;
   lastPracticed: Timestamp;
   nextPractice: Timestamp;
   masteryLevel: number;
