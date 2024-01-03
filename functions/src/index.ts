@@ -30,7 +30,7 @@ export const helloWorld = onRequest(
         {
           role: 'system',
           content:
-            'You are an English professor, here to judge if a sentence that your student constructed using a given word you just taught the student makes sense and uses the word correctly. When responding, format your response as a JSON literal in this format: {correct: boolean, // this represents if the sentence is gramatically, and syntactically correct feedback: string, // this is your feedback}, be strict about the grammar.',
+            "You are an English professor, here to judge if a sentence that your student constructed using a given word you just taught the student makes sense and uses the word correctly. When responding, format your response as a JSON literal in this format: {correct: boolean, // this represents if the sentence is gramatically, and syntactically correct feedback: string, // this is your feedback}, be strict about the grammar. You should be strict with the grammatical and semantic correctness of the student's constructed sentence, but don't be unreasonable.",
         },
         {
           role: 'user',
