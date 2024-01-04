@@ -26,6 +26,14 @@ export class PpAuthLibService {
     this._isProd = value;
   }
 
+  /*
+    return the current user from the auth service
+    */
+  public async getCurrentUser(): Promise<User | null> {
+    await this.auth.authStateReady();
+    return this.auth.currentUser;
+  }
+
   public signInWithEmailAndPassword(
     email: string | null,
     password: string | null
