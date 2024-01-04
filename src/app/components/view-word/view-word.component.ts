@@ -40,10 +40,6 @@ export class ViewWordComponent implements OnInit {
   }
   public ngOnInit(): void {
     console.log(`calling the method in the service`);
-
-    setTimeout(() => {
-      this.reviewService.getReviewQueue();
-    }, 5000);
   }
   public addToWordBank() {
     this.selectedWord.subscribe(async (word) => {

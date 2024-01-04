@@ -1,12 +1,5 @@
 import { WordService } from '../../services/word.service';
-import {
-  Component,
-  ElementRef,
-  Signal,
-  ViewChild,
-  WritableSignal,
-  signal,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -48,18 +41,13 @@ export class WordSearchComponent {
     private firestore: Firestore,
     private reviewService: ReviewService
   ) {
-    this.inputValue.valueChanges
-      .pipe(
-        // debounce for 300 ms
-        debounceTime(300)
-      )
-      .subscribe((value) => {
-        if (value) {
-          this.filteredOptions = this.wordService.fuzzySearchWord(value);
-        } else if (value === '') {
-          this.filteredOptions = undefined;
-        }
-      });
+    this.inputValue.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
+      if (value) {
+        this.filteredOptions = this.wordService.fuzzySearchWord(value);
+      } else if (value === '') {
+        this.filteredOptions = undefined;
+      }
+    });
 
     this.wordService.selectedWordSubject.subscribe(
       (wordEntry) => (this.selectedWord = wordEntry)

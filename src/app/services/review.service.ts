@@ -6,24 +6,23 @@ import {
   where,
   onSnapshot,
   query,
-  Timestamp,
-  getDocs,
   getDoc,
   doc,
+  getDocs,
+  Timestamp,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReviewService {
   constructor(private firestore: Firestore, private auth: Auth) {}
-  public getReviewQueue(): void {
-    console.log(`running that method`);
+  public async getReviewQueue(): Promise<void> {
+    await this.auth.authStateReady();
+    console.log(`auth state is ready, `, this.auth.currentUser?.email);
 
     const today = new Date('2024-01-01');
     today.setHours(0, 0, 0, 0);
-    console.log(`uid: `, this.auth.currentUser?.uid);
 
     const wordsCollection = collection(
       this.firestore,
@@ -34,8 +33,10 @@ export class ReviewService {
     const wordDocRef = doc(this.firestore, docPath);
     const reviewQueueQuery = query(
       wordsCollection,
-      where('word', '!=', 'fuck')
+      where('nextPractice', '>=', Timestamp.fromDate(today))
     );
-    getDoc(wordDocRef).then((snapshot) => console.log(snapshot.data()));
+    getDocs(reviewQueueQuery).then((snapshot) => {
+      snapshot.forEach((docRef) => console.log(docRef.data()));
+    });
   }
 }
