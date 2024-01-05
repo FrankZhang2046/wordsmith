@@ -1,3 +1,4 @@
+import { PpAuthLibComponent, PpAuthLibService } from 'pp-auth-lib';
 import { Injectable, WritableSignal, signal } from '@angular/core';
 import Fuse from 'fuse.js';
 import { listOfWords } from '../data/listOfWords';
@@ -5,6 +6,7 @@ import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { log } from 'console';
 import { VocabularyEntry, WordStats } from '../models/word-entry.model';
 import {
+  CollectionReference,
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
@@ -14,8 +16,10 @@ import {
   doc,
   getDoc,
   setDoc,
+  updateDoc,
 } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
+import { InstructorFeedback } from '../models/instructor-feedback.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,16 +27,17 @@ import { Auth } from '@angular/fire/auth';
 export class WordService {
   public selectedWordSubject: BehaviorSubject<VocabularyEntry | undefined> =
     new BehaviorSubject<VocabularyEntry | undefined>(undefined);
-  constructor(private auth: Auth, private firestore: Firestore) {}
+  constructor(
+    private auth: Auth,
+    private firestore: Firestore,
+    private ppAuthLibService: PpAuthLibService
+  ) {}
   public async addWordToWordBank(
     word: string
   ): Promise<DocumentSnapshot | string> {
     // grab the correct collection for the user
-    const user = await this.auth.currentUser;
-    const wordBankCollection = collection(
-      this.firestore,
-      `users/${user?.uid}/words/`
-    );
+    const user = await this.ppAuthLibService.getCurrentUser();
+    const wordBankCollection = await this.getWordBankCollection();
     // if the collection has a document with word as the key, return the document, if not, create it
     const wordEntryDocument = doc(wordBankCollection, word);
     return getDoc(wordEntryDocument).then((doc) => {
@@ -52,6 +57,32 @@ export class WordService {
       }
     });
   }
+
+  public async getWordBankCollection(): Promise<CollectionReference> {
+    const user = await this.ppAuthLibService.getCurrentUser();
+    return collection(this.firestore, `users/${user?.uid}/words/`);
+  }
+
+  public async updateWordStats(
+    word: string,
+    sentence: string,
+    res: InstructorFeedback
+  ) {
+    if (res.correct) {
+      // logic for when the user has created a correct sentence
+      const wordsCollection = await this.getWordBankCollection();
+      const wordEntryDocument = doc(wordsCollection, word);
+      const wordEntry = await getDoc(wordEntryDocument);
+      const wordEntryData = wordEntry.data() as WordStats;
+      wordEntryData.sentenceHistory.push({
+        ...res,
+        sentence,
+        timestamp: Timestamp.now(),
+      });
+      updateDoc(wordEntryDocument, { ...wordEntryData });
+    }
+  }
+
   public fuzzySearchWord(letters: string): Observable<string[]> {
     const fuse = new Fuse(listOfWords, { includeScore: true });
     const searchResult = fuse

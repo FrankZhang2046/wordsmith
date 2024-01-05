@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { InstructorFeedback } from '../models/instructor-feedback.model';
 import { environment } from '../../environments/environment';
+import { WordService } from './word.service';
 
 interface SentenceEvaluation {
   correct: boolean;
@@ -15,7 +16,7 @@ interface SentenceEvaluation {
 export class SentenceService {
   public instructorFeedback$: BehaviorSubject<InstructorFeedback | undefined> =
     new BehaviorSubject<InstructorFeedback | undefined>(undefined);
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private wordService: WordService) {}
   public async sentenceEvaluation(
     word: string,
     sentence: string,
@@ -31,6 +32,11 @@ export class SentenceService {
     }
     this.http.post(url, { word, sentence, provideExample }).subscribe((res) => {
       this.instructorFeedback$.next(res as InstructorFeedback);
+      this.wordService.updateWordStats(
+        word,
+        sentence,
+        res as InstructorFeedback
+      );
     });
   }
 }
