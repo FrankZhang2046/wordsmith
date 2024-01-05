@@ -39,7 +39,10 @@ export class WordService {
     const user = await this.ppAuthLibService.getCurrentUser();
     const wordBankCollection = await this.getWordBankCollection();
     // if the collection has a document with word as the key, return the document, if not, create it
-    const wordEntryDocument = doc(wordBankCollection, word);
+    const wordEntryDocument = await this.getWordDocRef(
+      wordBankCollection,
+      word
+    );
     return getDoc(wordEntryDocument).then((doc) => {
       if (doc.exists()) {
         return doc;
@@ -61,6 +64,13 @@ export class WordService {
   public async getWordBankCollection(): Promise<CollectionReference> {
     const user = await this.ppAuthLibService.getCurrentUser();
     return collection(this.firestore, `users/${user?.uid}/words/`);
+  }
+
+  public async getWordDocRef(
+    collectionRef: CollectionReference,
+    path: string
+  ): Promise<DocumentReference> {
+    return doc(collectionRef, path);
   }
 
   public async updateWordStats(
