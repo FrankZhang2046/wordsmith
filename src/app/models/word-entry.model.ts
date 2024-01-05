@@ -11,4 +11,5 @@ export interface WordStats {
   nextPractice: Timestamp;
   masteryLevel: number;
   sentenceHistory: any[];
+  currentInterval: number;
 }

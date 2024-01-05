@@ -48,7 +48,8 @@ export class SentenceConstructionComponent {
     if (this.selectedWord && this.sentenceForm.value) {
       await this.sentenceService.sentenceEvaluation(
         this.selectedWord?.word,
-        this.sentenceForm.value
+        this.sentenceForm.value,
+        true
       );
       this.sentenceForm.reset();
     }

@@ -45,6 +45,7 @@ export class WordService {
           nextPractice: Timestamp.now(),
           masteryLevel: 1,
           sentenceHistory: [],
+          currentInterval: 1,
         };
         setDoc(wordEntryDocument, newWordEntry);
         return 'doc created';
