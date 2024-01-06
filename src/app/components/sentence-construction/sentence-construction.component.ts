@@ -49,7 +49,7 @@ export class SentenceConstructionComponent {
         this.selectedWord?.word,
         this.sentenceForm.value,
         true,
-        true
+        false
       );
       this.sentenceForm.reset();
     }

@@ -79,33 +79,59 @@ export class WordService {
     res: InstructorFeedback,
     prevRetried: boolean
   ) {
-    // logic for when the user has created a correct sentence
+    // get data for the correct word entry
     const wordsCollection = await this.getWordBankCollection();
     const wordEntryDocument = doc(wordsCollection, word);
     const wordEntry = await getDoc(wordEntryDocument);
     const wordEntryData = wordEntry.data() as WordStats;
+    /*
+      - update sentenceHistory
+      - lastPractice updated to today
+
+      if user failed to construct a correct sentence
+      - do nothing
+
+      if it took multiple tries for the user to construct a correct sentence, 
+      - masteryLevel stays the same, 
+      - increment currentInterval by 1.2 * currentInterval
+      - increment nextPractice by currentInterval days 
+
+      if user constructed a correct sentence the first time
+      - increment masteryLevel by 1
+      - increment currentInterval by 2 * currentInterval
+      - increment nextPractice by currentInterval days 
+    */
+
     wordEntryData.sentenceHistory.push({
       ...res,
       sentence,
       timestamp: Timestamp.now(),
     });
-    wordEntryData.masteryLevel += 1;
+    wordEntryData.lastPracticed = Timestamp.now();
+
     if (res.correct) {
+      if (prevRetried) {
+        wordEntryData.currentInterval = wordEntryData.currentInterval * 1.2;
+      } else {
+        wordEntryData.masteryLevel += 1;
+        wordEntryData.currentInterval = wordEntryData.currentInterval * 2;
+      }
       wordEntryData.nextPractice = this.updateNextPracticeTime(
         wordEntryData,
-        10
+        wordEntryData.currentInterval
       );
     }
     updateDoc(wordEntryDocument, { ...wordEntryData });
   }
 
-  public updateNextPracticeTime(wordEntry: WordStats, days: number): Timestamp {
+  public updateNextPracticeTime(
+    wordEntry: WordStats,
+    intervalInDays: number
+  ): Timestamp {
     const currentPracticeTime = new Date();
     const nextPracticeTime =
-      wordEntry.nextPractice.toMillis() + days * 24 * 60 * 60 * 1000;
-    const newTimestamp = Timestamp.fromMillis(nextPracticeTime);
-    console.log(`new timestamp: `, currentPracticeTime, newTimestamp);
-    return newTimestamp;
+      wordEntry.nextPractice.toMillis() + intervalInDays * 24 * 60 * 60 * 1000;
+    return Timestamp.fromMillis(nextPracticeTime);
   }
 
   public fuzzySearchWord(letters: string): Observable<string[]> {
