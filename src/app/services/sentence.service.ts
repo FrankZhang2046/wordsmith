@@ -29,7 +29,7 @@ export class SentenceService {
       url = 'https://helloworld-5e7r32bc5a-uc.a.run.app';
     } else {
       url =
-        'http://127.0.0.1:5001/wordsmith-vocabulary-builder/us-central1/helloWorld';
+        'http://127.0.0.1:5001/wordsmith-vocabulary-builder/us-central1/evaluateSentence';
     }
     this.http.post(url, { word, sentence, provideExample }).subscribe((res) => {
       this.instructorFeedback$.next(res as InstructorFeedback);

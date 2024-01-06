@@ -26,6 +26,7 @@ import { InstructorFeedback } from '../../models/instructor-feedback.model';
 })
 export class SentenceConstructionComponent {
   public selectedWord: VocabularyEntry | undefined;
+  public prevRetry: boolean = false;
   public instructorFeedback: InstructorFeedback | undefined;
   public sentenceForm: FormControl<string | null> = new FormControl<
     string | null
@@ -34,12 +35,16 @@ export class SentenceConstructionComponent {
     private sentenceService: SentenceService,
     private wordSearchService: WordService
   ) {
-    this.wordSearchService.selectedWordSubject.subscribe(
-      (word) => (this.selectedWord = word)
-    );
-    this.sentenceService.instructorFeedback$.subscribe(
-      (feedback) => (this.instructorFeedback = feedback)
-    );
+    this.wordSearchService.selectedWordSubject.subscribe((word) => {
+      if (word && this.selectedWord?.word !== word.word) {
+        this.selectedWord = word;
+        this.prevRetry = false;
+      }
+    });
+    this.sentenceService.instructorFeedback$.subscribe((feedback) => {
+      this.instructorFeedback = feedback;
+      this.prevRetry = true;
+    });
   }
   public async formSubmit(event: Event) {
     event.preventDefault();

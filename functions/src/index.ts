@@ -21,7 +21,7 @@ const openai = new OpenAI({
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-export const helloWorld = onRequest(
+export const evaluateSentence = onRequest(
   { cors: true },
   async (request, response) => {
     const results = await openai.chat.completions.create({
