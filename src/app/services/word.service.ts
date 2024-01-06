@@ -113,8 +113,13 @@ export class WordService {
       if (prevRetried) {
         wordEntryData.currentInterval = wordEntryData.currentInterval * 1.2;
       } else {
-        wordEntryData.masteryLevel += 1;
+        if (wordEntryData.masteryLevel < 5) {
+          wordEntryData.masteryLevel += 1;
+        }
         wordEntryData.currentInterval = wordEntryData.currentInterval * 2;
+      }
+      if (wordEntryData.currentInterval >= 180) {
+        wordEntryData.currentInterval = 180;
       }
       wordEntryData.nextPractice = this.updateNextPracticeTime(
         wordEntryData,
