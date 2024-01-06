@@ -8,7 +8,6 @@ import { SentenceService } from '../../services/sentence.service';
 import { WordService } from '../../services/word.service';
 import { VocabularyEntry } from '../../models/word-entry.model';
 import { FeedbackDisplayComponent } from '../feedback-display/feedback-display.component';
-import { BehaviorSubject } from 'rxjs';
 import { InstructorFeedback } from '../../models/instructor-feedback.model';
 
 @Component({
@@ -49,6 +48,7 @@ export class SentenceConstructionComponent {
       await this.sentenceService.sentenceEvaluation(
         this.selectedWord?.word,
         this.sentenceForm.value,
+        true,
         true
       );
       this.sentenceForm.reset();

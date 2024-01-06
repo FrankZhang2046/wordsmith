@@ -76,21 +76,40 @@ export class WordService {
   public async updateWordStats(
     word: string,
     sentence: string,
-    res: InstructorFeedback
+    res: InstructorFeedback,
+    prevRetried: boolean
   ) {
-    if (res.correct) {
-      // logic for when the user has created a correct sentence
-      const wordsCollection = await this.getWordBankCollection();
-      const wordEntryDocument = doc(wordsCollection, word);
-      const wordEntry = await getDoc(wordEntryDocument);
-      const wordEntryData = wordEntry.data() as WordStats;
-      wordEntryData.sentenceHistory.push({
-        ...res,
-        sentence,
-        timestamp: Timestamp.now(),
-      });
-      updateDoc(wordEntryDocument, { ...wordEntryData });
+    // logic for when the user has created a correct sentence
+    const wordsCollection = await this.getWordBankCollection();
+    const wordEntryDocument = doc(wordsCollection, word);
+    const wordEntry = await getDoc(wordEntryDocument);
+    const wordEntryData = wordEntry.data() as WordStats;
+    wordEntryData.sentenceHistory.push({
+      ...res,
+      sentence,
+      timestamp: Timestamp.now(),
+    });
+    if (!prevRetried) {
+      wordEntryData.currentInterval += 1;
     }
+    updateDoc(wordEntryDocument, { ...wordEntryData });
+  }
+
+  public async updateNextPracticeTime(
+    wordDocRef: DocumentReference,
+    days: number
+  ) {
+    const wordEntry = await getDoc(wordDocRef);
+    const wordEntryData = wordEntry.data() as WordStats;
+    const currentPracticeTime = new Date();
+    // elapse time by the amt of days
+    const nextPracticeTime =
+      currentPracticeTime.getTime() + days * 24 * 60 * 60;
+    wordEntryData.nextPractice = Timestamp.fromMillis(nextPracticeTime);
+
+    updateDoc(wordDocRef, {
+      nextPractice: Timestamp.now(),
+    });
   }
 
   public fuzzySearchWord(letters: string): Observable<string[]> {
