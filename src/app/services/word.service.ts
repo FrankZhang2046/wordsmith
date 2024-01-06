@@ -89,27 +89,23 @@ export class WordService {
       sentence,
       timestamp: Timestamp.now(),
     });
-    if (!prevRetried) {
-      wordEntryData.currentInterval += 1;
+    wordEntryData.masteryLevel += 1;
+    if (res.correct) {
+      wordEntryData.nextPractice = this.updateNextPracticeTime(
+        wordEntryData,
+        10
+      );
     }
     updateDoc(wordEntryDocument, { ...wordEntryData });
   }
 
-  public async updateNextPracticeTime(
-    wordDocRef: DocumentReference,
-    days: number
-  ) {
-    const wordEntry = await getDoc(wordDocRef);
-    const wordEntryData = wordEntry.data() as WordStats;
+  public updateNextPracticeTime(wordEntry: WordStats, days: number): Timestamp {
     const currentPracticeTime = new Date();
-    // elapse time by the amt of days
     const nextPracticeTime =
-      currentPracticeTime.getTime() + days * 24 * 60 * 60;
-    wordEntryData.nextPractice = Timestamp.fromMillis(nextPracticeTime);
-
-    updateDoc(wordDocRef, {
-      nextPractice: Timestamp.now(),
-    });
+      wordEntry.nextPractice.toMillis() + days * 24 * 60 * 60 * 1000;
+    const newTimestamp = Timestamp.fromMillis(nextPracticeTime);
+    console.log(`new timestamp: `, currentPracticeTime, newTimestamp);
+    return newTimestamp;
   }
 
   public fuzzySearchWord(letters: string): Observable<string[]> {
