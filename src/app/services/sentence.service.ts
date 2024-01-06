@@ -20,8 +20,7 @@ export class SentenceService {
   public async sentenceEvaluation(
     word: string,
     sentence: string,
-    provideExample: boolean,
-    prevRetried: boolean
+    provideExample: boolean
   ) {
     let url: string;
     console.log(`environment is production: `, environment.production);
@@ -37,7 +36,7 @@ export class SentenceService {
         word,
         sentence,
         res as InstructorFeedback,
-        prevRetried
+        provideExample
       );
     });
   }

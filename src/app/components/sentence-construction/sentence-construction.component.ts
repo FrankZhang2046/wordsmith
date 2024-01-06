@@ -53,8 +53,7 @@ export class SentenceConstructionComponent {
       await this.sentenceService.sentenceEvaluation(
         this.selectedWord?.word,
         this.sentenceForm.value,
-        true,
-        false
+        this.prevRetry
       );
       this.sentenceForm.reset();
     }
