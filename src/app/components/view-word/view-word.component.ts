@@ -40,7 +40,8 @@ export class ViewWordComponent implements OnInit {
   public ngOnInit(): void {
     console.log(`calling the method in the service`);
   }
-  public async addToWordBank() {
+  public async addToWordBank($event: Event) {
+    $event.preventDefault();
     const selectedWord = this.selectedWordSignal();
     if (selectedWord) {
       const currentUser: string | DocumentSnapshot =

@@ -9,12 +9,15 @@ import {
   DocumentReference,
   DocumentSnapshot,
   Firestore,
+  query,
+  where,
   Timestamp,
   collection,
   doc,
   getDoc,
   setDoc,
   updateDoc,
+  onSnapshot,
 } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { InstructorFeedback } from '../models/instructor-feedback.model';
@@ -32,8 +35,33 @@ export class WordService {
     private ppAuthLibService: PpAuthLibService,
     private reviewService: ReviewService
   ) {
-    effect(() => {
-      console.log(`list of words: ${this.reviewService.listOfWordsSignal()}`);
+    effect(async () => {
+      const currentListOfWords = this.reviewService.listOfWordsSignal();
+      console.log(
+        `first index in current list of words: `,
+        currentListOfWords[0]
+      );
+      if (currentListOfWords.length > 0) {
+        const vocabularyEntry = await this.getVocabularyEntryByWord(
+          currentListOfWords[0]
+        );
+        console.log(`vocabulary entry: `, vocabularyEntry);
+        this.selectedWordSignal.set(vocabularyEntry);
+      }
+    });
+  }
+  public async getVocabularyEntryByWord(
+    word: string
+  ): Promise<VocabularyEntry> {
+    const vocabulariesCollection = collection(this.firestore, `vocabularies`);
+    const vocabularyQuery = query(
+      vocabulariesCollection,
+      where('word', '==', word)
+    );
+    return new Promise((resolve, reject) => {
+      onSnapshot(vocabularyQuery, (snapshot) => {
+        resolve(snapshot.docs[0].data() as VocabularyEntry);
+      });
     });
   }
   public async addWordToWordBank(

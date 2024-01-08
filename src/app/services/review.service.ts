@@ -35,6 +35,8 @@ export class ReviewService {
       where('nextPractice', '<=', Timestamp.fromDate(today))
     );
     getDocs(reviewQueueQuery).then((snapshot) => {
+      console.log(`setting list of words`);
+
       this.listOfWordsSignal.set(
         snapshot.docs
           .sort((a, b) => b.data()['masteryLevel'] - a.data()['masteryLevel'])
