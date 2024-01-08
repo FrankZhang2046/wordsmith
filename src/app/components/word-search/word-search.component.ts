@@ -52,8 +52,6 @@ export class WordSearchComponent {
     this.wordService.selectedWordSubject.subscribe(
       (wordEntry) => (this.selectedWord = wordEntry)
     );
-
-    this.reviewService.getReviewQueue();
   }
   public matOptionClickEventHandler(
     selectedOption: MatAutocompleteSelectedEvent

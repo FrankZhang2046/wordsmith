@@ -10,6 +10,7 @@ import {
   doc,
   getDocs,
   Timestamp,
+  orderBy,
 } from '@angular/fire/firestore';
 
 @Injectable({
@@ -21,22 +22,21 @@ export class ReviewService {
     await this.auth.authStateReady();
     console.log(`auth state is ready, `, this.auth.currentUser?.email);
 
-    const today = new Date('2024-01-01');
+    const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     const wordsCollection = collection(
       this.firestore,
       `users/${this.auth.currentUser?.uid}/words`
     );
-    const docPath = `/users/${this.auth.currentUser?.uid}/words/kill`;
-    console.log(`docPath: `, docPath);
-    const wordDocRef = doc(this.firestore, docPath);
     const reviewQueueQuery = query(
       wordsCollection,
-      where('nextPractice', '>=', Timestamp.fromDate(today))
+      where('nextPractice', '<=', Timestamp.fromDate(today))
     );
     getDocs(reviewQueueQuery).then((snapshot) => {
-      snapshot.forEach((docRef) => console.log(docRef.data()));
+      snapshot.docs
+        .sort((a, b) => b.data()['masteryLevel'] - a.data()['masteryLevel'])
+        .forEach((doc) => console.log(doc.data()));
     });
   }
 }

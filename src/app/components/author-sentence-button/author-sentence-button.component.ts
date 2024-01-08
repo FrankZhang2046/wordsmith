@@ -1,3 +1,4 @@
+import { ReviewService } from './../../services/review.service';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,9 +15,11 @@ import { UtilitiesService } from '../../services/utilities.service';
 export class AuthorSentenceButtonComponent {
   constructor(
     private ppAuthLibService: PpAuthLibService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private reviewService: ReviewService
   ) {}
   public async authorSentenceIconClickEventHandler() {
+    this.reviewService.getReviewQueue();
     const currentUser = await this.ppAuthLibService.getCurrentUser();
     if (currentUser) {
       this.utilities.navigateMethod('sentence-construction');
