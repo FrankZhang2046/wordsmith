@@ -11,6 +11,6 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './feedback-display.component.scss',
 })
 export class FeedbackDisplayComponent {
-  public instructorFeedback$ = this.sentenceService.instructorFeedback$;
+  public instructorFeedback = this.sentenceService.instructorFeedback;
   constructor(private sentenceService: SentenceService) {}
 }

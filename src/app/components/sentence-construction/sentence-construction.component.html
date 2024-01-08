@@ -7,6 +7,6 @@
         (click)="formSubmit($event)">Submit</button>
 </form>
 
-@if (instructorFeedback) {
+@if (instructorFeedback()) {
 <app-feedback-display></app-feedback-display>
 }

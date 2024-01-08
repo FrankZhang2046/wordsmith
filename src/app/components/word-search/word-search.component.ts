@@ -49,7 +49,7 @@ export class WordSearchComponent {
       }
     });
 
-    this.wordService.selectedWordSubject.subscribe(
+    this.wordService.selectedWordSubject$.subscribe(
       (wordEntry) => (this.selectedWord = wordEntry)
     );
   }
@@ -64,7 +64,7 @@ export class WordSearchComponent {
     const vocabularyCol = collection(this.firestore, 'vocabularies');
 
     onSnapshot(query(vocabularyCol, where('word', '==', word)), (snapshot) => {
-      this.wordService.selectedWordSubject.next(
+      this.wordService.selectedWordSubject$.next(
         snapshot.docs[0].data() as VocabularyEntry
       );
     });

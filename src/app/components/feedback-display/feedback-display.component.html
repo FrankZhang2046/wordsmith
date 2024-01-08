@@ -1,9 +1,9 @@
 <div>
-    <mat-icon>{{(instructorFeedback$ | async)?.correct ? "check" : "error"}}</mat-icon>
-    <div>{{(instructorFeedback$ | async)?.feedback}}</div>
-    @if (( instructorFeedback$ | async )?.example) {
+    <mat-icon>{{(instructorFeedback())?.correct ? "check" : "error"}}</mat-icon>
+    <div>{{(instructorFeedback())?.feedback}}</div>
+    @if (( instructorFeedback() )?.example) {
     <div>Here's an example sentence:
-        <div>{{( instructorFeedback$ | async )?.example}}</div>
+        <div>{{( instructorFeedback() )?.example}}</div>
     </div>
     }
 </div>

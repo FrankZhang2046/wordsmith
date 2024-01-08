@@ -7,7 +7,6 @@ import { log } from 'console';
 import { VocabularyEntry, WordStats } from '../models/word-entry.model';
 import {
   CollectionReference,
-  DocumentData,
   DocumentReference,
   DocumentSnapshot,
   Firestore,
@@ -20,17 +19,19 @@ import {
 } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { InstructorFeedback } from '../models/instructor-feedback.model';
+import { ReviewService } from './review.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WordService {
-  public selectedWordSubject: BehaviorSubject<VocabularyEntry | undefined> =
+  public selectedWordSubject$: BehaviorSubject<VocabularyEntry | undefined> =
     new BehaviorSubject<VocabularyEntry | undefined>(undefined);
   constructor(
     private auth: Auth,
     private firestore: Firestore,
-    private ppAuthLibService: PpAuthLibService
+    private ppAuthLibService: PpAuthLibService,
+    private reviewService: ReviewService
   ) {}
   public async addWordToWordBank(
     word: string

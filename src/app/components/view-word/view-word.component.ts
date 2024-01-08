@@ -25,7 +25,7 @@ import { ReviewService } from '../../services/review.service';
 })
 export class ViewWordComponent implements OnInit {
   public selectedWord: Observable<VocabularyEntry | undefined> =
-    this.wordService.selectedWordSubject.asObservable();
+    this.wordService.selectedWordSubject$.asObservable();
   public urlSegment: WritableSignal<string> = signal('');
   constructor(
     private router: Router,
