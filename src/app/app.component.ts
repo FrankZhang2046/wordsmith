@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthToggleButtonComponent } from './components/auth-toggle-button/auth-toggle-button.component';
 import { ReviewService } from './services/review.service';
 import { AuthorSentenceButtonComponent } from './components/author-sentence-button/author-sentence-button.component';
+import { NotificationStripComponent } from './components/notification-strip/notification-strip.component';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +35,7 @@ import { AuthorSentenceButtonComponent } from './components/author-sentence-butt
     MatTooltipModule,
     AuthToggleButtonComponent,
     AuthorSentenceButtonComponent,
+    NotificationStripComponent,
   ],
 })
 export class AppComponent implements OnInit {

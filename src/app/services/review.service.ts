@@ -21,8 +21,6 @@ export class ReviewService {
   constructor(private firestore: Firestore, private auth: Auth) {}
   public async getReviewQueue(): Promise<void> {
     await this.auth.authStateReady();
-    console.log(`auth state is ready, `, this.auth.currentUser?.email);
-
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -35,8 +33,6 @@ export class ReviewService {
       where('nextPractice', '<=', Timestamp.fromDate(today))
     );
     getDocs(reviewQueueQuery).then((snapshot) => {
-      console.log(`setting list of words`);
-
       this.listOfWordsSignal.set(
         snapshot.docs
           .sort((a, b) => b.data()['masteryLevel'] - a.data()['masteryLevel'])

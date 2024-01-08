@@ -1,10 +1,16 @@
-<div class="app-container">
+<div class="app-container grid grid-rows-[auto_1fr_auto]">
     <mat-toolbar class="!bg-green-600 flex justify-between">
         <mat-icon class="hover:cursor-pointer">menu</mat-icon>
         <div matTooltip="search for a word" class="text-black hover:cursor-pointer"
             (click)="redirectMethod('word-search')">Wordsmith</div>
         <app-auth-toggle-button></app-auth-toggle-button>
     </mat-toolbar>
+
+    <div class="grid justify-center w-100">
+        <app-notification-strip class="w-screen"></app-notification-strip>
+        <router-outlet class="mt-12"></router-outlet>
+    </div>
+
+    <footer></footer>
     <app-author-sentence-button></app-author-sentence-button>
-    <router-outlet></router-outlet>
 </div>

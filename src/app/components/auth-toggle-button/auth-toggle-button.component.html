@@ -1,8 +1,8 @@
-@if (!authenticatedUser) {
+@if (!authenticatedUser()) {
 <button (click)="redirectMethod('log-in')">sign in/sign up</button>
 } @else {
 <button [matMenuTriggerFor]="authMenu">
-    {{authenticatedUser.displayName ? authenticatedUser.displayName : authenticatedUser.email}}
+    {{( authenticatedUser())?.displayName ? authenticatedUser()?.displayName : authenticatedUser()?.email}}
 </button>
 }
 

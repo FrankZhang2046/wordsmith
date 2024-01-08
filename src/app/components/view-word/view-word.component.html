@@ -1,17 +1,17 @@
-<div class="flex flex-col">
-    <div class="grid grid-cols-[100px_1fr]">
-        <span class="font-bold">{{"word".toUpperCase()}}</span>
-        <div class="ml-2">{{(selectedWordSignal())?.word}}</div>
-        <span class="font-bold">{{"definition".toUpperCase()}}</span>
-        <div class="ml-2">{{(selectedWordSignal())?.definition}}</div>
+<div class="flex flex-col items-center">
+    <div class="flex w-[80%] max-w-[800px]">
+        <div class="grid grid-cols-[100px_1fr]">
+            <span class="font-bold">{{"word".toUpperCase()}}</span>
+            <div class="ml-2">{{(selectedWordSignal())?.word}}</div>
+            <span class="font-bold">{{"definition".toUpperCase()}}</span>
+            <div class="ml-2 h-auto max-h-[400px] overflow-y-scroll">{{(selectedWordSignal())?.definition}}</div>
+        </div>
     </div>
-    <mat-divider class="!border-black"></mat-divider>
+    <mat-divider class="!border-black w-full"></mat-divider>
     @if (urlSegment() !== 'sentence-construction') {
-    <div>
-        <div class="font-light">Now try using this word in a sentence.</div>
-        <button mat-flat-button (click)="addToWordBank($event)">Confirm</button>
+    <div class="flex flex-col w-[80%] max-w-[800px]">
+        <div class="font-light self-center">Now try using this word in a sentence.</div>
+        <button color="primary" class="self-end" mat-flat-button (click)="addToWordBank($event)">Confirm</button>
     </div>
-
     }
-
 </div>

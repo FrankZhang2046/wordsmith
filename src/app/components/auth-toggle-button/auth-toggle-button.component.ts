@@ -13,13 +13,11 @@ import { Router } from '@angular/router';
   styleUrl: './auth-toggle-button.component.scss',
 })
 export class AuthToggleButtonComponent {
-  public authenticatedUser: User | null = null;
+  public authenticatedUser = this.ppAuthLibService.authenticatedUserSignal;
   constructor(
     private ppAuthLibService: PpAuthLibService,
     private router: Router
-  ) {
-    this.authenticatedUser = this.ppAuthLibService.authenticatedUserSignal();
-  }
+  ) {}
   public signOutMethod(): void {
     this.ppAuthLibService.signOut();
   }
