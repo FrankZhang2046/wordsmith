@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
   ) {
     onAuthStateChanged(this.auth, (user) => {
       this.currentUserVal = user;
-      this.ppAuthLibService.authenticatedUser$.next(user);
+      this.ppAuthLibService.authenticatedUserSignal.set(user);
     });
   }
 

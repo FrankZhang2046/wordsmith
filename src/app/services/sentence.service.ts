@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 import { InstructorFeedback } from '../models/instructor-feedback.model';
 import { environment } from '../../environments/environment';
 import { WordService } from './word.service';

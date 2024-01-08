@@ -18,9 +18,7 @@ export class AuthToggleButtonComponent {
     private ppAuthLibService: PpAuthLibService,
     private router: Router
   ) {
-    this.ppAuthLibService.authenticatedUser$.subscribe(
-      (user) => (this.authenticatedUser = user)
-    );
+    this.authenticatedUser = this.ppAuthLibService.authenticatedUserSignal();
   }
   public signOutMethod(): void {
     this.ppAuthLibService.signOut();
