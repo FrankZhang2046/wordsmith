@@ -1,9 +1,9 @@
 <div class="flex flex-col">
     <div class="grid grid-cols-[100px_1fr]">
         <span class="font-bold">{{"word".toUpperCase()}}</span>
-        <div class="ml-2">{{(selectedWord |async)?.word}}</div>
+        <div class="ml-2">{{(selectedWordSignal())?.word}}</div>
         <span class="font-bold">{{"definition".toUpperCase()}}</span>
-        <div class="ml-2">{{(selectedWord | async)?.definition}}</div>
+        <div class="ml-2">{{(selectedWordSignal())?.definition}}</div>
     </div>
     <mat-divider class="!border-black"></mat-divider>
     @if (urlSegment() !== 'sentence-construction') {

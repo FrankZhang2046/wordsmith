@@ -35,12 +35,14 @@ export class SentenceConstructionComponent {
     private sentenceService: SentenceService,
     private wordSearchService: WordService
   ) {
-    this.wordSearchService.selectedWordSubject$.subscribe((word) => {
-      if (word && this.selectedWord?.word !== word.word) {
-        this.selectedWord = word;
-        this.prevRetry = false;
-      }
-    });
+    const currentlySelectedWord = this.wordSearchService.selectedWordSignal();
+    if (
+      currentlySelectedWord &&
+      currentlySelectedWord?.word !== this.selectedWord?.word
+    ) {
+      this.selectedWord = currentlySelectedWord;
+      this.prevRetry = false;
+    }
   }
   public async formSubmit(event: Event) {
     event.preventDefault();

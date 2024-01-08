@@ -35,7 +35,7 @@ import { ReviewService } from '../../services/review.service';
 export class WordSearchComponent {
   public inputValue: FormControl<string | null> = new FormControl('');
   public filteredOptions: Observable<string[]> | undefined;
-  public selectedWord: VocabularyEntry | undefined;
+  public selectedWord = this.wordService.selectedWordSignal;
   constructor(
     private wordService: WordService,
     private firestore: Firestore,
@@ -48,10 +48,6 @@ export class WordSearchComponent {
         this.filteredOptions = undefined;
       }
     });
-
-    this.wordService.selectedWordSubject$.subscribe(
-      (wordEntry) => (this.selectedWord = wordEntry)
-    );
   }
   public matOptionClickEventHandler(
     selectedOption: MatAutocompleteSelectedEvent
@@ -64,7 +60,7 @@ export class WordSearchComponent {
     const vocabularyCol = collection(this.firestore, 'vocabularies');
 
     onSnapshot(query(vocabularyCol, where('word', '==', word)), (snapshot) => {
-      this.wordService.selectedWordSubject$.next(
+      this.wordService.selectedWordSignal.set(
         snapshot.docs[0].data() as VocabularyEntry
       );
     });

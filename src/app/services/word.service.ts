@@ -1,9 +1,8 @@
-import { PpAuthLibComponent, PpAuthLibService } from 'pp-auth-lib';
-import { Injectable, WritableSignal, signal } from '@angular/core';
+import { PpAuthLibService } from 'pp-auth-lib';
+import { Injectable, WritableSignal, effect, signal } from '@angular/core';
 import Fuse from 'fuse.js';
 import { listOfWords } from '../data/listOfWords';
-import { BehaviorSubject, Observable, from, of } from 'rxjs';
-import { log } from 'console';
+import { Observable, of } from 'rxjs';
 import { VocabularyEntry, WordStats } from '../models/word-entry.model';
 import {
   CollectionReference,
@@ -25,14 +24,18 @@ import { ReviewService } from './review.service';
   providedIn: 'root',
 })
 export class WordService {
-  public selectedWordSubject$: BehaviorSubject<VocabularyEntry | undefined> =
-    new BehaviorSubject<VocabularyEntry | undefined>(undefined);
+  public selectedWordSignal: WritableSignal<VocabularyEntry | undefined> =
+    signal<VocabularyEntry | undefined>(undefined);
   constructor(
     private auth: Auth,
     private firestore: Firestore,
     private ppAuthLibService: PpAuthLibService,
     private reviewService: ReviewService
-  ) {}
+  ) {
+    effect(() => {
+      console.log(`list of words: ${this.reviewService.listOfWordsSignal()}`);
+    });
+  }
   public async addWordToWordBank(
     word: string
   ): Promise<DocumentSnapshot | string> {

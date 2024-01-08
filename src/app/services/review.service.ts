@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import {
   Firestore,
@@ -12,13 +12,12 @@ import {
   Timestamp,
   orderBy,
 } from '@angular/fire/firestore';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReviewService {
-  public listOfWords$ = new BehaviorSubject<string[]>([]);
+  public listOfWordsSignal: WritableSignal<string[]> = signal<string[]>([]);
   constructor(private firestore: Firestore, private auth: Auth) {}
   public async getReviewQueue(): Promise<void> {
     await this.auth.authStateReady();
@@ -36,7 +35,7 @@ export class ReviewService {
       where('nextPractice', '<=', Timestamp.fromDate(today))
     );
     getDocs(reviewQueueQuery).then((snapshot) => {
-      this.listOfWords$.next(
+      this.listOfWordsSignal.set(
         snapshot.docs
           .sort((a, b) => b.data()['masteryLevel'] - a.data()['masteryLevel'])
           .map((doc) => doc.data()['word'])

@@ -24,8 +24,7 @@ import { ReviewService } from '../../services/review.service';
   styleUrl: './view-word.component.scss',
 })
 export class ViewWordComponent implements OnInit {
-  public selectedWord: Observable<VocabularyEntry | undefined> =
-    this.wordService.selectedWordSubject$.asObservable();
+  public selectedWordSignal = this.wordService.selectedWordSignal;
   public urlSegment: WritableSignal<string> = signal('');
   constructor(
     private router: Router,
@@ -41,18 +40,17 @@ export class ViewWordComponent implements OnInit {
   public ngOnInit(): void {
     console.log(`calling the method in the service`);
   }
-  public addToWordBank() {
-    this.selectedWord.subscribe(async (word) => {
-      if (word) {
-        const currentUser: string | DocumentSnapshot =
-          await this.wordService.addWordToWordBank(word?.word);
-        if (typeof currentUser == 'string') {
-          console.log(currentUser);
-        } else {
-          console.log('word entry doc: ', currentUser.data());
-        }
+  public async addToWordBank() {
+    const selectedWord = this.selectedWordSignal();
+    if (selectedWord) {
+      const currentUser: string | DocumentSnapshot =
+        await this.wordService.addWordToWordBank(selectedWord?.word);
+      if (typeof currentUser == 'string') {
+        console.log(currentUser);
+      } else {
+        console.log('word exists, entry doc: ', currentUser.data());
       }
-    });
+    }
     this.utilities.navigateMethod('sentence-construction');
   }
 }
