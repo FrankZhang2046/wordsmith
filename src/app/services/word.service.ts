@@ -79,10 +79,12 @@ export class WordService {
       if (doc.exists()) {
         return doc;
       } else {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
         const newWordEntry: WordStats = {
           word,
           lastPracticed: Timestamp.now(),
-          nextPractice: Timestamp.now(),
+          nextPractice: Timestamp.fromDate(today),
           masteryLevel: 1,
           sentenceHistory: [],
           currentInterval: 1,
