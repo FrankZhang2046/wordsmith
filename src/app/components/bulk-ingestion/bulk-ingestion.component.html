@@ -1,2 +1,13 @@
 <textarea matInput name="" id="" cols="30" rows="10" [formControl]="bulkWordString"></textarea>
-<button mat-flat-button (click)="printForm()">process</button>
+<button mat-flat-button (click)="printForm($event)">process</button>
+<mat-chip-listbox>
+    @for (word of listOfWords; track $index) {
+    <mat-chip class="!bg-green-400">
+        <div class="flex items-center">
+            <mat-icon class="scale-75">done</mat-icon>
+            {{word}}
+        </div>
+    </mat-chip>
+    }
+
+</mat-chip-listbox>
