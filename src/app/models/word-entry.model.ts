@@ -13,3 +13,8 @@ export interface WordStats {
   sentenceHistory: any[];
   currentInterval: number;
 }
+
+export interface WordImportStatus {
+  word: string;
+  imported: 'done' | 'none' | 'warn' | 'discard';
+}

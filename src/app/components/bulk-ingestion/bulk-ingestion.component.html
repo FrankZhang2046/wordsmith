@@ -2,10 +2,22 @@
 <button mat-flat-button (click)="printForm($event)">process</button>
 <mat-chip-listbox>
     @for (word of listOfWords; track $index) {
-    <mat-chip class="!bg-green-400">
+    <mat-chip [ngClass]="word | resolveChipBgColor">
         <div class="flex items-center">
+            @if (word.imported !== 'none') {
+            @switch (word.imported) {
+            @case ('done') {
             <mat-icon class="scale-75">done</mat-icon>
-            {{word}}
+            }
+            @case ('discard') {
+            <mat-icon class="scale-75">close</mat-icon>
+            }
+            @case ('warn') {
+            <mat-icon class="scale-75">priority_high</mat-icon>
+            }
+            }
+            }
+            {{word.word}}
         </div>
     </mat-chip>
     }
