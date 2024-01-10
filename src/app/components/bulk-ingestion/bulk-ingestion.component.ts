@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { WordImportStatus } from '../../models/word-entry.model';
 import { ResolveChipBgColorPipe } from '../../pipes/resolve-chip-bg-color.pipe';
+import { WordService } from '../../services/word.service';
+import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-bulk-ingestion',
   standalone: true,
@@ -25,6 +27,7 @@ import { ResolveChipBgColorPipe } from '../../pipes/resolve-chip-bg-color.pipe';
 export class BulkIngestionComponent {
   public bulkWordString = new FormControl<string>('');
   public listOfWords: WordImportStatus[] = [];
+  constructor(private wordService: WordService) {}
   public printForm(event: Event) {
     event.preventDefault();
     this.listOfWords = this.returnListOfWords(this.bulkWordString.value || '');
@@ -41,6 +44,23 @@ export class BulkIngestionComponent {
           wordList.push(word);
         });
     });
-    return wordList.map((word) => ({ word, imported: 'discard' }));
+    return wordList.map((word) => ({ word, imported: 'none' }));
+  }
+
+  public async processWordsForBulkIngestion() {
+    for (const word of this.listOfWords) {
+      const searchResults = await firstValueFrom(
+        this.wordService.fuzzySearchWord(word.word)
+      );
+
+      if (searchResults.length > 0) {
+        if (searchResults[0].score === 0) {
+          await this.wordService.addWordToWordBank(word.word);
+          word.imported = 'done';
+        } else {
+          word.imported = 'warn';
+        }
+      }
+    }
   }
 }
