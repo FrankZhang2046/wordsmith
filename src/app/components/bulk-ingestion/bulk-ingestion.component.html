@@ -10,8 +10,9 @@
 
     <mat-chip-listbox class="w-[80%]">
         @for (word of listOfWords; track $index) {
-        <mat-chip
-            [ngClass]="word.imported === 'done' ? '!bg-green-400' : (word.imported === 'warn' ? '!bg-yellow-400' : (word.imported === 'discard' ? '!bg-red-400' : ''))">
+        <mat-chip class="hover:cursor-pointer"
+            [ngClass]="word.imported === 'done' ? '!bg-green-400' : (word.imported === 'warn' ? '!bg-yellow-400' : (word.imported === 'discard' ? '!bg-red-400' : ''))"
+            (click)="chipOnClickEventHandler(word)">
             <div class="flex items-center">
                 @if (word.imported !== 'none') {
                 @switch (word.imported) {
@@ -34,5 +35,8 @@
     </mat-chip-listbox>
     @if (displayProcessWordsListBtn) {
     <button (click)="processWordsForBulkIngestion()">Add Words</button>
+    }
+    @if (displayDashboardNavBtn) {
+    <button (click)="goToDashboard()">Go to Dashboard</button>
     }
 </div>

@@ -9,6 +9,7 @@ import { WordImportStatus } from '../../models/word-entry.model';
 import { ResolveChipBgColorPipe } from '../../pipes/resolve-chip-bg-color.pipe';
 import { WordService } from '../../services/word.service';
 import { firstValueFrom } from 'rxjs';
+import { UtilitiesService } from '../../services/utilities.service';
 @Component({
   selector: 'app-bulk-ingestion',
   standalone: true,
@@ -27,8 +28,12 @@ import { firstValueFrom } from 'rxjs';
 export class BulkIngestionComponent {
   public bulkWordString = new FormControl<string>('');
   public displayProcessWordsListBtn: boolean = true;
+  public displayDashboardNavBtn: boolean = false;
   public listOfWords: WordImportStatus[] = [];
-  constructor(private wordService: WordService) {}
+  constructor(
+    private wordService: WordService,
+    private utilitiesService: UtilitiesService
+  ) {}
   public printForm(event: Event) {
     event.preventDefault();
     this.listOfWords = this.returnListOfWords(this.bulkWordString.value || '');
@@ -45,7 +50,18 @@ export class BulkIngestionComponent {
           wordList.push(word);
         });
     });
-    return wordList.map((word) => ({ word, imported: 'none' }));
+    return wordList.map((word) => ({ word, imported: 'none', results: [] }));
+  }
+
+  public goToDashboard() {
+    this.utilitiesService.navigateMethod('/dashboard');
+    this.displayDashboardNavBtn = false;
+  }
+
+  public chipOnClickEventHandler(word: WordImportStatus) {
+    if (word.imported === 'warn') {
+      console.log(word);
+    }
   }
 
   public async processWordsForBulkIngestion() {
@@ -54,6 +70,7 @@ export class BulkIngestionComponent {
       const searchResults = await firstValueFrom(
         this.wordService.fuzzySearchWord(word.word)
       );
+      word.results = searchResults;
 
       if (searchResults.length > 0) {
         if (searchResults[0].score === 0) {
@@ -64,5 +81,6 @@ export class BulkIngestionComponent {
         }
       }
     }
+    this.displayDashboardNavBtn = true;
   }
 }

@@ -1,4 +1,5 @@
 import { Timestamp } from '@angular/fire/firestore';
+import { FuseResult } from 'fuse.js';
 
 export interface VocabularyEntry {
   word: string;
@@ -17,4 +18,5 @@ export interface WordStats {
 export interface WordImportStatus {
   word: string;
   imported: 'done' | 'none' | 'warn' | 'discard';
+  results: FuseResult<string>[];
 }
