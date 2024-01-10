@@ -10,7 +10,8 @@
 
     <mat-chip-listbox class="w-[80%]">
         @for (word of listOfWords; track $index) {
-        <mat-chip [ngClass]="word | resolveChipBgColor">
+        <mat-chip
+            [ngClass]="word.imported === 'done' ? '!bg-green-400' : (word.imported === 'warn' ? '!bg-yellow-400' : (word.imported === 'discard' ? '!bg-red-400' : ''))">
             <div class="flex items-center">
                 @if (word.imported !== 'none') {
                 @switch (word.imported) {
@@ -31,4 +32,5 @@
         }
 
     </mat-chip-listbox>
+    <button (click)="processWordsForBulkIngestion()">Add Words</button>
 </div>
