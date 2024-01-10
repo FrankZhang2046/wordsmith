@@ -18,6 +18,7 @@ import {
 import { VocabularyEntry } from '../../models/word-entry.model';
 import { ViewWordComponent } from '../view-word/view-word.component';
 import { ReviewService } from '../../services/review.service';
+import { FuseResult } from 'fuse.js';
 
 @Component({
   selector: 'app-word-search',
@@ -34,7 +35,7 @@ import { ReviewService } from '../../services/review.service';
 })
 export class WordSearchComponent {
   public inputValue: FormControl<string | null> = new FormControl('');
-  public filteredOptions: Observable<string[]> | undefined;
+  public filteredOptions: Observable<FuseResult<string>[]> | undefined;
   public selectedWord = this.wordService.selectedWordSignal;
   constructor(
     private wordService: WordService,

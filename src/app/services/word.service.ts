@@ -1,6 +1,6 @@
 import { PpAuthLibService } from 'pp-auth-lib';
 import { Injectable, WritableSignal, effect, signal } from '@angular/core';
-import Fuse from 'fuse.js';
+import Fuse, { FuseResult } from 'fuse.js';
 import { listOfWords } from '../data/listOfWords';
 import { Observable, of } from 'rxjs';
 import { VocabularyEntry, WordStats } from '../models/word-entry.model';
@@ -173,12 +173,9 @@ export class WordService {
     return Timestamp.fromMillis(nextPracticeTime);
   }
 
-  public fuzzySearchWord(letters: string): Observable<string[]> {
+  public fuzzySearchWord(letters: string): Observable<FuseResult<string>[]> {
     const fuse = new Fuse(listOfWords, { includeScore: true });
-    const searchResult = fuse
-      .search(letters)
-      .slice(0, 11)
-      .map((word) => word.item);
-    return of(searchResult);
+    const searchResult = fuse.search(letters);
+    return of(searchResult.slice(0, 11));
   }
 }

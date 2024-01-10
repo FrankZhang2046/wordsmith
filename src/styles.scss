@@ -12,3 +12,11 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.app-container {
+  @apply w-full flex flex-col items-center;
+}
+
+.component-container {
+  @apply w-full flex flex-col items-center;
+}

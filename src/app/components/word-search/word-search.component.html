@@ -7,7 +7,7 @@
             <mat-autocomplete #wordSearchAutoComplete="matAutocomplete"
                 (optionSelected)="matOptionClickEventHandler($event)">
                 @for (option of filteredOptions | async; track option) {
-                <mat-option [value]="option">{{option}}</mat-option>
+                <mat-option [value]="option.item">{{option.item}}</mat-option>
                 }
             </mat-autocomplete>
         </mat-form-field>
