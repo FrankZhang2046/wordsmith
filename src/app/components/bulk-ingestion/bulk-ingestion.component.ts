@@ -26,6 +26,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class BulkIngestionComponent {
   public bulkWordString = new FormControl<string>('');
+  public displayProcessWordsListBtn: boolean = true;
   public listOfWords: WordImportStatus[] = [];
   constructor(private wordService: WordService) {}
   public printForm(event: Event) {
@@ -48,6 +49,7 @@ export class BulkIngestionComponent {
   }
 
   public async processWordsForBulkIngestion() {
+    this.displayProcessWordsListBtn = false;
     for (const word of this.listOfWords) {
       const searchResults = await firstValueFrom(
         this.wordService.fuzzySearchWord(word.word)
