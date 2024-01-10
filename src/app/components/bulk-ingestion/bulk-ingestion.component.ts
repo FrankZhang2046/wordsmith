@@ -10,6 +10,8 @@ import { ResolveChipBgColorPipe } from '../../pipes/resolve-chip-bg-color.pipe';
 import { WordService } from '../../services/word.service';
 import { firstValueFrom } from 'rxjs';
 import { UtilitiesService } from '../../services/utilities.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ResolveWordComponent } from '../modal/resolve-word/resolve-word.component';
 @Component({
   selector: 'app-bulk-ingestion',
   standalone: true,
@@ -21,6 +23,8 @@ import { UtilitiesService } from '../../services/utilities.service';
     MatChipsModule,
     MatIconModule,
     ResolveChipBgColorPipe,
+    MatDialogModule,
+    ResolveWordComponent,
   ],
   templateUrl: './bulk-ingestion.component.html',
   styleUrl: './bulk-ingestion.component.scss',
@@ -32,7 +36,8 @@ export class BulkIngestionComponent {
   public listOfWords: WordImportStatus[] = [];
   constructor(
     private wordService: WordService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private matDialog: MatDialog
   ) {}
   public printForm(event: Event) {
     event.preventDefault();
@@ -62,6 +67,7 @@ export class BulkIngestionComponent {
     if (word.imported === 'warn') {
       console.log(word);
     }
+    this.matDialog.open(ResolveWordComponent);
   }
 
   public async processWordsForBulkIngestion() {
