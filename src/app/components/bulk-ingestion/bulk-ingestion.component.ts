@@ -66,8 +66,8 @@ export class BulkIngestionComponent {
   public chipOnClickEventHandler(word: WordImportStatus) {
     if (word.imported === 'warn') {
       console.log(word);
+      this.matDialog.open(ResolveWordComponent, { data: word });
     }
-    this.matDialog.open(ResolveWordComponent);
   }
 
   public async processWordsForBulkIngestion() {
