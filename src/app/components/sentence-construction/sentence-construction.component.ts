@@ -1,4 +1,3 @@
-import { listOfWords } from './../../data/listOfWords';
 import { ReviewService } from './../../services/review.service';
 import {
   Component,
@@ -35,7 +34,6 @@ import { InstructorFeedback } from '../../models/instructor-feedback.model';
 })
 export class SentenceConstructionComponent {
   public selectedWord: VocabularyEntry | undefined;
-  public listOfWords = this.reviewService.listOfWordsSignal;
   public prevRetry: boolean = false;
   public instructorFeedback = this.sentenceService.instructorFeedback;
   public sentenceForm: FormControl<string | null> = new FormControl<
@@ -47,9 +45,6 @@ export class SentenceConstructionComponent {
     private wordSearchService: WordService,
     private reviewService: ReviewService
   ) {
-    effect(() => {
-      console.log(`current value: `, this.listOfWords());
-    });
     const currentlySelectedWord = this.wordSearchService.selectedWordSignal();
     if (
       currentlySelectedWord &&

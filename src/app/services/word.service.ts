@@ -27,37 +27,13 @@ import { ReviewService } from './review.service';
   providedIn: 'root',
 })
 export class WordService {
-  public listOfWordsSignal = this.reviewService.listOfWordsSignal;
   public selectedWordSignal: WritableSignal<VocabularyEntry | undefined> =
     signal<VocabularyEntry | undefined>(undefined);
   constructor(
     private auth: Auth,
     private firestore: Firestore,
-    private ppAuthLibService: PpAuthLibService,
-    private reviewService: ReviewService
-  ) {
-    console.log(`word service injected`);
-    effect(() => {
-      console.log(`received new list`, this.listOfWordsSignal());
-    });
-
-    effect(async () => {
-      console.log(`currentListOfWords changed`);
-
-      const currentListOfWords = this.listOfWordsSignal();
-      console.log(
-        `first index in current list of words: `,
-        currentListOfWords[0]
-      );
-      if (currentListOfWords.length > 0) {
-        const vocabularyEntry = await this.getVocabularyEntryByWord(
-          currentListOfWords[0]
-        );
-        console.log(`vocabulary entry: `, vocabularyEntry);
-        this.selectedWordSignal.set(vocabularyEntry);
-      }
-    });
-  }
+    private ppAuthLibService: PpAuthLibService
+  ) {}
   public async getVocabularyEntryByWord(
     word: string
   ): Promise<VocabularyEntry> {
