@@ -19,27 +19,19 @@ import {
   orderBy,
 } from '@angular/fire/firestore';
 import { SentenceService } from './sentence.service';
-import { WordService } from './word.service';
+// import { WordService } from './word.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReviewService {
   public listOfWordsSignal: WritableSignal<string[]> = signal<string[]>([]);
-  constructor(
-    private firestore: Firestore,
-    private auth: Auth,
-    private wordService: WordService
-  ) {}
+  constructor(private firestore: Firestore, private auth: Auth) {}
   public async getReviewQueue(): Promise<void> {
     if (this.listOfWordsSignal().length > 0) {
       const tempList = this.listOfWordsSignal();
       tempList.shift();
-      this.listOfWordsSignal.set(tempList);
-      const wordEntry = await this.wordService.getVocabularyEntryByWord(
-        this.listOfWordsSignal()[0]
-      );
-      this.wordService.selectedWordSignal.set(wordEntry);
+      this.listOfWordsSignal.set([...tempList]);
     } else {
       await this.auth.authStateReady();
       const today = new Date();

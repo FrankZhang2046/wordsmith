@@ -22,7 +22,6 @@ export class SentenceService {
     provideExample: boolean
   ) {
     let url: string;
-    console.log(`environment is production: `, environment.production);
     if (environment.production) {
       url = 'https://evaluatesentence-5e7r32bc5a-uc.a.run.app';
     } else {

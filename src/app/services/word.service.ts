@@ -32,8 +32,17 @@ export class WordService {
   constructor(
     private auth: Auth,
     private firestore: Firestore,
-    private ppAuthLibService: PpAuthLibService
-  ) {}
+    private ppAuthLibService: PpAuthLibService,
+    private reviewService: ReviewService
+  ) {
+    effect(async () => {
+      if (this.reviewService.listOfWordsSignal().length > 0) {
+        const newList = this.reviewService.listOfWordsSignal();
+        const wordEntry = await this.getVocabularyEntryByWord(newList[0]);
+        this.selectedWordSignal.set(wordEntry);
+      }
+    });
+  }
   public async getVocabularyEntryByWord(
     word: string
   ): Promise<VocabularyEntry> {
@@ -153,7 +162,7 @@ export class WordService {
   ): Timestamp {
     const currentPracticeTime = new Date();
     const nextPracticeTime =
-      wordEntry.nextPractice.toMillis() + intervalInDays * 24 * 60 * 60 * 1000;
+      wordEntry.lastPracticed.toMillis() + intervalInDays * 24 * 60 * 60 * 1000;
     return Timestamp.fromMillis(nextPracticeTime);
   }
 

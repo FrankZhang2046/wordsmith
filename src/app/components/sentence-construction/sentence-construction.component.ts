@@ -42,17 +42,24 @@ export class SentenceConstructionComponent {
 
   constructor(
     private sentenceService: SentenceService,
-    private wordSearchService: WordService,
-    private reviewService: ReviewService
+    private wordSearchService: WordService
   ) {
-    const currentlySelectedWord = this.wordSearchService.selectedWordSignal();
-    if (
-      currentlySelectedWord &&
-      currentlySelectedWord?.word !== this.selectedWord?.word
-    ) {
-      this.selectedWord = currentlySelectedWord;
-      this.prevRetry = false;
-    }
+    effect(() => {
+      const feedback = this.instructorFeedback();
+      if (!feedback?.correct) {
+        this.prevRetry = true;
+      }
+    });
+    effect(() => {
+      const currentlySelectedWord = this.wordSearchService.selectedWordSignal();
+      if (
+        currentlySelectedWord &&
+        currentlySelectedWord?.word !== this.selectedWord?.word
+      ) {
+        this.selectedWord = currentlySelectedWord;
+        this.prevRetry = false;
+      }
+    });
   }
   public async formSubmit(event: Event) {
     event.preventDefault();
