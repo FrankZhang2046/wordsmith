@@ -1,4 +1,13 @@
-import { Component } from '@angular/core';
+import { listOfWords } from './../../data/listOfWords';
+import { ReviewService } from './../../services/review.service';
+import {
+  Component,
+  Signal,
+  WritableSignal,
+  computed,
+  effect,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,15 +35,21 @@ import { InstructorFeedback } from '../../models/instructor-feedback.model';
 })
 export class SentenceConstructionComponent {
   public selectedWord: VocabularyEntry | undefined;
+  public listOfWords = this.reviewService.listOfWordsSignal;
   public prevRetry: boolean = false;
   public instructorFeedback = this.sentenceService.instructorFeedback;
   public sentenceForm: FormControl<string | null> = new FormControl<
     string | null
   >('');
+
   constructor(
     private sentenceService: SentenceService,
-    private wordSearchService: WordService
+    private wordSearchService: WordService,
+    private reviewService: ReviewService
   ) {
+    effect(() => {
+      console.log(`current value: `, this.listOfWords());
+    });
     const currentlySelectedWord = this.wordSearchService.selectedWordSignal();
     if (
       currentlySelectedWord &&

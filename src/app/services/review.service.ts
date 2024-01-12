@@ -1,4 +1,10 @@
-import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
+import {
+  Injectable,
+  Signal,
+  WritableSignal,
+  effect,
+  signal,
+} from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import {
   Firestore,
@@ -18,26 +24,36 @@ import {
 })
 export class ReviewService {
   public listOfWordsSignal: WritableSignal<string[]> = signal<string[]>([]);
-  constructor(private firestore: Firestore, private auth: Auth) {}
-  public async getReviewQueue(): Promise<void> {
-    await this.auth.authStateReady();
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const wordsCollection = collection(
-      this.firestore,
-      `users/${this.auth.currentUser?.uid}/words`
-    );
-    const reviewQueueQuery = query(
-      wordsCollection,
-      where('nextPractice', '<=', Timestamp.fromDate(today))
-    );
-    getDocs(reviewQueueQuery).then((snapshot) => {
-      this.listOfWordsSignal.set(
-        snapshot.docs
-          .sort((a, b) => b.data()['masteryLevel'] - a.data()['masteryLevel'])
-          .map((doc) => doc.data()['word'])
-      );
+  constructor(private firestore: Firestore, private auth: Auth) {
+    effect(() => {
+      console.log(`fuck you`, this.listOfWordsSignal());
     });
+  }
+  public async getReviewQueue(): Promise<void> {
+    if (this.listOfWordsSignal().length > 0) {
+      const tempList = this.listOfWordsSignal();
+      tempList.shift();
+      this.listOfWordsSignal.set(tempList);
+    } else {
+      await this.auth.authStateReady();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const wordsCollection = collection(
+        this.firestore,
+        `users/${this.auth.currentUser?.uid}/words`
+      );
+      const reviewQueueQuery = query(
+        wordsCollection,
+        where('nextPractice', '<=', Timestamp.fromDate(today))
+      );
+      getDocs(reviewQueueQuery).then((snapshot) => {
+        this.listOfWordsSignal.set(
+          snapshot.docs
+            .sort((a, b) => b.data()['masteryLevel'] - a.data()['masteryLevel'])
+            .map((doc) => doc.data()['word'])
+        );
+      });
+    }
   }
 }

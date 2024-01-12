@@ -37,9 +37,7 @@ export class ViewWordComponent implements OnInit {
       this.urlSegment.set(url[0].path as string);
     });
   }
-  public ngOnInit(): void {
-    console.log(`calling the method in the service`);
-  }
+  public ngOnInit(): void {}
   public async addToWordBank($event: Event) {
     $event.preventDefault();
     const selectedWord = this.selectedWordSignal();

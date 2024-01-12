@@ -27,6 +27,7 @@ import { ReviewService } from './review.service';
   providedIn: 'root',
 })
 export class WordService {
+  public listOfWordsSignal = this.reviewService.listOfWordsSignal;
   public selectedWordSignal: WritableSignal<VocabularyEntry | undefined> =
     signal<VocabularyEntry | undefined>(undefined);
   constructor(
@@ -35,8 +36,15 @@ export class WordService {
     private ppAuthLibService: PpAuthLibService,
     private reviewService: ReviewService
   ) {
+    console.log(`word service injected`);
+    effect(() => {
+      console.log(`received new list`, this.listOfWordsSignal());
+    });
+
     effect(async () => {
-      const currentListOfWords = this.reviewService.listOfWordsSignal();
+      console.log(`currentListOfWords changed`);
+
+      const currentListOfWords = this.listOfWordsSignal();
       console.log(
         `first index in current list of words: `,
         currentListOfWords[0]
