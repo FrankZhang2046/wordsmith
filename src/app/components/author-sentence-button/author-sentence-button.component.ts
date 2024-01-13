@@ -1,3 +1,4 @@
+import { SentenceService } from './../../services/sentence.service';
 import { ReviewService } from './../../services/review.service';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,9 +17,13 @@ export class AuthorSentenceButtonComponent {
   constructor(
     private ppAuthLibService: PpAuthLibService,
     private utilities: UtilitiesService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private sentenceService: SentenceService
   ) {}
   public async authorSentenceIconClickEventHandler() {
+    if (this.sentenceService.instructorFeedback()) {
+      this.sentenceService.instructorFeedback.set(undefined);
+    }
     this.reviewService.getReviewQueue();
     const currentUser = await this.ppAuthLibService.getCurrentUser();
     if (currentUser) {
