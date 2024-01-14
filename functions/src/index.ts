@@ -11,7 +11,7 @@
  */
 
 import { onRequest } from 'firebase-functions/v2/https';
-// import * as logger from 'firebase-functions/logger';
+import * as logger from 'firebase-functions/logger';
 import { OpenAI } from 'openai';
 
 const openai = new OpenAI({
@@ -47,3 +47,9 @@ export const evaluateSentence = onRequest(
     response.send(results.choices[0].message.content);
   }
 );
+
+export const testChronJob = onRequest({ cors: true }, (request, response) => {
+  logger.log('req body: ', request.body.text);
+  response.setHeader('Content-Type', 'application/json');
+  response.send({ status: 'success', message: request.body.text });
+});
