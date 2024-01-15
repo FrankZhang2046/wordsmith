@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import {
+  Messaging,
+  getMessaging,
+  getToken,
+  onMessage,
+} from '@angular/fire/messaging';
+import {
   Firestore,
   collection,
   doc,
@@ -47,16 +53,54 @@ export class AppComponent implements OnInit {
     private auth: Auth,
     private wordSearchService: WordService,
     private router: Router,
-    private ppAuthLibService: PpAuthLibService
+    private ppAuthLibService: PpAuthLibService,
+    private messaging: Messaging
   ) {
     onAuthStateChanged(this.auth, (user) => {
       this.currentUserVal = user;
       this.ppAuthLibService.authenticatedUserSignal.set(user);
     });
+
+    setTimeout(() => {
+      this.startReceivingMessages();
+    }, 5000);
   }
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    setTimeout(() => {
+      this.requestPermission();
+    }, 5000);
+  }
   public redirectMethod(destination: string): void {
     this.router.navigate([`/${destination}`]);
+  }
+
+  public requestPermission() {
+    const messaging = getMessaging();
+    getToken(messaging, {
+      vapidKey:
+        'BP8rcV6a8WQJ3ecIwSko9s--Mpx1rUPKnEG4PtvZkThMXp9aaRNxmSgw04IyoV1Q7pBuhmOoVTxHQIzatFMQo1c',
+    })
+      .then((currentToken) => {
+        if (currentToken) {
+          // send token to server
+          console.log(`current token: `, currentToken);
+        } else {
+          console.log(
+            `no registration token available. Request permission to generate one.`
+          );
+        }
+      })
+      .catch((err) =>
+        console.log(`an error occurred while retrieving token.`, err)
+      );
+  }
+
+  public startReceivingMessages() {
+    console.log(`will console log out incoming messages`);
+    const messaging = getMessaging();
+    onMessage(messaging, (payload) => {
+      console.log(`message is: `, payload);
+    });
   }
 }
