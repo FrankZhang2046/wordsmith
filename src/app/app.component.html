@@ -2,13 +2,13 @@
     <mat-toolbar class="!bg-green-600 flex justify-between">
         <mat-icon class="hover:cursor-pointer">menu</mat-icon>
         <div matTooltip="search for a word" class="text-black hover:cursor-pointer"
-            (click)="redirectMethod('word-search')">Wordsmith (Beta)</div>
+            (click)="redirectMethod('word-search')">Wordsmith</div>
         <app-auth-toggle-button></app-auth-toggle-button>
     </mat-toolbar>
 
     <div class="app-container">
         <app-notification-strip class="w-screen"></app-notification-strip>
-        <router-outlet class="mt-12 w-[80%] max-w-[800px] self-center"></router-outlet>
+        <router-outlet class="mt-12"></router-outlet>
     </div>
 
     <footer></footer>

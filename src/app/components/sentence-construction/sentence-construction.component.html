@@ -1,12 +1,20 @@
-<app-view-word></app-view-word>
-<form class="grid justify-center">
-    <div class="font-light mt-2">Now create a sentence using this word, click <span class="font-semibold">Submit</span>
-        to have your sentence evaluated.</div>
-    <textarea class="min-w-20 mt-2" name="" id="" [formControl]="sentenceForm"></textarea>
-    <button mat-flat-button color="primary" class="w-8 mt-2 mb-2 justify-self-end"
-        (click)="formSubmit($event)">Submit</button>
-</form>
+<div class="w-screen">
+    <app-view-word></app-view-word>
+    <div class="">
+        <form class="flex flex-col items-center">
+            <div class="font-light mt-2">Now create a sentence using this word, click <span
+                    class="font-semibold">Submit</span>
+                to have your sentence evaluated.</div>
+            <textarea class="w-[80%] max-w-[800px] p-2 mt-2 border border-gray-500 rounded-lg" name="" id=""
+                [formControl]="sentenceForm"></textarea>
+            <button mat-flat-button color="primary" class="w-8 mt-2 mb-2 justify-self-end"
+                (click)="formSubmit($event)">Submit</button>
+        </form>
 
-@if (instructorFeedback()) {
-<app-feedback-display></app-feedback-display>
-}
+
+        @if (instructorFeedback()) {
+        <app-feedback-display></app-feedback-display>
+        }
+    </div>
+
+</div>

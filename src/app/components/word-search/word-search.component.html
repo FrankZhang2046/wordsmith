@@ -1,18 +1,16 @@
-<div>
-    <form class="flex w-screen justify-center">
-        <mat-form-field class="w-[80%] max-w-[800px]">
-            <mat-label>Word search</mat-label>
-            <input matInput placeholder="enter word" [formControl]="inputValue" aria-label="word-search" type="text"
-                [matAutocomplete]="wordSearchAutoComplete">
-            <mat-autocomplete #wordSearchAutoComplete="matAutocomplete"
-                (optionSelected)="matOptionClickEventHandler($event)">
-                @for (option of filteredOptions | async; track option) {
-                <mat-option [value]="option.item">{{option.item}}</mat-option>
-                }
-            </mat-autocomplete>
-        </mat-form-field>
-    </form>
-    @if (selectedWord()) {
-    <app-view-word></app-view-word>
-    }
-</div>
+<form class="flex w-screen justify-center">
+    <mat-form-field class="w-[80%] max-w-[800px]">
+        <mat-label>Word search</mat-label>
+        <input matInput placeholder="enter word" [formControl]="inputValue" aria-label="word-search" type="text"
+            [matAutocomplete]="wordSearchAutoComplete">
+        <mat-autocomplete #wordSearchAutoComplete="matAutocomplete"
+            (optionSelected)="matOptionClickEventHandler($event)">
+            @for (option of filteredOptions | async; track option) {
+            <mat-option [value]="option.item">{{option.item}}</mat-option>
+            }
+        </mat-autocomplete>
+    </mat-form-field>
+</form>
+@if (selectedWord()) {
+<app-view-word></app-view-word>
+}
