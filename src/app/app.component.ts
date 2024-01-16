@@ -100,7 +100,21 @@ export class AppComponent implements OnInit {
     console.log(`will console log out incoming messages`);
     const messaging = getMessaging();
     onMessage(messaging, (payload) => {
-      console.log(`message is: `, payload);
+      console.log(`foreground msg is: `, payload);
+      this.displayNotification(payload);
+    });
+  }
+
+  private displayNotification(message: any) {
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        const notificationTitle = 'foreground msg';
+        const notificationOptions = {
+          body: message.notification.body,
+        };
+
+        new Notification(notificationTitle, notificationOptions);
+      }
     });
   }
 }

@@ -27,7 +27,7 @@ messaging.onBackgroundMessage(function (payload) {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
   // Customize the notification here
-  const notificationTitle = payload.notification.title;
+  const notificationTitle = 'background notification';
   const notificationOptions = {
     body: payload.notification.body,
     icon: payload.notification.icon
