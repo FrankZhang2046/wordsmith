@@ -11,15 +11,20 @@ import { VocabularyEntry } from '../../models/word-entry.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-import { Observable, tap } from 'rxjs';
 import { UtilitiesService } from '../../services/utilities.service';
 import { DocumentSnapshot } from '@angular/fire/firestore';
 import { ReviewService } from '../../services/review.service';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-view-word',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatDividerModule],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatExpansionModule,
+  ],
   templateUrl: './view-word.component.html',
   styleUrl: './view-word.component.scss',
 })
