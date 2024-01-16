@@ -11,7 +11,7 @@ const message = {
     title: 'wordsmith is my app',
     body: 'wordsmith is my app'
   },
-  token: 'flnGgQM5vlckl1kWTMAjNc:APA91bGM1UzR368XnrHRU-uAip1z58ZFirImKTOJTfcF_efvqjE8jJRv1zmGclw9eN2Sy2qA7eBPJkIHBdIcCKpMruBGAqw4VpOmrYV8OtdZtV2oTvznchIVdqsvBV6vFnPWFS6qXtbG'
+  token: 'emgW_nDJK2mvkctDRoeMKp:APA91bGcYEh6FmEqZFWHmKEjVdGnf8DUJRrqFXq82Vb3DVgh6ttT6YgZYgg_LDCEyjrcZqK6Fouynmigge3__T_fcibYCwtyer9OUPdxlE7Me8AvFUIAetgtMdg4bfpRXojY_lbHhOf2'
 }
 admin.messaging().send(message)
   .then((res) => {
