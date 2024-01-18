@@ -24,14 +24,14 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function (payload) {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  // console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
-  // Customize the notification here
-  const notificationTitle = 'background notification';
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: payload.notification.icon
-  };
+  // // Customize the notification here
+  // const notificationTitle = 'background notification';
+  // const notificationOptions = {
+  //   body: payload.notification.body,
+  //   icon: payload.notification.icon
+  // };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  // self.registration.showNotification(notificationTitle, notificationOptions);
 });

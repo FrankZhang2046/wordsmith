@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import {
@@ -45,6 +45,7 @@ import { NotificationStripComponent } from './components/notification-strip/noti
   ],
 })
 export class AppComponent implements OnInit {
+  private ppAuthLibService = inject(PpAuthLibService);
   public currentUser$!: Observable<User | null>;
   public currentUserVal!: User | null;
   title = 'wordsmith';
@@ -53,17 +54,12 @@ export class AppComponent implements OnInit {
     private auth: Auth,
     private wordSearchService: WordService,
     private router: Router,
-    private ppAuthLibService: PpAuthLibService,
     private messaging: Messaging
   ) {
     onAuthStateChanged(this.auth, (user) => {
       this.currentUserVal = user;
       this.ppAuthLibService.authenticatedUserSignal.set(user);
     });
-
-    setTimeout(() => {
-      this.startReceivingMessages();
-    }, 5000);
   }
 
   public ngOnInit(): void {
@@ -97,7 +93,6 @@ export class AppComponent implements OnInit {
   }
 
   public startReceivingMessages() {
-    console.log(`will console log out incoming messages`);
     const messaging = getMessaging();
     onMessage(messaging, (payload) => {
       console.log(`foreground msg is: `, payload);
