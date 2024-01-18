@@ -21,8 +21,8 @@ export class AuthorSentenceButtonComponent {
     private sentenceService: SentenceService
   ) {}
   public async authorSentenceIconClickEventHandler() {
-    if (this.sentenceService.instructorFeedback()) {
-      this.sentenceService.instructorFeedback.set(undefined);
+    if (this.sentenceService.instructorFeedbackSignal()) {
+      this.sentenceService.instructorFeedbackSignal.set(undefined);
     }
     this.reviewService.getReviewQueue();
     const currentUser = await this.ppAuthLibService.getCurrentUser();

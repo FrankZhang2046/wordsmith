@@ -1,5 +1,11 @@
 import { PpAuthLibService } from 'pp-auth-lib';
-import { Injectable, WritableSignal, effect, signal } from '@angular/core';
+import {
+  Injectable,
+  WritableSignal,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import Fuse, { FuseResult } from 'fuse.js';
 import { listOfWords } from '../data/listOfWords';
 import { Observable, of } from 'rxjs';
@@ -29,10 +35,10 @@ import { ReviewService } from './review.service';
 export class WordService {
   public selectedWordSignal: WritableSignal<VocabularyEntry | undefined> =
     signal<VocabularyEntry | undefined>(undefined);
+  private ppAuthLibService = inject(PpAuthLibService);
   constructor(
     private auth: Auth,
     private firestore: Firestore,
-    private ppAuthLibService: PpAuthLibService,
     private reviewService: ReviewService
   ) {
     effect(async () => {

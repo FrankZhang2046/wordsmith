@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PpAuthLibService } from 'pp-auth-lib';
 import { User } from '@angular/fire/auth';
@@ -13,11 +13,9 @@ import { Router } from '@angular/router';
   styleUrl: './auth-toggle-button.component.scss',
 })
 export class AuthToggleButtonComponent {
+  private ppAuthLibService = inject(PpAuthLibService);
   public authenticatedUser = this.ppAuthLibService.authenticatedUserSignal;
-  constructor(
-    private ppAuthLibService: PpAuthLibService,
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
   public signOutMethod(): void {
     this.ppAuthLibService.signOut();
   }

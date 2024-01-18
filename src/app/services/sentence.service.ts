@@ -13,8 +13,9 @@ interface SentenceEvaluation {
   providedIn: 'root',
 })
 export class SentenceService {
-  public instructorFeedback: WritableSignal<InstructorFeedback | undefined> =
-    signal<InstructorFeedback | undefined>(undefined);
+  public instructorFeedbackSignal: WritableSignal<
+    InstructorFeedback | undefined
+  > = signal<InstructorFeedback | undefined>(undefined);
   constructor(private http: HttpClient, private wordService: WordService) {}
   public async sentenceEvaluation(
     word: string,
@@ -29,13 +30,21 @@ export class SentenceService {
         'http://127.0.0.1:5001/wordsmith-vocabulary-builder/us-central1/evaluateSentence';
     }
     this.http.post(url, { word, sentence, provideExample }).subscribe((res) => {
-      this.instructorFeedback.set(res as InstructorFeedback);
+      this.instructorFeedbackSignal.set(res as InstructorFeedback);
       this.wordService.updateWordStats(
         word,
         sentence,
         res as InstructorFeedback,
         provideExample
       );
+    });
+  }
+
+  private injectFakeFeedback() {
+    this.instructorFeedbackSignal.set({
+      correct: true,
+      feedback:
+        'this is a fake feedback message. This is a very fake feedback message.',
     });
   }
 }
