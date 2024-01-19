@@ -38,7 +38,7 @@ export class SentenceConstructionComponent {
   public prevRetry: boolean = false;
   public instructorFeedback = this.sentenceService.instructorFeedbackSignal;
   public displayTextarea: boolean = true;
-  public cachedSentence: string = '';
+  public cachedSentence: string = 'Ah shit, why go into it.';
   public sentenceForm: FormControl<string | null> = new FormControl<
     string | null
   >('');
@@ -50,6 +50,8 @@ export class SentenceConstructionComponent {
   ) {
     effect(() => {
       const feedback = this.instructorFeedback();
+      console.log(`feedback: `, feedback);
+
       if (!feedback?.correct) {
         this.displayTextarea = false;
         this.prevRetry = true;

@@ -16,7 +16,13 @@ export class SentenceService {
   public instructorFeedbackSignal: WritableSignal<
     InstructorFeedback | undefined
   > = signal<InstructorFeedback | undefined>(undefined);
-  constructor(private http: HttpClient, private wordService: WordService) {}
+  constructor(private http: HttpClient, private wordService: WordService) {
+    setTimeout(() => {
+      console.log(`injecting a fake feedback`);
+
+      this.injectFakeFeedback();
+    }, 0);
+  }
   public async sentenceEvaluation(
     word: string,
     sentence: string,
@@ -41,8 +47,10 @@ export class SentenceService {
   }
 
   private injectFakeFeedback() {
+    console.log(`injecting a fake feedback.`);
+
     this.instructorFeedbackSignal.set({
-      correct: true,
+      correct: false,
       feedback:
         'this is a fake feedback message. This is a very fake feedback message.',
     });
