@@ -3,7 +3,7 @@
     <div class="">
         <!-- textarea for sentence submission -->
         @if (displayTextarea) {
-        <div>
+        <div class="mt-4">
             <form class="flex flex-col items-center">
                 <div class="font-light mt-2 w-[80%] max-w-[800px]">Now create a sentence using this word, click <span
                         class="font-semibold">Submit</span>
@@ -26,10 +26,9 @@
         }
 
         @if (instructorFeedback()) {
-        <div>
-            your sentence was: {{cachedSentence}}
+        <div class="flex flex-col items-center">
+            <app-feedback-display class="w-[80%] max-w-[800px]" [userSentence]="cachedSentence"></app-feedback-display>
         </div>
-        <app-feedback-display></app-feedback-display>
         }
     </div>
 
