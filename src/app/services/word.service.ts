@@ -49,7 +49,7 @@ export class WordService {
       }
     });
 
-    this.injectSampleWord();
+    // this.injectSampleWord();
   }
   public async getVocabularyEntryByWord(
     word: string
