@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SentenceService } from '../../services/sentence.service';
 import { MatIconModule } from '@angular/material/icon';
+import { ResolveFbBgColorPipeTsPipe } from '../../pipes/resolve-fb-bg-color.pipe.ts.pipe';
 
 @Component({
   selector: 'app-feedback-display',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, ResolveFbBgColorPipeTsPipe],
   templateUrl: './feedback-display.component.html',
   styleUrl: './feedback-display.component.scss',
 })
 export class FeedbackDisplayComponent {
+  @Input() userSentence: string = '';
   public instructorFeedback = this.sentenceService.instructorFeedbackSignal;
   constructor(private sentenceService: SentenceService) {}
 }
