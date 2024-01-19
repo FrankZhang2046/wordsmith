@@ -50,7 +50,7 @@ export class SentenceService {
     console.log(`injecting a fake feedback.`);
 
     this.instructorFeedbackSignal.set({
-      correct: false,
+      correct: true,
       feedback:
         'this is a fake feedback message. This is a very fake feedback message.',
     });

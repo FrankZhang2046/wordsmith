@@ -25,7 +25,11 @@ import { SentenceService } from './sentence.service';
   providedIn: 'root',
 })
 export class ReviewService {
-  public listOfWordsSignal: WritableSignal<string[]> = signal<string[]>([]);
+  public listOfWordsSignal: WritableSignal<string[]> = signal<string[]>([
+    'espionage',
+    'spy',
+    'vehicle',
+  ]);
   constructor(private firestore: Firestore, private auth: Auth) {}
   public async getReviewQueue(): Promise<void> {
     if (this.listOfWordsSignal().length > 0) {
