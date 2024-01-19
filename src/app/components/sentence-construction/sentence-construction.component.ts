@@ -5,6 +5,7 @@ import {
   WritableSignal,
   computed,
   effect,
+  inject,
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -34,11 +35,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   ],
 })
 export class SentenceConstructionComponent {
+  private reviewService: ReviewService = inject(ReviewService);
   public selectedWord: VocabularyEntry | undefined;
   public prevRetry: boolean = false;
   public instructorFeedback = this.sentenceService.instructorFeedbackSignal;
   public displayTextarea: boolean = true;
-  public cachedSentence: string = 'Ah shit, why go into it.';
+  public cachedSentence: string = '';
   public sentenceForm: FormControl<string | null> = new FormControl<
     string | null
   >('');
@@ -53,8 +55,6 @@ export class SentenceConstructionComponent {
       console.log(`feedback: `, feedback);
 
       if (!feedback?.correct) {
-        this.displayTextarea = false;
-        this.prevRetry = true;
         this.displayLoadingSpinner = false;
       } else {
         // * if the feedback is correct, no need to render the textarea again
@@ -86,5 +86,17 @@ export class SentenceConstructionComponent {
       );
       this.sentenceForm.reset();
     }
+  }
+
+  public userConfirmsRetry(): void {
+    this.prevRetry = true;
+    this.displayTextarea = true;
+    this.sentenceService.flushInstructorFeedbackSignal();
+  }
+
+  public userConfirmsNewAttempt(): void {
+    this.prevRetry = false;
+    this.reviewService.getReviewQueue();
+    this.sentenceService.flushInstructorFeedbackSignal();
   }
 }

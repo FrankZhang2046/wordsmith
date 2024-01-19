@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, Output, inject, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SentenceService } from '../../services/sentence.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +22,8 @@ export class FeedbackDisplayComponent {
   private reviewService = inject(ReviewService);
   public listOfWordsSignal = this.reviewService.listOfWordsSignal;
   @Input() userSentence: string = '';
+  @Output() confirmRetry: EventEmitter<boolean> = new EventEmitter();
+  @Output() confirmNewAttempt: EventEmitter<boolean> = new EventEmitter();
   public instructorFeedback = this.sentenceService.instructorFeedbackSignal;
   constructor(private sentenceService: SentenceService) {}
 }

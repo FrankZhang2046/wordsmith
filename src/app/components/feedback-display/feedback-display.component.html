@@ -17,7 +17,7 @@
             Would you like to construct another sentence with the same word?
             <div class="flex w-full justify-end mt-2">
                 <button mat-flat-button color="secondary">Cancel</button>
-                <button mat-flat-button color="primary" class="ml-2">Confirm</button>
+                <button mat-flat-button color="primary" class="ml-2" (click)="confirmRetry.emit(true)">Confirm</button>
             </div>
         </div>
         }
@@ -26,7 +26,8 @@
             Would you like to work on the next work in your study queue?
             <div class="flex w-full justify-end mt-2">
                 <button mat-flat-button color="secondary">Cancel</button>
-                <button mat-flat-button color="primary" class="ml-2">Confirm</button>
+                <button mat-flat-button color="primary" class="ml-2"
+                    (click)="confirmNewAttempt.emit(true)">Confirm</button>
             </div>
         </div>
         }
