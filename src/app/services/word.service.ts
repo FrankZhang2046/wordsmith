@@ -33,6 +33,7 @@ import { ReviewService } from './review.service';
   providedIn: 'root',
 })
 export class WordService {
+  public wordBankEntriesSignal: WritableSignal<WordStats[]> = signal([]);
   public selectedWordSignal: WritableSignal<VocabularyEntry | undefined> =
     signal<VocabularyEntry | undefined>(undefined);
   private ppAuthLibService = inject(PpAuthLibService);
