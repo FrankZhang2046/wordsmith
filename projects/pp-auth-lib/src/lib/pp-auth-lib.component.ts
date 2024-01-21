@@ -1,3 +1,4 @@
+import { MatButtonModule } from '@angular/material/button';
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -14,7 +15,13 @@ import { SignInComponent } from './sign-in/sign-in.component';
   standalone: true,
   templateUrl: './pp-auth-lib.component.html',
   styles: ``,
-  imports: [CommonModule, MatTabsModule, SignUpComponent, SignInComponent],
+  imports: [
+    CommonModule,
+    MatTabsModule,
+    SignUpComponent,
+    SignInComponent,
+    MatButtonModule,
+  ],
 })
 export class PpAuthLibComponent implements OnInit {
   constructor(

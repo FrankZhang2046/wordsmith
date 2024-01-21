@@ -1,3 +1,4 @@
+import { MatButtonModule } from '@angular/material/button';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -27,6 +28,7 @@ import { ConfirmPasswordResetComponent } from '../modal/modal/confirm-password-r
     ConfirmPasswordResetComponent,
     MatIconModule,
     ReactiveFormsModule,
+    MatButtonModule,
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
