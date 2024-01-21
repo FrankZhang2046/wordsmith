@@ -1,3 +1,6 @@
-@for (word of wordBankEntries; track $index) {
-<div>{{word.word}}</div>
-}
+<div class="w-full">
+    <mat-list></mat-list>
+    @for (word of wordBankEntries; track $index) {
+    <mat-list-item>{{word.word}}</mat-list-item>
+    }
+</div>
