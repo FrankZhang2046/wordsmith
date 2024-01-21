@@ -9,12 +9,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
   const router = inject(Router);
   await auth.authStateReady();
   if (auth.currentUser) {
-    if (wordService.selectedWordSignal()) {
-      return true;
-    } else {
-      console.log(`need to select a word`);
-      return router.createUrlTree(['/word-search']);
-    }
+    return true;
   } else {
     return router.createUrlTree(['/log-in']);
   }

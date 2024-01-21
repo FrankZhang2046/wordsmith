@@ -1,3 +1,4 @@
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { Routes } from '@angular/router';
 import { PpAuthLibComponent } from 'pp-auth-lib';
 import { SentenceConstructionComponent } from './components/sentence-construction/sentence-construction.component';
@@ -22,5 +23,10 @@ export const routes: Routes = [
   {
     path: 'bulk-ingestion',
     component: BulkIngestionComponent,
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
   },
 ];
