@@ -10,13 +10,14 @@ import { VocabularyEntry, WordStats } from '../../models/word-entry.model';
 import { Auth } from '@angular/fire/auth';
 import { WordBankWidgetComponent } from '../word-bank-widget/word-bank-widget.component';
 import { WordService } from '../../services/word.service';
+import { ChartViewWidgetComponent } from '../chart-view-widget/chart-view-widget.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  imports: [WordBankWidgetComponent],
+  imports: [WordBankWidgetComponent, ChartViewWidgetComponent],
 })
 export class DashboardComponent implements OnInit {
   private firestore = inject(Firestore);
