@@ -8,8 +8,8 @@
                 <div class="font-light mt-2 w-[80%] max-w-[800px]">Now create a sentence using this word, click <span
                         class="font-semibold">Submit</span>
                     to have your sentence evaluated.</div>
-                <textarea class="w-[80%] max-w-[800px] p-2 mt-2 border border-gray-500 rounded-lg" name="" id=""
-                    [formControl]="sentenceForm"></textarea>
+                <textarea maxlength="150" class="w-[80%] max-w-[800px] p-2 mt-2 border border-gray-500 rounded-lg"
+                    name="" id="" [formControl]="sentenceForm"></textarea>
                 <div class="w-[80%] max-w-[800px] flex justify-end">
                     <button mat-flat-button color="primary" class="w-8 mt-2 mb-2 justify-self-end"
                         (click)="formSubmit($event)">Submit</button>
