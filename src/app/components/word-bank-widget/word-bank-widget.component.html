@@ -1,6 +1,6 @@
 <div class="w-full">
-    <mat-list></mat-list>
-    @for (word of wordBankEntries; track $index) {
-    <mat-list-item>{{word.word}}</mat-list-item>
-    }
+    <mat-selection-list #words [multiple]="false" (selectionChange)="printWordEntry($event)">
+        @for (word of wordBankEntries; track $index) {
+        <mat-list-option [value]="word">{{word.word}}</mat-list-option>
+        }</mat-selection-list>
 </div>

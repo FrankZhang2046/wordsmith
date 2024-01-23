@@ -5,6 +5,7 @@ import { SentenceConstructionComponent } from './components/sentence-constructio
 import { WordSearchComponent } from './components/word-search/word-search.component';
 import { authGuard } from './guards/auth.guard';
 import { BulkIngestionComponent } from './components/bulk-ingestion/bulk-ingestion.component';
+import { WordDetailComponent } from './components/word-detail/word-detail.component';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,11 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'word-detail/:word',
+    component: WordDetailComponent,
     canActivate: [authGuard],
   },
 ];
