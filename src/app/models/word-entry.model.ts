@@ -20,3 +20,8 @@ export interface WordImportStatus {
   imported: 'done' | 'none' | 'warn' | 'discard';
   results: FuseResult<string>[];
 }
+
+export interface DailyMissionWord {
+  word: string;
+  completed: boolean;
+}
