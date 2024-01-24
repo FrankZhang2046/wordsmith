@@ -2,9 +2,19 @@
     <mat-form-field class="w-full">
         <input type="text" placeholder="search within your word bank" matInput [formControl]="wordBankSearchString">
     </mat-form-field>
-    <mat-selection-list class="h-[400px] overflow-y-scroll" #words [multiple]="false"
-        (selectionChange)="printWordEntry($event)">
-        @for (word of wordBankEntries; track $index) {
-        <mat-list-option [value]="word">{{word.word}}</mat-list-option>
-        }</mat-selection-list>
+    <div class="max-h-[400px] overflow-y-scroll">
+        <table mat-table [dataSource]="wordBankEntries">
+            <ng-container matColumnDef="word">
+                <th mat-header-cell *matHeaderCellDef="">Word</th>
+                <td mat-cell *matCellDef="let word">{{word.word}}</td>
+            </ng-container>
+            <ng-container matColumnDef="mastery">
+                <th mat-header-cell *matHeaderCellDef="">Mastery</th>
+                <td mat-cell *matCellDef="let word">{{word.masteryLevel}}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
+        </table>
+    </div>
 </div>

@@ -6,16 +6,18 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { debounceTime } from 'rxjs';
 import Fuse from 'fuse.js';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-word-bank-widget',
   standalone: true,
-  imports: [MatListModule, ReactiveFormsModule, MatInputModule],
+  imports: [MatListModule, ReactiveFormsModule, MatInputModule, MatTableModule],
   templateUrl: './word-bank-widget.component.html',
   styleUrl: './word-bank-widget.component.scss',
 })
 export class WordBankWidgetComponent {
   private wordService = inject(WordService);
+  public displayColumns = ['word', 'mastery'];
   public wordBankEntries: WordStats[] = [];
   public filteredWordBankEntries: WordStats[] = [];
   public wordBankSearchString: FormControl<string | null> = new FormControl('');
@@ -35,7 +37,6 @@ export class WordBankWidgetComponent {
           this.filteredWordBankEntries = fuse
             .search(value)
             .map((result) => result.item);
-          console.log(`filtered results: `, this.filteredWordBankEntries);
         }
       });
   }
