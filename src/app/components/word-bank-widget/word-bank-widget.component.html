@@ -1,5 +1,9 @@
-<div class="w-full">
-    <mat-selection-list #words [multiple]="false" (selectionChange)="printWordEntry($event)">
+<div class="w-full border border-gray-300 rounded-md">
+    <mat-form-field class="w-full">
+        <input type="text" placeholder="search within your word bank" matInput [formControl]="wordBankSearchString">
+    </mat-form-field>
+    <mat-selection-list class="h-[400px] overflow-y-scroll" #words [multiple]="false"
+        (selectionChange)="printWordEntry($event)">
         @for (word of wordBankEntries; track $index) {
         <mat-list-option [value]="word">{{word.word}}</mat-list-option>
         }</mat-selection-list>
