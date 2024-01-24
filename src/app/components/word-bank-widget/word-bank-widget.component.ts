@@ -34,9 +34,16 @@ export class WordBankWidgetComponent {
             includeScore: true,
             keys: ['word'],
           });
-          this.filteredWordBankEntries = fuse
-            .search(value)
-            .map((result) => result.item);
+          const resultArr = fuse.search(value);
+          if (resultArr[0].item.word === value) {
+            this.filteredWordBankEntries = [resultArr[0].item];
+          } else {
+            this.filteredWordBankEntries = resultArr.map(
+              (result) => result.item
+            );
+          }
+        } else {
+          this.filteredWordBankEntries = [];
         }
       });
   }
