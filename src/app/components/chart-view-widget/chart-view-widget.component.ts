@@ -23,13 +23,9 @@ export class ChartViewWidgetComponent {
   legendPosition = LegendPosition.Below;
   showLegend: boolean = true;
   showXAxisLabel: boolean = true;
-  yAxisLabel: string = 'Country';
+  yAxisLabel: string = 'Mastery';
   showYAxisLabel: boolean = true;
-  xAxisLabel: string = 'Population';
-
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
-  };
+  xAxisLabel: string = 'Count';
 
   constructor() {
     effect(() => {
