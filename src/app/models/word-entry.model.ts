@@ -10,6 +10,7 @@ export interface WordStats {
   word: string;
   lastPracticed: Timestamp;
   nextPractice: Timestamp;
+  dateAdded: Timestamp;
   masteryLevel: number;
   sentenceHistory: any[];
   currentInterval: number;

@@ -87,6 +87,7 @@ export class WordService {
           word,
           lastPracticed: Timestamp.now(),
           nextPractice: Timestamp.fromDate(today),
+          dateAdded: Timestamp.fromDate(today),
           masteryLevel: 1,
           sentenceHistory: [],
           currentInterval: 1,
