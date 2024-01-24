@@ -11,6 +11,7 @@ import { Auth } from '@angular/fire/auth';
 import { WordBankWidgetComponent } from '../word-bank-widget/word-bank-widget.component';
 import { WordService } from '../../services/word.service';
 import { ChartViewWidgetComponent } from '../chart-view-widget/chart-view-widget.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-dashboard',
