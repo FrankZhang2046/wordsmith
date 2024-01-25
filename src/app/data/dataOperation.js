@@ -1,6 +1,6 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('./wordsmith-vocabulary-builder-firebase-adminsdk-tl8hp-3df4ebe0cc');
-const dictionary = require('./dictionary.json');
+const serviceAccount = require('./wordsmith-vocabulary-builder-firebase-adminsdk-tl8hp-c23b1c4597.json');
+// const dictionary = require('./dictionary.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -13,8 +13,8 @@ const db = admin.firestore();
 // });
 
 // 1. create a list of words from dictionary.json
-const vocabCollectionRef = db.collection('vocabularies');
-const wordList = Object.keys(dictionary);
+// const vocabCollectionRef = db.collection('vocabularies');
+// const wordList = Object.keys(dictionary);
 // 2. loop through the word list, use `counter` to track how many words have been added to the batch
 async function writeRecords() {
   let batch = db.batch();
@@ -56,7 +56,49 @@ async function writeRecords() {
 // writeRecords()
 //   .then(() => console.log('done'));
 
-vocabCollectionRef.get()
+function printVocabSize() {
+  vocabCollectionRef.get()
+    .then(snapshot => {
+      console.log(`${snapshot.size} in collection, ${wordList.length} words in dict.`)
+    });
+}
+
+// printVocabSize();
+
+
+const usersCollection = db.collection('users');
+usersCollection.get()
   .then(snapshot => {
-    console.log(`${snapshot.size} in collection, ${wordList.length} words in dict.`)
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return;
+    }
+    const updatePromises = [];
+    snapshot.forEach(doc => {
+      const userWordCol = db.collection(`users/${doc.id}/words`);
+      console.log(`reading word bank for user `, doc.id);
+
+      const userWordBankPromise = userWordCol.get().then(userWordBank => {
+        const wordUpdatePromises = userWordBank.docs.map(wordDoc => {
+          if (wordDoc.data().masteryLevel > 0) {
+            const newMasteryLevel = wordDoc.data().masteryLevel - 1;
+            return wordDoc.ref.update({
+              masteryLevel: newMasteryLevel
+            });
+          }
+        });
+
+        return Promise.all(wordUpdatePromises);
+      });
+
+      updatePromises.push(userWordBankPromise);
+    });
+
+    return Promise.all(updatePromises);
+  })
+  .then(() => {
+    console.log('All words updated successfully.');
+  })
+  .catch(error => {
+    console.error("Error getting documents or updating words: ", error);
   });
