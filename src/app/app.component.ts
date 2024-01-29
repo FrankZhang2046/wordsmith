@@ -7,12 +7,7 @@ import {
   getToken,
   onMessage,
 } from '@angular/fire/messaging';
-import {
-  Firestore,
-  collection,
-  doc,
-  onSnapshot,
-} from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { PpAuthLibComponent, PpAuthLibService } from 'pp-auth-lib';
 import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
 import { Auth, User, onAuthStateChanged } from '@angular/fire/auth';

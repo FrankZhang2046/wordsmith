@@ -5,7 +5,12 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  getDocs,
+  onSnapshot,
+} from '@angular/fire/firestore';
 import { VocabularyEntry, WordStats } from '../../models/word-entry.model';
 import { Auth } from '@angular/fire/auth';
 import { WordBankWidgetComponent } from '../word-bank-widget/word-bank-widget.component';
@@ -32,7 +37,7 @@ export class DashboardComponent implements OnInit {
 
     const wordsCollection = collection(this.firestore, `users/${uid}/words`);
 
-    onSnapshot(wordsCollection, (snapshot) => {
+    getDocs(wordsCollection).then((snapshot) => {
       const wordEntries = snapshot.docs.map((doc) => doc.data() as WordStats);
       this.wordService.wordBankEntriesSignal.set(wordEntries);
     });

@@ -11,7 +11,6 @@ import {
   Firestore,
   collection,
   where,
-  onSnapshot,
   query,
   getDoc,
   doc,

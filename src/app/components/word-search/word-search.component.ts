@@ -11,7 +11,8 @@ import {
 import {
   Firestore,
   collection,
-  onSnapshot,
+  getDoc,
+  getDocs,
   query,
   where,
 } from '@angular/fire/firestore';
@@ -59,8 +60,9 @@ export class WordSearchComponent {
   }
   public searchWordInDb(word: string) {
     const vocabularyCol = collection(this.firestore, 'vocabularies');
+    const wordQuery = query(vocabularyCol, where('word', '==', word));
 
-    onSnapshot(query(vocabularyCol, where('word', '==', word)), (snapshot) => {
+    getDocs(wordQuery).then((snapshot) => {
       this.wordService.selectedWordSignal.set(
         snapshot.docs[0].data() as VocabularyEntry
       );

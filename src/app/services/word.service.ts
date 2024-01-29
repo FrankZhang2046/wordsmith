@@ -23,7 +23,7 @@ import {
   getDoc,
   setDoc,
   updateDoc,
-  onSnapshot,
+  getDocs,
 } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { InstructorFeedback } from '../models/instructor-feedback.model';
@@ -61,7 +61,7 @@ export class WordService {
       where('word', '==', word)
     );
     return new Promise((resolve, reject) => {
-      onSnapshot(vocabularyQuery, (snapshot) => {
+      getDocs(vocabularyQuery).then((snapshot) => {
         resolve(snapshot.docs[0].data() as VocabularyEntry);
       });
     });
