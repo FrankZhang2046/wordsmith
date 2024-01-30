@@ -7,10 +7,10 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
-// db.settings({
-//   host: 'localhost:8080',
-//   ssl: false
-// });
+db.settings({
+  host: 'localhost:8080',
+  ssl: false
+});
 
 // 1. create a list of words from dictionary.json
 // const vocabCollectionRef = db.collection('vocabularies');
@@ -67,38 +67,62 @@ function printVocabSize() {
 
 
 const usersCollection = db.collection('users');
-usersCollection.get()
-  .then(snapshot => {
-    if (snapshot.empty) {
-      console.log('No matching documents.');
-      return;
-    }
-    const updatePromises = [];
-    snapshot.forEach(doc => {
-      const userWordCol = db.collection(`users/${doc.id}/words`);
-      console.log(`reading word bank for user `, doc.id);
 
-      const userWordBankPromise = userWordCol.get().then(userWordBank => {
-        const wordUpdatePromises = userWordBank.docs.map(wordDoc => {
-          if (wordDoc.data().masteryLevel > 0) {
-            const newMasteryLevel = wordDoc.data().masteryLevel - 1;
-            return wordDoc.ref.update({
-              masteryLevel: newMasteryLevel
-            });
-          }
+function resolveGhostDocuments() {
+  usersCollection.listDocuments().then(documentRefs => {
+    return db.getAll(...documentRefs);
+  }).then(documentSnapshots => {
+    for (let docSnap of documentSnapshots) {
+      if (!docSnap.exists) {
+        console.log(`Found a ghost document at '${docSnap.ref.path}'`);
+        // Add a dummy field to this 'ghost' document
+        docSnap.ref.set({
+          dummyField: true
+        });
+      }
+    }
+  }).catch(error => {
+    console.error("Error processing documents: ", error);
+  });
+}
+
+function decrementMasteryLevel() {
+  usersCollection.get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+      }
+      const updatePromises = [];
+      snapshot.forEach(doc => {
+        const userWordCol = db.collection(`users/${doc.id}/words`);
+        console.log(`reading word bank for user `, doc.id);
+
+        const userWordBankPromise = userWordCol.get().then(userWordBank => {
+          const wordUpdatePromises = userWordBank.docs.map(wordDoc => {
+            if (wordDoc.data().masteryLevel > 0) {
+              const newMasteryLevel = wordDoc.data().masteryLevel - 1;
+              console.log(`new masteryLevel for ${wordDoc.data().word}: `, newMasteryLevel);
+              return wordDoc.ref.update({
+                masteryLevel: newMasteryLevel
+              });
+            }
+          });
+
+          return Promise.all(wordUpdatePromises);
         });
 
-        return Promise.all(wordUpdatePromises);
+        updatePromises.push(userWordBankPromise);
       });
 
-      updatePromises.push(userWordBankPromise);
+      return Promise.all(updatePromises);
+    })
+    .then(() => {
+      console.log('All words updated successfully.');
+    })
+    .catch(error => {
+      console.error("Error getting documents or updating words: ", error);
     });
+}
 
-    return Promise.all(updatePromises);
-  })
-  .then(() => {
-    console.log('All words updated successfully.');
-  })
-  .catch(error => {
-    console.error("Error getting documents or updating words: ", error);
-  });
+decrementMasteryLevel();
