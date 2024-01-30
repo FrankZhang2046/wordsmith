@@ -52,6 +52,12 @@ export class WordService {
 
     // this.injectSampleWord();
   }
+
+  public async setSelectedWordByWord(word: string): Promise<void> {
+    const vocabularyEntry = await this.getVocabularyEntryByWord(word);
+    this.selectedWordSignal.set(vocabularyEntry);
+  }
+
   public async getVocabularyEntryByWord(
     word: string
   ): Promise<VocabularyEntry> {
@@ -88,7 +94,7 @@ export class WordService {
           lastPracticed: Timestamp.now(),
           nextPractice: Timestamp.fromDate(today),
           dateAdded: Timestamp.fromDate(today),
-          masteryLevel: 1,
+          masteryLevel: 0,
           sentenceHistory: [],
           currentInterval: 1,
         };
