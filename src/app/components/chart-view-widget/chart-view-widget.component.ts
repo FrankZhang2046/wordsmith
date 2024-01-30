@@ -34,7 +34,7 @@ export class ChartViewWidgetComponent {
           acc[cur.masteryLevel] += 1;
           return acc;
         },
-        { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+        { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
       );
       const finalResult: { name: string; value: number }[] = [];
       Object.keys(result).forEach((key) => {
