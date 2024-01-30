@@ -1,16 +1,18 @@
 <app-view-word></app-view-word>
 <div class="flex w-screen flex-col items-center">
-    <div class="w-[80%] max-w-[800px] bg-slate-400">
+    <div class="w-[80%] max-w-[800px] text-lg mt-2">
         Mastery level: {{selectedWordStatsSignal().masteryLevel}}
     </div>
 
-    <div class="w-[80%] max-w-[800px] bg-slate-400">
+    <div class="w-[80%] max-w-[800px]">
         @for (hallmark of selectedWordStatsSignal().sentenceHistory; track $index) {
-        <div>
-            <div>timestamp: {{dateTimeFormatter(hallmark.timestamp)}}</div>
-            <div>sentence: {{hallmark.sentence}}</div>
-            <div>feedback: {{hallmark.feedback}}</div>
+        <div class="mt-2 border border-gray-400 rounded-md p-4" [class]="hallmark | resolveChipBgColor">
+            <div>Date: {{dateTimeFormatter(hallmark.timestamp)}}</div>
+            <div>Sentence: {{hallmark.sentence}}</div>
+            <div>Feedback: {{hallmark.feedback}}</div>
         </div>
         }
     </div>
+
+    <button class="mt-2" mat-flat-button (click)="backToDashboard()" color="primary">Back to Dashboard</button>
 </div>
