@@ -1,4 +1,4 @@
-<div class="app-container grid grid-rows-[auto_1fr_auto]">
+<div class="grid grid-rows-[auto_1fr_auto] h-screen">
     <mat-toolbar class="!bg-green-600 flex justify-between">
         <mat-icon class="hover:cursor-pointer">menu</mat-icon>
         <div matTooltip="search for a word" class="text-black hover:cursor-pointer"
@@ -6,11 +6,13 @@
         <app-auth-toggle-button></app-auth-toggle-button>
     </mat-toolbar>
 
-    <div class="app-container">
+    <div class="app-container overflow-y-scroll overflow-x-hidden">
         <app-notification-strip class="w-screen"></app-notification-strip>
         <router-outlet class="mt-12"></router-outlet>
     </div>
 
-    <footer></footer>
+    <footer>
+        developed by Frank Zhang
+    </footer>
     <app-author-sentence-button></app-author-sentence-button>
 </div>
