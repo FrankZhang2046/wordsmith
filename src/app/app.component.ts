@@ -7,7 +7,13 @@ import {
   getToken,
   onMessage,
 } from '@angular/fire/messaging';
-import { Firestore } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+} from '@angular/fire/firestore';
 import { PpAuthLibComponent, PpAuthLibService } from 'pp-auth-lib';
 import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
 import { Auth, User, onAuthStateChanged } from '@angular/fire/auth';
@@ -51,9 +57,21 @@ export class AppComponent implements OnInit {
     private router: Router,
     private messaging: Messaging
   ) {
-    onAuthStateChanged(this.auth, (user) => {
+    onAuthStateChanged(this.auth, async (user) => {
       this.currentUserVal = user;
       this.ppAuthLibService.authenticatedUserSignal.set(user);
+
+      // check if there's a document in the /users collection with the current user's uid
+      if (user) {
+        const usersCollection = collection(this.firestore, 'users');
+        const userDocRef = doc(usersCollection, this.currentUserVal?.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (!userDoc.exists()) {
+          setDoc(userDocRef, { dummyField: true });
+        } else {
+          console.log(`user document already exists`);
+        }
+      }
     });
   }
 
