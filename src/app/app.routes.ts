@@ -11,6 +11,9 @@ export const routes: Routes = [
   {
     path: 'log-in',
     component: PpAuthLibComponent,
+    data: {
+      redirectUrl: 'dashboard',
+    },
   },
   {
     path: 'sentence-construction',

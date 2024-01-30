@@ -1,7 +1,7 @@
 import { MatButtonModule } from '@angular/material/button';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Subscription, take, timer } from 'rxjs';
 import { MatTabsModule } from '@angular/material/tabs';
 import { PpAuthLibService } from './pp-auth-lib.service';
@@ -9,7 +9,11 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { Auth } from '@angular/fire/auth';
 
+interface urlData {
+  redirectUrl: string;
+}
 @Component({
   selector: 'lib-pp-auth-lib',
   standalone: true,
@@ -24,12 +28,27 @@ import { SignInComponent } from './sign-in/sign-in.component';
   ],
 })
 export class PpAuthLibComponent implements OnInit {
+  private auth = inject(Auth);
+  private route = inject(ActivatedRoute);
   constructor(
     private router: Router,
     private authService: PpAuthLibService,
     private iconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
   ) {
+    this.route.data.subscribe((data: Data) => {
+      const destination = (data as urlData).redirectUrl;
+
+      this.redirectIfAuthenticated(destination);
+      this.auth.onAuthStateChanged((user) => {
+        if (user) {
+          console.log(`already authenticated, redirecting`);
+
+          this.router.navigate([`/${destination}`]);
+        }
+      });
+    });
+
     this.iconRegistry.addSvgIconLiteral(
       'google-icon',
       this.domSanitizer.bypassSecurityTrustHtml(
@@ -47,6 +66,13 @@ export class PpAuthLibComponent implements OnInit {
     status: '',
     message: null,
   };
+  public async redirectIfAuthenticated(destination: string): Promise<void> {
+    await this.auth.authStateReady();
+    if (this.auth.currentUser) {
+      console.log(`redirecting to dashboard`);
+      this.router.navigate([`/${destination}`]);
+    }
+  }
   public ngOnInit(): void {
     this.isProd = this.authService.isProd;
   }
