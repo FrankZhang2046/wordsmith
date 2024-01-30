@@ -6,13 +6,14 @@ import { WordStats } from '../../models/word-entry.model';
 import { Timestamp } from '@angular/fire/firestore';
 import { UtilitiesService } from '../../services/utilities.service';
 import { MatButtonModule } from '@angular/material/button';
+import { ResolveChipBgColorPipe } from '../../pipes/resolve-chip-bg-color.pipe';
 
 @Component({
   selector: 'app-word-detail',
   standalone: true,
   templateUrl: './word-detail.component.html',
   styleUrl: './word-detail.component.scss',
-  imports: [ViewWordComponent, MatButtonModule],
+  imports: [ViewWordComponent, MatButtonModule, ResolveChipBgColorPipe],
 })
 export class WordDetailComponent {
   public word: string = '';

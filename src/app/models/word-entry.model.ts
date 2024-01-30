@@ -12,13 +12,15 @@ export interface WordStats {
   nextPractice: Timestamp;
   dateAdded: Timestamp;
   masteryLevel: number;
-  sentenceHistory: {
-    correct: boolean;
-    feedback: string;
-    sentence: string;
-    timestamp: Timestamp;
-  }[];
+  sentenceHistory: SentenceHistoryEntry[];
   currentInterval: number;
+}
+
+export interface SentenceHistoryEntry {
+  correct: boolean;
+  feedback: string;
+  sentence: string;
+  timestamp: Timestamp;
 }
 
 export interface WordImportStatus {

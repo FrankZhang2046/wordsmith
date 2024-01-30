@@ -1,13 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { WordImportStatus, WordStats } from '../models/word-entry.model';
+import {
+  SentenceHistoryEntry,
+  WordImportStatus,
+  WordStats,
+} from '../models/word-entry.model';
 import { Timestamp } from '@angular/fire/firestore';
-
-interface SentenceHistoryEntry {
-  correct: boolean;
-  timestamp: Timestamp;
-  feedback: string;
-  sentence: string;
-}
 
 @Pipe({
   name: 'resolveChipBgColor',
