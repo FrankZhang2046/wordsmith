@@ -6,8 +6,13 @@ import { WordSearchComponent } from './components/word-search/word-search.compon
 import { authGuard } from './guards/auth.guard';
 import { BulkIngestionComponent } from './components/bulk-ingestion/bulk-ingestion.component';
 import { WordDetailComponent } from './components/word-detail/word-detail.component';
+import { MainComponent } from './components/main/main.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: MainComponent,
+  },
   {
     path: 'log-in',
     component: PpAuthLibComponent,
