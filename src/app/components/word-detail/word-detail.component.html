@@ -1,3 +1,16 @@
 <app-view-word></app-view-word>
-<p>word-detail works!</p>
-<div>word is: {{word}}</div>
+<div class="flex w-screen flex-col items-center">
+    <div class="w-[80%] max-w-[800px] bg-slate-400">
+        Mastery level: {{selectedWordStatsSignal().masteryLevel}}
+    </div>
+
+    <div class="w-[80%] max-w-[800px] bg-slate-400">
+        @for (hallmark of selectedWordStatsSignal().sentenceHistory; track $index) {
+        <div>
+            <div>timestamp: {{dateTimeFormatter(hallmark.timestamp)}}</div>
+            <div>sentence: {{hallmark.sentence}}</div>
+            <div>feedback: {{hallmark.feedback}}</div>
+        </div>
+        }
+    </div>
+</div>

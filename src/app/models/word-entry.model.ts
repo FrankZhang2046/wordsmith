@@ -12,7 +12,12 @@ export interface WordStats {
   nextPractice: Timestamp;
   dateAdded: Timestamp;
   masteryLevel: number;
-  sentenceHistory: any[];
+  sentenceHistory: {
+    correct: boolean;
+    feedback: string;
+    sentence: string;
+    timestamp: Timestamp;
+  }[];
   currentInterval: number;
 }
 

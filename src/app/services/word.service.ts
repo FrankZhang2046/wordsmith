@@ -1,3 +1,4 @@
+import { WordStats } from './../models/word-entry.model';
 import { PpAuthLibService } from 'pp-auth-lib';
 import {
   Injectable,
@@ -9,7 +10,7 @@ import {
 import Fuse, { FuseResult } from 'fuse.js';
 import { listOfWords } from '../data/listOfWords';
 import { Observable, of } from 'rxjs';
-import { VocabularyEntry, WordStats } from '../models/word-entry.model';
+import { VocabularyEntry } from '../models/word-entry.model';
 import {
   CollectionReference,
   DocumentReference,
@@ -34,6 +35,9 @@ import { ReviewService } from './review.service';
 })
 export class WordService {
   public wordBankEntriesSignal: WritableSignal<WordStats[]> = signal([]);
+  public selectedWordStatsSignal: WritableSignal<WordStats> = signal(
+    {} as WordStats
+  );
   public selectedWordSignal: WritableSignal<VocabularyEntry | undefined> =
     signal<VocabularyEntry | undefined>(undefined);
   private ppAuthLibService = inject(PpAuthLibService);
@@ -50,12 +54,32 @@ export class WordService {
       }
     });
 
+    effect(async () => {
+      if (this.selectedWordSignal()?.word) {
+        const wordStat = await this.getWordStats(
+          this.selectedWordSignal()?.word!
+        );
+        console.log(`updated wordStat: `, wordStat);
+        this.selectedWordStatsSignal.set(wordStat);
+      }
+    });
+
     // this.injectSampleWord();
   }
 
   public async setSelectedWordByWord(word: string): Promise<void> {
     const vocabularyEntry = await this.getVocabularyEntryByWord(word);
     this.selectedWordSignal.set(vocabularyEntry);
+  }
+
+  public async getWordStats(word: string): Promise<WordStats> {
+    const user = await this.ppAuthLibService.getCurrentUser();
+    const wordDocumentRef = doc(
+      this.firestore,
+      `users/${user?.uid}/words/${word}`
+    );
+    const returnVal = await getDoc(wordDocumentRef);
+    return returnVal.data() as WordStats;
   }
 
   public async getVocabularyEntryByWord(
