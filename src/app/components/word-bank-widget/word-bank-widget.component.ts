@@ -7,18 +7,29 @@ import { MatInputModule } from '@angular/material/input';
 import { debounceTime } from 'rxjs';
 import Fuse from 'fuse.js';
 import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-word-bank-widget',
   standalone: true,
-  imports: [MatListModule, ReactiveFormsModule, MatInputModule, MatTableModule],
+  imports: [
+    MatListModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatTableModule,
+  ],
   templateUrl: './word-bank-widget.component.html',
   styleUrl: './word-bank-widget.component.scss',
 })
 export class WordBankWidgetComponent {
   private wordService = inject(WordService);
-  public displayColumns = ['word', 'mastery'];
+  private router = inject(Router);
+  public displayColumns = ['word', 'mastery', 'control'];
   public wordBankEntries: WordStats[] = [];
+  public hoveredOverWord: WordStats | null = null;
+  public headerSticky = true;
   public filteredWordBankEntries: WordStats[] = [];
   public wordBankSearchString: FormControl<string | null> = new FormControl('');
   constructor() {
@@ -49,5 +60,11 @@ export class WordBankWidgetComponent {
   }
   public printWordEntry(event: MatSelectionListChange) {
     event.options.forEach((option) => console.log(option.value));
+  }
+  public registerHoveredOverWord(row: WordStats | null) {
+    this.hoveredOverWord = row;
+  }
+  public viewWordDetails(word: WordStats): void {
+    this.router.navigate([`word-detail/${word.word}`]);
   }
 }
