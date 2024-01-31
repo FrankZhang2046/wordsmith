@@ -35,7 +35,7 @@ import { ReviewService } from './review.service';
 })
 export class WordService {
   public wordBankEntriesSignal: WritableSignal<WordStats[]> = signal([]);
-  public selectedWordStatsSignal: WritableSignal<WordStats> = signal(
+  public selectedWordStatsSignal: WritableSignal<WordStats | null> = signal(
     {} as WordStats
   );
   public selectedWordSignal: WritableSignal<VocabularyEntry | undefined> =

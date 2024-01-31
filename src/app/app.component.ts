@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import {
   Messaging,
   getMessaging,
@@ -41,6 +42,7 @@ import { NotificationStripComponent } from './components/notification-strip/noti
     MatIconModule,
     MatTooltipModule,
     AuthToggleButtonComponent,
+    MatSidenavModule,
     AuthorSentenceButtonComponent,
     NotificationStripComponent,
   ],
@@ -49,6 +51,10 @@ export class AppComponent implements OnInit {
   private ppAuthLibService = inject(PpAuthLibService);
   public currentUser$!: Observable<User | null>;
   public currentUserVal!: User | null;
+  public functionalities = [
+    { displayName: 'Dashboard', destination: 'dashboard' },
+    { displayName: 'Bulk Ingestion', destination: 'bulk-ingestion' },
+  ];
   title = 'wordsmith';
   constructor(
     private firestore: Firestore,

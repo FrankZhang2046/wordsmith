@@ -1,20 +1,24 @@
 <div class="grid grid-rows-[auto_1fr_auto] h-screen">
     <mat-toolbar class="!bg-green-600 flex justify-between">
-        <mat-icon class="hover:cursor-pointer">menu</mat-icon>
+        <mat-icon class="hover:cursor-pointer" (click)="drawer.toggle()">menu</mat-icon>
         <div matTooltip="search for a word" class="text-black hover:cursor-pointer"
             (click)="redirectMethod('word-search')">Wordsmith</div>
         <app-auth-toggle-button></app-auth-toggle-button>
     </mat-toolbar>
 
-    <div class="app-container overflow-y-scroll overflow-x-hidden">
+    <mat-drawer-container class="app-container overflow-y-scroll overflow-x-hidden" autosize>
         <app-notification-strip class="w-screen"></app-notification-strip>
+        <mat-drawer #drawer class="flex example-sidenav w-[200px] " mode="side">
+            @for (functionality of functionalities; track $index) {
+            <div class="h-10 p-2 border border-b-gray-200 hover:cursor-pointer hover:bg-gray-200"
+                (click)="redirectMethod(functionality.destination)">
+                {{functionality.displayName}}</div>
+            }
+        </mat-drawer>
         <router-outlet class="mt-12"></router-outlet>
-    </div>
+    </mat-drawer-container>
 
     <footer class="">
-        <div class="flex p-2 justify-start text-sm">
-            developed by <span class="italic ml-1">Frank Zhang</span>
-        </div>
     </footer>
     <app-author-sentence-button></app-author-sentence-button>
 </div>
