@@ -16,6 +16,7 @@ import {
 } from '@angular/fire/auth';
 import { PpAuthLibService } from '../pp-auth-lib.service';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 interface AuthStatus {
   status: 'success' | 'error';
@@ -25,7 +26,7 @@ interface AuthStatus {
 @Component({
   selector: 'lib-sign-up',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatButtonModule],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css',
 })

@@ -19,26 +19,28 @@ import {
   orderBy,
 } from '@angular/fire/firestore';
 import { SentenceService } from './sentence.service';
-import { DailyMissionWord } from '../models/word-entry.model';
+import { DailyMissionWord, WordStats } from '../models/word-entry.model';
 // import { WordService } from './word.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReviewService {
-  public listOfWordsSignal: WritableSignal<string[]> = signal<string[]>([]);
-  public dailyMissionSignal: Signal<DailyMissionWord[]> = computed(() => {
-    if (this.listOfWordsSignal().length > 0) {
-      const dailyMissionWords = this.listOfWordsSignal()
-        .filter((word, idx) => idx <= 2)
-        .map((word) => ({ word, completed: false } as DailyMissionWord));
-      console.log(`daily mission words: `, dailyMissionWords);
+  public listOfWordsSignal: WritableSignal<WordStats[]> = signal<WordStats[]>(
+    []
+  );
+  // public dailyMissionSignal: Signal<DailyMissionWord[]> = computed(() => {
+  //   if (this.listOfWordsSignal().length > 0) {
+  //     const dailyMissionWords = this.listOfWordsSignal()
+  //       .filter((word, idx) => idx <= 2)
+  //       .map((word) => ({ word, completed: false } as DailyMissionWord));
+  //     console.log(`daily mission words: `, dailyMissionWords);
 
-      return dailyMissionWords;
-    } else {
-      return [];
-    }
-  });
+  //     return dailyMissionWords;
+  //   } else {
+  //     return [];
+  //   }
+  // });
   constructor(private firestore: Firestore, private auth: Auth) {}
   public async getReviewQueue(): Promise<void> {
     if (this.listOfWordsSignal().length > 0) {
@@ -62,7 +64,7 @@ export class ReviewService {
         this.listOfWordsSignal.set(
           snapshot.docs
             .sort((a, b) => b.data()['masteryLevel'] - a.data()['masteryLevel'])
-            .map((doc) => doc.data()['word'])
+            .map((doc) => doc.data() as WordStats)
         );
       });
     }

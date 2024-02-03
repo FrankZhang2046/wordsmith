@@ -49,7 +49,7 @@ export class WordService {
     effect(async () => {
       if (this.reviewService.listOfWordsSignal().length > 0) {
         const newList = this.reviewService.listOfWordsSignal();
-        const wordEntry = await this.getVocabularyEntryByWord(newList[0]);
+        const wordEntry = await this.getVocabularyEntryByWord(newList[0].word);
         this.selectedWordSignal.set(wordEntry);
       }
     });

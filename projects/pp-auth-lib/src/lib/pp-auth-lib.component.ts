@@ -9,7 +9,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SignInComponent } from './sign-in/sign-in.component';
-import { Auth } from '@angular/fire/auth';
+import { Auth, signInAnonymously } from '@angular/fire/auth';
+import { MatDividerModule } from '@angular/material/divider';
 
 interface urlData {
   redirectUrl: string;
@@ -25,6 +26,7 @@ interface urlData {
     SignUpComponent,
     SignInComponent,
     MatButtonModule,
+    MatDividerModule,
   ],
 })
 export class PpAuthLibComponent implements OnInit {
@@ -110,5 +112,13 @@ export class PpAuthLibComponent implements OnInit {
 
   public navigateMethod() {
     this.router.navigate(['/']);
+  }
+
+  public signInAsGuestBtnHandler(): void {
+    signInAnonymously(this.auth)
+      .then((userCredential) =>
+        console.log(`successfully logged in as gust`, userCredential)
+      )
+      .catch((error) => console.log(`error logging in as guest`, error));
   }
 }
