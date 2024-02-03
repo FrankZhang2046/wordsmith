@@ -2,7 +2,14 @@
 <button (click)="redirectMethod('log-in')">sign in/sign up</button>
 } @else {
 <button [matMenuTriggerFor]="authMenu">
-    {{( authenticatedUser())?.displayName ? authenticatedUser()?.displayName : authenticatedUser()?.email}}
+    @if (authenticatedUser()?.isAnonymous) {
+    <span>Guest</span>
+    } @else {
+    <div>
+        {{( authenticatedUser())?.displayName ? authenticatedUser()?.displayName : authenticatedUser()?.email}}
+    </div>
+
+    }
 </button>
 }
 

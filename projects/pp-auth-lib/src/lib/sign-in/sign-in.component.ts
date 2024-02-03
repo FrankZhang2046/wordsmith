@@ -5,6 +5,7 @@ import {
   Auth,
   signInWithPopup,
   GoogleAuthProvider,
+  signInAnonymously,
   User,
 } from '@angular/fire/auth';
 import {
@@ -118,5 +119,15 @@ export class SignInComponent implements OnInit {
         this.signInStatus.emit({ status: 'error', message: result.code });
       }
     });
+  }
+
+  public signInAsGuest(): void {
+    signInAnonymously(this.auth)
+      .then((userCredential) => {
+        console.log(`successfully signed in as a guest`, userCredential);
+      })
+      .catch((error) => {
+        console.error(`error signing in as a guest`, error);
+      });
   }
 }
