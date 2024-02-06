@@ -22,12 +22,14 @@
         </div>
         }
         @if (instructorFeedback()?.correct && listOfWordsSignal().length > 0) {
-        <div class="mt-2 font-bold w-full">
-            Would you like to work on the next work in your study queue?
+        <div class="mt-2 w-full">
+            You have <strong>{{reviewQueueStats().old}} old words</strong> due for review and
+            <strong>{{reviewQueueStats().new}} new words</strong> in your word
+            bank, click the appropriate button to start studying the next word.
             <div class="flex w-full justify-end mt-2">
-                <button mat-flat-button color="secondary">Cancel</button>
-                <button mat-flat-button color="primary" class="ml-2"
-                    (click)="confirmNewAttempt.emit(true)">Confirm</button>
+                <button mat-flat-button color="secondary">Review old word</button>
+                <button mat-flat-button color="primary" class="ml-2" (click)="confirmNewAttempt.emit(true)">Study new
+                    word</button>
             </div>
         </div>
         }

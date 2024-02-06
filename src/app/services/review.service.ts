@@ -61,11 +61,11 @@ export class ReviewService {
         where('nextPractice', '<=', Timestamp.fromDate(today))
       );
       getDocs(reviewQueueQuery).then((snapshot) => {
-        this.listOfWordsSignal.set(
-          snapshot.docs
-            .sort((a, b) => b.data()['masteryLevel'] - a.data()['masteryLevel'])
-            .map((doc) => doc.data() as WordStats)
-        );
+        const listOfWords = snapshot.docs
+          .sort((a, b) => b.data()['masteryLevel'] - a.data()['masteryLevel'])
+          .map((doc) => doc.data() as WordStats);
+        console.log(`list of words: `, listOfWords);
+        this.listOfWordsSignal.set(listOfWords);
       });
     }
   }
