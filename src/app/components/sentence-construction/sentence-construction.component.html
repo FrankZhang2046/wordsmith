@@ -27,8 +27,9 @@
 
         @if (instructorFeedback()) {
         <div class="flex flex-col items-center">
-            <app-feedback-display (confirmNewAttempt)="userConfirmsNewAttempt()" (confirmRetry)="userConfirmsRetry()"
-                class="w-[80%] max-w-[800px] mt-4" [userSentence]="cachedSentence"></app-feedback-display>
+            <app-feedback-display (confirmNewAttempt)="userConfirmsNewAttempt($event)"
+                (confirmRetry)="userConfirmsRetry()" class="w-[80%] max-w-[800px] mt-4"
+                [userSentence]="cachedSentence"></app-feedback-display>
         </div>
         }
     </div>

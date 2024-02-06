@@ -69,4 +69,13 @@ export class ReviewService {
       });
     }
   }
+
+  public removeWordFormReviewQueue(word: string): void {
+    console.log(`current word is: `, word);
+    const filteredArr = this.listOfWordsSignal().filter(
+      (wordStats) => wordStats.word !== word
+    );
+    console.log(`updated arr: `, filteredArr);
+    this.listOfWordsSignal.set([...filteredArr]);
+  }
 }

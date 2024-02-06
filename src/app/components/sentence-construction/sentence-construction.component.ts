@@ -48,7 +48,7 @@ export class SentenceConstructionComponent {
 
   constructor(
     private sentenceService: SentenceService,
-    private wordSearchService: WordService
+    private wordService: WordService
   ) {
     effect(() => {
       const feedback = this.instructorFeedback();
@@ -62,7 +62,7 @@ export class SentenceConstructionComponent {
       }
     });
     effect(() => {
-      const currentlySelectedWord = this.wordSearchService.selectedWordSignal();
+      const currentlySelectedWord = this.wordService.selectedWordSignal();
       if (
         currentlySelectedWord &&
         currentlySelectedWord?.word !== this.selectedWord?.word
@@ -73,6 +73,13 @@ export class SentenceConstructionComponent {
       }
     });
   }
+
+  public removeCurrentWordFromQueue(): void {
+    if (this.selectedWord) {
+      this.reviewService.removeWordFormReviewQueue(this.selectedWord?.word);
+    }
+  }
+
   public async formSubmit(event: Event) {
     event.preventDefault();
     if (this.selectedWord && this.sentenceForm.value) {
@@ -94,9 +101,10 @@ export class SentenceConstructionComponent {
     this.sentenceService.flushInstructorFeedbackSignal();
   }
 
-  public userConfirmsNewAttempt(): void {
+  public userConfirmsNewAttempt(event: 'old' | 'new'): void {
     this.prevRetry = false;
-    this.reviewService.getReviewQueue();
+    this.removeCurrentWordFromQueue();
+    this.wordService.getNextWordFromReviewQueue(event);
     this.sentenceService.flushInstructorFeedbackSignal();
   }
 }

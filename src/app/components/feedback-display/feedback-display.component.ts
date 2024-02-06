@@ -47,7 +47,7 @@ export class FeedbackDisplayComponent {
   });
   @Input() userSentence: string = '';
   @Output() confirmRetry: EventEmitter<boolean> = new EventEmitter();
-  @Output() confirmNewAttempt: EventEmitter<boolean> = new EventEmitter();
+  @Output() confirmNewAttempt: EventEmitter<'old' | 'new'> = new EventEmitter();
   public instructorFeedback = this.sentenceService.instructorFeedbackSignal;
   constructor(private sentenceService: SentenceService) {}
 }

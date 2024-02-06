@@ -1,4 +1,4 @@
-import { WordStats } from './../models/word-entry.model';
+import { WordStats, VocabularyEntry } from './../models/word-entry.model';
 import { PpAuthLibService } from 'pp-auth-lib';
 import {
   Injectable,
@@ -10,7 +10,6 @@ import {
 import Fuse, { FuseResult } from 'fuse.js';
 import { listOfWords } from '../data/listOfWords';
 import { Observable, of } from 'rxjs';
-import { VocabularyEntry } from '../models/word-entry.model';
 import {
   CollectionReference,
   DocumentReference,
@@ -47,7 +46,10 @@ export class WordService {
     private reviewService: ReviewService
   ) {
     effect(async () => {
-      if (this.reviewService.listOfWordsSignal().length > 0) {
+      if (
+        this.reviewService.listOfWordsSignal().length > 0 &&
+        this.selectedWordSignal() === undefined
+      ) {
         const newList = this.reviewService.listOfWordsSignal();
         const wordEntry = await this.getVocabularyEntryByWord(newList[0].word);
         this.selectedWordSignal.set(wordEntry);
@@ -70,6 +72,34 @@ export class WordService {
   public async setSelectedWordByWord(word: string): Promise<void> {
     const vocabularyEntry = await this.getVocabularyEntryByWord(word);
     this.selectedWordSignal.set(vocabularyEntry);
+  }
+
+  public isNewWord(wordStats: WordStats): boolean {
+    return (
+      wordStats.masteryLevel === 0 && wordStats.sentenceHistory.length === 0
+    );
+  }
+
+  public async getNextWordFromReviewQueue(
+    attribute: 'old' | 'new'
+  ): Promise<void> {
+    console.log(`user wants a ${attribute} word`);
+
+    let targetWordStats;
+    if (attribute === 'new') {
+      targetWordStats = this.reviewService
+        .listOfWordsSignal()
+        .find((wordStats) => this.isNewWord(wordStats));
+    } else {
+      targetWordStats = this.reviewService
+        .listOfWordsSignal()
+        .find((wordStats) => !this.isNewWord(wordStats));
+    }
+    console.log(`targetwordstats: `, targetWordStats);
+    const VocabularyEntry = await this.getVocabularyEntryByWord(
+      targetWordStats?.word!
+    );
+    this.selectedWordSignal.set(VocabularyEntry);
   }
 
   public async getWordStats(word: string): Promise<WordStats> {

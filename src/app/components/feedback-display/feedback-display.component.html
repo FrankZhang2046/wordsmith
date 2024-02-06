@@ -27,8 +27,9 @@
             <strong>{{reviewQueueStats().new}} new words</strong> in your word
             bank, click the appropriate button to start studying the next word.
             <div class="flex w-full justify-end mt-2">
-                <button mat-flat-button color="secondary">Review old word</button>
-                <button mat-flat-button color="primary" class="ml-2" (click)="confirmNewAttempt.emit(true)">Study new
+                <button mat-flat-button color="secondary" (click)="confirmNewAttempt.emit('old')">Review old
+                    word</button>
+                <button mat-flat-button color="primary" class="ml-2" (click)="confirmNewAttempt.emit('new')">Study new
                     word</button>
             </div>
         </div>
