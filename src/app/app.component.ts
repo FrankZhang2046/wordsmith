@@ -82,9 +82,9 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    setTimeout(() => {
-      this.requestPermission();
-    }, 5000);
+    // setTimeout(() => {
+    //   this.requestPermission();
+    // }, 5000);
   }
   public redirectMethod(destination: string): void {
     this.router.navigate([`/${destination}`]);
