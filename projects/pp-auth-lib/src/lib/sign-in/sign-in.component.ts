@@ -7,6 +7,7 @@ import {
   GoogleAuthProvider,
   signInAnonymously,
   User,
+  linkWithPopup,
 } from '@angular/fire/auth';
 import {
   FormBuilder,
@@ -66,13 +67,21 @@ export class SignInComponent implements OnInit {
   public signIn(signInMethod: string) {
     switch (signInMethod) {
       case 'google':
-        signInWithPopup(this.auth, new GoogleAuthProvider())
-          .then((result) => {
-            this.signInStatus.emit({ status: 'success', message: 'logged in' });
-          })
-          .catch((error) =>
-            this.signInStatus.emit({ status: 'error', message: error.code })
-          );
+        const googleAuthProvider = new GoogleAuthProvider();
+        if (this.auth.currentUser?.isAnonymous) {
+          linkWithPopup(this.auth.currentUser, googleAuthProvider);
+        } else {
+          signInWithPopup(this.auth, new GoogleAuthProvider())
+            .then((result) => {
+              this.signInStatus.emit({
+                status: 'success',
+                message: 'logged in',
+              });
+            })
+            .catch((error) =>
+              this.signInStatus.emit({ status: 'error', message: error.code })
+            );
+        }
         break;
       case 'email':
         this.displaySignInForm = true;

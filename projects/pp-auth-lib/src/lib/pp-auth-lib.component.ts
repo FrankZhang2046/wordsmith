@@ -44,9 +44,10 @@ export class PpAuthLibComponent implements OnInit {
       this.redirectIfAuthenticated(destination);
       this.auth.onAuthStateChanged((user) => {
         if (user) {
-          console.log(`already authenticated, redirecting`);
-
-          this.router.navigate([`/${destination}`]);
+          if (!user.isAnonymous) {
+            console.log(`already authenticated, redirecting`);
+            this.router.navigate([`/${destination}`]);
+          }
         }
       });
     });
@@ -70,7 +71,7 @@ export class PpAuthLibComponent implements OnInit {
   };
   public async redirectIfAuthenticated(destination: string): Promise<void> {
     await this.auth.authStateReady();
-    if (this.auth.currentUser) {
+    if (this.auth.currentUser && !this.auth.currentUser.isAnonymous) {
       console.log(`redirecting to dashboard`);
       this.router.navigate([`/${destination}`]);
     }
