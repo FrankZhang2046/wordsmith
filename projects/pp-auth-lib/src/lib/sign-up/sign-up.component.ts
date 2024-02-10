@@ -9,11 +9,13 @@ import {
 } from '@angular/forms';
 import {
   Auth,
+  EmailAuthProvider,
   User,
   GoogleAuthProvider,
   signInWithPopup,
   sendEmailVerification,
   linkWithPopup,
+  linkWithCredential,
 } from '@angular/fire/auth';
 import { PpAuthLibService } from '../pp-auth-lib.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -116,25 +118,35 @@ export class SignUpComponent implements OnInit {
     const email = this.f['email'].value;
     const password = this.f['password'].value;
 
-    // TODO: Implement the sign-up logic using Firebase or your preferred authentication service
-    this.authService
-      .signUpWithEmailAndPassword(email, password)
-      .then((res) => {
-        const actionCodeSettings = {
-          url: this.auth
-            ? 'https://https://wordsmith-vocabulary-builder.web.app/'
-            : 'http://localhost:4200',
-          handleCodeInApp: true,
-        };
-        if ((res.user as User).providerData[0].providerId === 'password') {
-          this.sendEmailVerification(res.user, actionCodeSettings);
-        } else {
-          this.signUpStatus.emit({ status: 'success', message: 'logged in' });
-        }
-      })
-      .catch((err) =>
-        this.signUpStatus.emit({ status: 'error', message: err.code })
-      );
+    if (this.auth.currentUser?.isAnonymous) {
+      if (email && password) {
+        const emailCredential = EmailAuthProvider.credential(email, password);
+        linkWithCredential(this.auth.currentUser, emailCredential)
+          .then((userCredential) => {
+            console.log(`successfully upgraded anon account`, userCredential);
+          })
+          .catch((error) => console.log(`caught an error: `, error));
+      }
+    } else {
+      this.authService
+        .signUpWithEmailAndPassword(email, password)
+        .then((res) => {
+          const actionCodeSettings = {
+            url: this.auth
+              ? 'https://https://wordsmith-vocabulary-builder.web.app/'
+              : 'http://localhost:4200',
+            handleCodeInApp: true,
+          };
+          if ((res.user as User).providerData[0].providerId === 'password') {
+            this.sendEmailVerification(res.user, actionCodeSettings);
+          } else {
+            this.signUpStatus.emit({ status: 'success', message: 'logged in' });
+          }
+        })
+        .catch((err) =>
+          this.signUpStatus.emit({ status: 'error', message: err.code })
+        );
+    }
   }
 
   private sendEmailVerification(
