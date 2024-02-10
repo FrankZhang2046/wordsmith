@@ -13,6 +13,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   sendEmailVerification,
+  linkWithPopup,
 } from '@angular/fire/auth';
 import { PpAuthLibService } from '../pp-auth-lib.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -78,13 +79,21 @@ export class SignUpComponent implements OnInit {
     switch (signInMethod) {
       // todo this case is probably best handled by a service
       case 'google':
-        signInWithPopup(this.auth, new GoogleAuthProvider())
-          .then((userCred) => {
-            this.signUpStatus.emit({ status: 'success', message: 'logged in' });
-          })
-          .catch((error) => {
-            this.signUpStatus.emit({ status: 'error', message: error.code });
-          });
+        const googleAuthProvider = new GoogleAuthProvider();
+        if (this.auth.currentUser?.isAnonymous) {
+          linkWithPopup(this.auth.currentUser, googleAuthProvider);
+        } else {
+          signInWithPopup(this.auth, new GoogleAuthProvider())
+            .then((userCred) => {
+              this.signUpStatus.emit({
+                status: 'success',
+                message: 'logged in',
+              });
+            })
+            .catch((error) => {
+              this.signUpStatus.emit({ status: 'error', message: error.code });
+            });
+        }
         break;
       case 'email':
         this.displayEmailSignInForm();
