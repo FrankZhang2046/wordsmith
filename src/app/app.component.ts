@@ -27,6 +27,7 @@ import { AuthToggleButtonComponent } from './components/auth-toggle-button/auth-
 import { ReviewService } from './services/review.service';
 import { AuthorSentenceButtonComponent } from './components/author-sentence-button/author-sentence-button.component';
 import { NotificationStripComponent } from './components/notification-strip/notification-strip.component';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +35,7 @@ import { NotificationStripComponent } from './components/notification-strip/noti
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   imports: [
+    TourMatMenuModule,
     CommonModule,
     RouterOutlet,
     PpAuthLibComponent,
