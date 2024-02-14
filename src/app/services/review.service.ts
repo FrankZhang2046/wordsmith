@@ -78,4 +78,8 @@ export class ReviewService {
     console.log(`updated arr: `, filteredArr);
     this.listOfWordsSignal.set([...filteredArr]);
   }
+
+  public flushListOfWordsSignal(): void {
+    this.listOfWordsSignal.set([]);
+  }
 }
