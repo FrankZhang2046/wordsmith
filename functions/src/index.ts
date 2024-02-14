@@ -18,11 +18,11 @@ import { OpenAI } from 'openai';
 // https://firebase.google.com/docs/functions/typescript
 
 export const evaluateSentence = onRequest(
-  { cors: true, secrets: ['API_KEY'] },
+  { cors: true, secrets: ['OPEN_API_KEY'] },
   async (request, response) => {
-    console.log(`api key is: `, process.env.API_KEY);
+    console.log(`api key is: `, process.env.OPEN_API_KEY);
     const openai = new OpenAI({
-      apiKey: process.env.API_KEY,
+      apiKey: process.env.OPEN_API_KEY,
     });
     const results = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
