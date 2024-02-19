@@ -79,6 +79,7 @@ export class AppComponent implements OnInit {
         } else {
           console.log(`user document already exists`);
         }
+      } else {
       }
     });
   }

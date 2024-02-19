@@ -13,6 +13,16 @@
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 import { OpenAI } from 'openai';
+import * as admin from 'firebase-admin';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const gtts = require('better-node-gtts').default;
+
+admin.initializeApp();
+const storage = admin.storage();
+const bucket = storage.bucket('test');
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -53,3 +63,19 @@ export const testChronJob = onRequest({ cors: true }, (request, response) => {
   response.setHeader('Content-Type', 'application/json');
   response.send({ status: 'success', message: request.body.text });
 });
+
+export const generatePronunciation = onRequest(
+  { cors: true },
+  async (request, response) => {
+    const { word } = request.body;
+    const tempFilePath = path.join(os.tmpdir(), `${word}.wav`);
+    await gtts.save(tempFilePath, word);
+    await bucket.upload(tempFilePath, {
+      destination: `pronunciations/${word}.wav`,
+    });
+
+    fs.unlinkSync(tempFilePath);
+
+    response.send('wav file uploaded and temp file cleaned up.');
+  }
+);

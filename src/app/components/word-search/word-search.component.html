@@ -1,8 +1,8 @@
 <form class="component-container flex justify-center">
     <mat-form-field class="w-[80%] max-w-[800px]">
         <mat-label>Search for a word</mat-label>
-        <input matInput placeholder="enter word" [formControl]="inputValue" aria-label="word-search" type="text"
-            [matAutocomplete]="wordSearchAutoComplete">
+        <input matInput tourAnchor="some.anchor.id" placeholder="enter word" [formControl]="inputValue"
+            aria-label="word-search" type="text" [matAutocomplete]="wordSearchAutoComplete">
         <mat-autocomplete #wordSearchAutoComplete="matAutocomplete"
             (optionSelected)="matOptionClickEventHandler($event)">
             @for (option of filteredOptions | async; track option) {

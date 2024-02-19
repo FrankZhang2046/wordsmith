@@ -1,5 +1,5 @@
 import { WordService } from '../../services/word.service';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -20,6 +20,7 @@ import { VocabularyEntry } from '../../models/word-entry.model';
 import { ViewWordComponent } from '../view-word/view-word.component';
 import { ReviewService } from '../../services/review.service';
 import { FuseResult } from 'fuse.js';
+import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
 
 @Component({
   selector: 'app-word-search',
@@ -32,10 +33,12 @@ import { FuseResult } from 'fuse.js';
     ReactiveFormsModule,
     MatAutocompleteModule,
     ViewWordComponent,
+    TourMatMenuModule,
   ],
 })
 export class WordSearchComponent {
   public inputValue: FormControl<string | null> = new FormControl('');
+  private tourService = inject(TourService);
   public filteredOptions: Observable<FuseResult<string>[]> | undefined;
   public selectedWord = this.wordService.selectedWordSignal;
   constructor(
@@ -43,6 +46,20 @@ export class WordSearchComponent {
     private firestore: Firestore,
     private reviewService: ReviewService
   ) {
+    this.tourService.initialize([
+      {
+        anchorId: 'some.anchor.id',
+        content: 'Some content',
+        title: 'First',
+      },
+      {
+        anchorId: 'another.anchor.id',
+        content: 'Other content',
+        title: 'Second',
+      },
+    ]);
+
+    // this.tourService.start();
     this.inputValue.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
       if (value) {
         this.filteredOptions = this.wordService.fuzzySearchWord(value);

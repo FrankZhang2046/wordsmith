@@ -7,6 +7,11 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import {
+  connectStorageEmulator,
+  getStorage,
+  provideStorage,
+} from '@angular/fire/storage';
+import {
   connectFunctionsEmulator,
   getFunctions,
   provideFunctions,
@@ -47,6 +52,13 @@ export const appConfig: ApplicationConfig = {
           measurementId: 'G-PX3C2ZLDCQ',
         })
       ),
+      provideStorage(() => {
+        const storage = getStorage();
+        if (!environment.production) {
+          connectStorageEmulator(storage, 'localhost', 9199);
+        }
+        return storage;
+      }),
       provideAuth(() => {
         const auth = getAuth();
         if (!environment.production) {

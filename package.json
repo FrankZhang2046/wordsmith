@@ -7,7 +7,7 @@
     "build": "ng build",
     "build-auth-lib": "ng build pp-auth-lib",
     "watch": "ng build --watch --configuration development",
-    "emulators": "firebase emulators:start --only auth,firestore,functions --import=./emulators-snapshot --export-on-exit=./emulators-snapshot",
+    "emulators": "firebase emulators:start --only auth,firestore,functions,storage --import=./emulators-snapshot --export-on-exit=./emulators-snapshot",
     "test": "ng test"
   },
   "private": true,
