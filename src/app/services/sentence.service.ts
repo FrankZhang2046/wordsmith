@@ -39,7 +39,8 @@ export class SentenceService {
         'http://127.0.0.1:5001/wordsmith-vocabulary-builder/us-central1/evaluateSentence';
     }
     this.http.post(url, { word, sentence, provideExample }).subscribe((res) => {
-      this.instructorFeedbackSignal.set(res as InstructorFeedback);
+      const feedbackObj = JSON.parse(res as string);
+      this.instructorFeedbackSignal.set(feedbackObj as InstructorFeedback);
       this.wordService.updateWordStats(
         word,
         sentence,
