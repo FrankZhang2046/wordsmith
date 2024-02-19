@@ -44,7 +44,7 @@ export class SentenceService {
       this.wordService.updateWordStats(
         word,
         sentence,
-        res as InstructorFeedback,
+        feedbackObj as InstructorFeedback,
         provideExample
       );
     });
